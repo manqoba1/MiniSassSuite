@@ -27,6 +27,7 @@ import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dialogs.AddTeamsDialog;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
+import com.sifiso.codetribe.minisasslibrary.emailUtil.BackgroundMail;
 import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
@@ -46,17 +47,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     String email, townList;
     ProgressBar sign_progress;
     AutoCompleteTextView esEmail;
-    TextView SI_app, SI_welcome;
+    TextView SI_app, SI_welcome,SI_wifi;
     ImageView SI_banner;
     WebCheckResult wr;
     Menu mMenu;
-    //BackgroundMail bm;
+    BackgroundMail bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         ctx = getApplicationContext();
+        bm = new BackgroundMail(ForgotPasswordActivity.this);
+        bm.setGmailUserName("apk@mlab.co.za");
+        bm.setGmailPassword("mLabtestdevice");
         wr = WebCheck.checkNetworkAvailability(ctx);
         setFields();
 
@@ -99,6 +103,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         SI_app = (TextView) findViewById(R.id.SI_app);
         SI_banner = (ImageView) findViewById(R.id.SI_banner);
+        SI_wifi = (TextView) findViewById(R.id.SI_wifi);
         SI_banner.setImageDrawable(Util.getRandomHeroImage(ctx));
         SI_banner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,17 +178,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         if (!ErrorUtil.checkServerError(ctx, resp)) {
                             return;
                         }
-                        /*bm = MiniSassApp.getBackgroundMail();
+
                         bm.setMailTo(resp.getTeamMember().getEmail());
                         bm.setFormSubject("MiniSASS forgot password");
                         String msg = "Hi, " + resp.getTeamMember().getFirstName() + "\n\n"
-                                + " Email \t: " + resp.getTeamMember().getEmail() + "\n"
+                                + "Email \t\t: " + resp.getTeamMember().getEmail() + "\n"
                                 + "Password \t: " + resp.getTeamMember().getPin();
+                        Log.i(LOG, msg);
                         bm.setFormBody(msg);
-                        bm.send();*/
-                        SharedUtil.storeEmail(ctx, esEmail.getText().toString());
-                        ToastUtil.toast(ctx, resp.getMessage());
-                        bsSignin.setEnabled(true);
+                        bm.send();
+                        bm.setmListener(new BackgroundMail.BackgroundMailListener() {
+                            @Override
+                            public void onMailSent() {
+                                SI_wifi.setText(resp.getMessage());
+                                SI_wifi.setVisibility(View.VISIBLE);
+                                //Util.shakeX();
+                                SharedUtil.storeEmail(ctx, esEmail.getText().toString());
+
+                            }
+                        });
+
 
                     }
                 });

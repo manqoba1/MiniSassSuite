@@ -2,6 +2,7 @@ package com.sifiso.codetribe.riverteamapp;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -242,7 +243,7 @@ public class SignActivity extends AppCompatActivity {
     }
 
     AddTeamsDialog addTeamDialog;
-
+ProgressDialog pd;
     public void sendSignIn() {
 
         if (esEmail.getText() == null) {
@@ -261,16 +262,21 @@ public class SignActivity extends AppCompatActivity {
         w.setGcmDevice(gcmDevice);
         Log.d(LOG, new Gson().toJson(w));
         bsSignin.setEnabled(false);
-        setRefreshActionButtonState(true);
+        //setRefreshActionButtonState(true);
+        pd = new ProgressDialog(SignActivity.this);
 
+        pd.setMessage("Signing in...");
+
+        pd.setCancelable(false);
+        pd.show();
         BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO resp) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setRefreshActionButtonState(false);
-
+                        //setRefreshActionButtonState(false);
+pd.dismiss();
                         // Log.d(LOG,resp.getTeamMember().getEmail());
                         if (!ErrorUtil.checkServerError(ctx, resp)) {
                             return;
@@ -322,7 +328,8 @@ public class SignActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setRefreshActionButtonState(false);
+                       // setRefreshActionButtonState(false);
+                        pd.dismiss();
                         bsSignin.setEnabled(true);
                         if (!error.getMessage().equals(null)) {
 
@@ -340,7 +347,8 @@ public class SignActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setRefreshActionButtonState(false);
+                        //setRefreshActionButtonState(false);
+                        pd.dismiss();
                         bsSignin.setEnabled(true);
                         if (!message.equals(null)) {
 

@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.L;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.sifiso.codetribe.minisasslibrary.emailUtil.BackgroundMail;
 import com.sifiso.codetribe.minisasslibrary.toolbox.BitmapLruCache;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class MiniSassApp extends Application {
     static String LOG = MiniSassApp.class.getSimpleName();
     RequestQueue requestQueue;
     BitmapLruCache bitmapLruCache;
-   // static BackgroundMail backgroundMail;
+    static BackgroundMail backgroundMail;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -59,9 +60,9 @@ public class MiniSassApp extends Application {
         }*/
         Log.e(LOG, "###### ACRA Crash Reporting has been initiated");
         initializeVolley(getApplicationContext());
-        /*backgroundMail = new BackgroundMail(getApplicationContext());
-        backgroundMail.setGmailPassword("apk@mlab.co.za");
-        backgroundMail.setGmailPassword("mLabtestdevice");*/
+        backgroundMail = new BackgroundMail(getApplicationContext());
+        backgroundMail.setGmailUserName("apk@mlab.co.za");
+        backgroundMail.setGmailPassword("mLabtestdevice");
         DisplayImageOptions defaultOptions =
                 new DisplayImageOptions.Builder()
                         .cacheInMemory(true)
@@ -150,9 +151,9 @@ public class MiniSassApp extends Application {
         return requestQueue;
     }
 
-    /*public static BackgroundMail getBackgroundMail() {
+    public static BackgroundMail getBackgroundMail() {
         return backgroundMail;
-    }*/
+    }
 
     public BitmapLruCache getBitmapLruCache() {
         return bitmapLruCache;

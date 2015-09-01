@@ -118,10 +118,10 @@ public class Util {
             subTxt.setVisibility(View.VISIBLE);
         }
         if (image == null || image.equals("")) {
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.girl));
+            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
         } else {
             CircleTransform transform = new CircleTransform();
-            Picasso.with(ctx).load(image).placeholder(ctx.getResources().getDrawable(R.drawable.girl)).transform(transform).into(logo);
+            Picasso.with(ctx).load(image).placeholder(ctx.getResources().getDrawable(R.drawable.ic_launcher)).transform(transform).into(logo);
 
         }
 
