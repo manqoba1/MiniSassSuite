@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.sifiso.codetribe.minisasslibrary.fragments.EvaluationListFragment">
+
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/FEL_list"
+        android:layout_below="@+id/FEL_search"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:id="@+id/FEL_search"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/search_layout" />
+    </LinearLayout>
+</RelativeLayout>

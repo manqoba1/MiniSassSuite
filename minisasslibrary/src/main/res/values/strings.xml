@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="date_started">Date</string>
+    <string name="team_list">Team List</string>
+    <string name="team_member_list">Team Member List</string>
+    <string name="zero_zero">00</string>
+    <string name="add_team_member">Add Team Member</string>
+    <string name="join_team">Join Team</string>
+    <string name="save_team">Save Team</string>
+    <string name="create_new_team">Create New Team</string>
+    <string name="insect_selected">Insects found</string>
+    <string name="app_name">MiniSass</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_list">list view</string>
+    <string name="action_grid">grid view</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_forgot_password">Forgot Password</string>
+    <string name="action_add_member">Add member</string>
+    <string name="user_profile">My Profile</string>
+    <string name="enter_team_name">Enter team name</string>
+    <string name="action_log_out">Log out</string>
+    <string name="done_label">Done</string>
+    <string name="map_unavailable">Map Unavailable, please try again</string>
+    <string name="evaluation_map">Evaluation Map</string>
+    <string name="already_in_team">Already belong to a team</string>
+    <string name="company_staff">Staff</string>
+    <string name="id_number">ID Number</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="get_status">Get Status</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="send_app_link">Send App Link</string>
+    <string name="select_action">enter first name</string>
+    <string name="action_team">Teams</string>
+    <string name="image_source">Choose Photo Source</string>
+
+    <string name="evaluation_image_map">Evaluation Image Map</string>
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <string name="radial_numbers_typeface" translatable="false">sans-serif</string>
+    <string name="hour_picker_description">Hours circular slider</string>
+    <string name="select_hours">Select hours</string>
+    <string name="select_minutes">Select minutes</string>
+    <string name="minute_picker_description">Minutes circular slider</string>
+    <string name="time_placeholder" translatable="false">--</string>
+    <string name="time_separator" translatable="false">:</string>
+    <string name="day_picker_description">Month grid of days</string>
+    <string name="select_day">Select month and day</string>
+    <string name="select_year">Select year</string>
+    <string name="year_picker_description">Year list</string>
+    <string name="item_is_selected">%1$s selected</string>
+    <string name="contact_us"><![CDATA[<p>Should you encounter any issues please do not hesitate to contact us. We hope you find our platform useful!</p>]]></string>
+    <string name="enjoy">Enjoy the app!</string>
+    <string name="invited">You are invited to download this app\:</string>
+    <string name="click_link">Click or tap the link below to navigate to Google Play</string>
+    <string name="crash_toast">ms</string>
+    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
+    <string name="crash_dialog_title">CrashTest has crashed</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing the
+    application to stop. Please help us fix this by sending us error data,
+    all you have to do is click OK.</string>
+    <string name="yes">YES</string>
+    <string name="action_camera">Camera</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="camera_error">Unable to fetch picture from camera, try again</string>
+    <string name="no">NO</string>
+    <string name="welcome">Welcome</string>
+    <string name="no_photos">No Photos</string>
+    <string name="check_image">Check Image on the Map</string>
+    <string name="check_image_text">Would you like to see where this picture was take?</string>
+    <string name="refresh">Refresh</string>
+    <string name="evaluation_image_pics">Evaluation Image Pictures</string>
+    <string name="gps_complete">GPS Co-ordinates done, Begin by tapping camera</string>
+    <string name="file_error">unable to createImageFile</string>
+    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+    <string name="crash_dialog_ok_toast">Thank you !</string>
+    <string name="image_not_found">Evaluation Image not found in list</string>
+    <string name="server_comms_failed">Server communications failed. Please try again</string>
+    <string name="no_networks">Network connections unavailable</string>
+    <string name="day_of_week_label_typeface" translatable="false">sans-serif</string>
+    <string name="error_email">Problem sending email</string>
+    <string name="photo_error">Unable to cache photo, insert SD card</string>
+    <string name="choose_photo">Select Profile Photo</string>
+    <string name="image_status">Evaluation Image status</string>
+    <string name="image_gallery">Image Gallery</string>
+    <string name="site_on_map">Site On Map</string>
+    <string name="fetch_gps">Get GPS Coordinates</string>
+    <string name="image_colon">Image Colon</string>
+    <string name="error_date">Enter end date equal or later than start date</string>
+    <string name="error_database">Database error. Contact The CourseMaker support on the web site</string>
+    <string name="error_local_databse">Local Database error. Contact The CourseMaker support on the web site</string>
+    <string name="error_network_unavailable">Network unavailable. Check settings and signal strength</string>
+    <string name="error_server_unavailable">Server is unavailable due to maintenance. Please try later.</string>
+    <string name="error_encoding">Error encoding request. Contact support</string>
+    <string name="error_server_comms">Problem communicating with the server. Please try again or contact mgGolf support</string>
+    <string name="error_duplicate">Attempting to put duplicate data in database, ignored</string>
+    <string name="title_activity_picture">PictureActivity</string>
+    <string name="take_pic">Take Picture</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Open Camera</string>
+    <string name="error_image_get">Unable to get picture from disk. Please take another picture</string>
+    <string name="image_pick_cancelled">No photo selected</string>
+    <string name="finding_gps">Finding GPS</string>
+    <string name="start_camera">Start camera</string>
+    <string name="title_activity_mini_sassma">MiniSass</string>
+    <string name="title_activity_minisass_maps">Map</string>
+    <string name="title_activity_picture_recycler_grid">Picture recycler grid activity</string>
+    <string name="title_activity_full_photo">Full photo activity</string>
+    <string name="title_activity_image">Image activity</string>
+    <string name="title_activity_evaluation_image_pager">Evaluation image pager activity</string>
+    <string name="title_activity_evaluation_image_list_fragment">Evaluation image list fragment</string>
+    <string name="txt">Text for design purpose</string>
+    <string name="zero">00</string>
+    <string name="edit_staff">Edit team details</string>
+    <string name="enter_firstname">Enter firstName</string>
+    <string name="enter_lastname">Enter surname</string>
+    <string name="enter_id">Enter ID number</string>
+    <string name="enter_desc">Enter description</string>
+    <string name="enter_cell">Enter cell number</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="river_not_found">River not found</string>
+    <string name="elapsed_time"> Elapse time</string>
+    <string name="add_evaluation">Create new evaluation</string>
+
+
+    <string name="login_with_facebook">Sign in</string>
+    <string name="login_with_google">Google+</string>
+    <string name="login_with_twitter">Twitter</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_gpsscanner">GPS scanner</string>
+    <string name="title_activity_insect_picker">Choose insects</string>
+    <string name="title_activity_evaluation">Create Evaluation</string>
+    <string name="title_activity_inse">Inse</string>
+    <string name="title_activity_insect_browser">InsectBrowser</string>
+    <string name="title_activity_minnisass_maps">MinisassMap</string>
+    <string name="title_activity_view_more_images">ViewMoreImages</string>
+    <string name="title_activity_just">Map</string>
+    <string name="title_activity_visited_sites">VisitedSitesActivity</string>
+    <string name="title_activity_file_import">FileImportActivity</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+       AIzaSyBwOWDuadjGmsvN8drvijcWpyGXRySTzbs
+    </string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+</resources>

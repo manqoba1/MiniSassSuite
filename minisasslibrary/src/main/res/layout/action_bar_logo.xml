@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true">
+
+    <ImageView
+        android:id="@+id/ACTION_BAR_logo"
+        android:src="@drawable/xblack_oval_small"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ACTION_BAR_logo"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/ACTION_BAR_text"
+            style="@style/TextStyle"
+            android:text="Municipality Name"
+            android:textColor="@color/transparent_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/TextStyle"
+            android:id="@+id/ACTION_BAR_sub_text"
+            android:text="Municipality Name"
+            android:textColor="@color/transparent_black"
+            android:textSize="12sp"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</RelativeLayout><!-- From: file:/Volumes/HardDrive/REPOS/AAA-Dec2014-Repos/maono-android/MonitorPlatform006/MonPlatformLibrary/src/main/res/layout/action_bar_logo.xml -->

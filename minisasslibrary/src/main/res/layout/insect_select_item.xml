@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/INSC_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+
+        android:src="@drawable/othermayfly13"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/INSC_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:elevation="15dp"
+        android:text="@string/insect_selected"
+        android:layout_margin="15dp"
+        android:textColor="@color/red"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/INSC_name"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/blue"
+        android:layout_alignBottom="@+id/INSC_box"/>
+
+
+</RelativeLayout>

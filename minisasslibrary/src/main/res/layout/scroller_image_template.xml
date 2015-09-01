@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/sas_divider_tiny"
+    android:background="@color/AliceBlue"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner_water1"
+        android:layout_width="@dimen/sas_picture_larger"
+        android:layout_height="@dimen/sas_picture_larger" />
+
+    <TextView
+        android:id="@+id/number"
+        android:text="00"
+        style="@style/TextStyleSmall"
+        android:textColor="@color/blue"
+        android:layout_margin="@dimen/sas_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/xborder">
+
+    <ImageView
+        android:id="@+id/AE_pin_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="@color/blue"
+        android:elevation="5dp"
+        android:src="@drawable/ic_point"
+        android:tint="@color/blue"
+        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/no_connect_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/WT_sp_river"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xborder"
+            android:hint="What is the current river are you at?"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/WT_sp_riverConnected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xborder"
+            android:hint="What is the current river are you at?"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <AutoCompleteTextView
+            android:id="@+id/WT_sp_stream"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/WT_sp_river"
+            android:background="@drawable/xborder"
+            android:hint="Stream not available? Add 0r Search"
+            android:padding="10dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/WT_sp_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/GPS_layout4"
+            android:background="@drawable/xborder"
+            android:focusable="false"
+            android:hint="What environment are you at? Rocky or Sandy?"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/AE_find_near_sites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/WT_sp_category"
+            android:layout_marginTop="4dp"
+            android:background="@color/blue"
+            android:elevation="25dp"
+            android:text="Do you want find sites visited before?"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/GPS_layout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/no_connect_layout"
+        android:layout_marginTop="@dimen/mon_divider"
+        android:background="@drawable/xborder"
+        android:padding="@dimen/mon_padding"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/xborder"
+            android:padding="@dimen/mon_divider">
+
+
+            <TextView
+                android:id="@+id/GPS_latitude"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:text="00.0000000" />
+
+            <TextView
+                android:id="@+id/GPS_label2"
+                style="@style/TextStyleGreySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/GPS_latitude"
+                android:text="Latitude" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GPS_layout2"
+            android:background="@drawable/xborder"
+            android:padding="@dimen/mon_divider">
+
+
+            <TextView
+                android:id="@+id/GPS_longitude"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:text="00.0000000" />
+
+            <TextView
+                android:id="@+id/GPS_label3"
+                style="@style/TextStyleGreySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/GPS_longitude"
+                android:text="Longitude" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/GPS_accLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/GPS_layout3">
+
+            <TextView
+                android:id="@+id/GPS_label4"
+                style="@style/Title2TextStyleGrey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accuracy" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/GPS_accuracy"
+            style="@style/Title1TextStyleRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/GPS_layout3"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_toEndOf="@+id/GPS_accLayout"
+            android:text="00.0"
+            android:textSize="40sp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

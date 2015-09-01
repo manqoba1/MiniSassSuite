@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context="com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_below="@+id/result1"
+                android:id="@+id/AE_find_near_sites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/teal"
+                android:drawableLeft="@drawable/star_grey_48"
+                android:text="Do you want find sites visited before?"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+
+            <RelativeLayout
+                android:id="@+id/result1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+
+                <include
+
+                    android:id="@+id/l1"
+                    layout="@layout/site_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/AE_pin_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/blue"
+                    android:src="@drawable/ic_point"
+                    android:tint="@color/blue"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/AE_down_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AE_find_near_sites"
+                android:layout_marginTop="10dp"
+                android:background="@color/teal"
+                android:drawableRight="@android:drawable/arrow_up_float"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/star_grey_48"
+                android:text=" Do you have testing equipments?If yes tab  here."
+                android:textStyle="italic"
+                android:textColor="@color/White"
+                />
+
+            <RelativeLayout
+                android:id="@+id/result2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/AE_down_up"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/l2"
+                    layout="@layout/water_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp" />
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/LL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/result2"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/SL_show_insect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/teal"
+                    android:drawableLeft="@drawable/star32"
+                    android:text="Which insects group did you find?"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/result3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL1"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/l3"
+                    layout="@layout/score_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/result4"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/result3">
+
+                <include
+                    android:id="@+id/l4"
+                    layout="@layout/comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/AE_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/result4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/xsquare_green"
+                android:drawablePadding="10dp"
+                android:text="Submit Results"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

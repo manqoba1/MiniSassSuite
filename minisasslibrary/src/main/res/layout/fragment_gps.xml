@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/mon_padding">
+
+        <ImageView
+            android:id="@+id/GPS_hero"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_medium_lite"
+            android:scaleType="centerCrop"
+            android:src="@drawable/banner_gps1" />
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GPS_hero"
+            android:background="@drawable/xborder">
+
+
+            <RelativeLayout
+                android:id="@+id/GPS_nameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/GPS_imgLogo"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_divider"
+                    android:elevation="@dimen/mon_divider"
+                    android:src="@drawable/ic_point"
+                    android:tint="@color/absa_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Evaluation Site Found"
+                    style="@style/Title3TextStyleBlack"
+                    android:id="@+id/textView16"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/GPS_label"
+                style="@style/TextStyleGreySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/GPS_nameLayout"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginTop="@dimen/mon_padding"
+                android:text="Desired GPS Accuracy" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/GPS_label"
+                android:layout_marginLeft="@dimen/mon_padding"
+                android:padding="@dimen/mon_padding">
+
+                <TextView
+                    android:id="@+id/GPS_desiredAccuracy"
+                    style="@style/Title2TextStyleGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10" />
+
+                <SeekBar
+                    android:id="@+id/GPS_seekBar"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_padding"
+                    android:layout_toRightOf="@id/GPS_desiredAccuracy"
+                    android:elevation="@dimen/mon_divider"
+
+                    android:indeterminate="false"
+                    android:max="50"
+                    android:progress="10" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GPS_layout1"
+            android:background="@drawable/xborder"
+            android:padding="@dimen/mon_divider">
+
+
+            <TextView
+                android:id="@+id/GPS_latitude"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:text="00.0000000" />
+
+            <TextView
+                android:id="@+id/GPS_label2"
+                style="@style/TextStyleGreySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/GPS_latitude"
+                android:text="Latitude" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GPS_layout2"
+            android:background="@drawable/xborder"
+            android:padding="@dimen/mon_divider">
+
+
+            <TextView
+                android:id="@+id/GPS_longitude"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:text="00.0000000" />
+
+            <TextView
+                android:id="@+id/GPS_label3"
+                style="@style/TextStyleGreySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/GPS_longitude"
+                android:text="Longitude" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/GPS_layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/GPS_layout3"
+            android:layout_marginTop="@dimen/mon_divider"
+            android:background="@drawable/xborder"
+            android:padding="@dimen/mon_padding">
+
+            <RelativeLayout
+                android:id="@+id/GPS_accLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/GPS_label4"
+                    style="@style/Title2TextStyleGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accuracy" />
+
+                <TextView
+                    android:id="@+id/GPS_label4a"
+                    style="@style/TextStyleGreySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/GPS_label4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:text="Measured in metres" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/GPS_accuracy"
+                style="@style/Title1TextStyleRed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_toRightOf="@id/GPS_accLayout"
+                android:text="00.0"
+                android:textSize="40sp" />
+
+            <RelativeLayout
+                android:id="@+id/GPS_elapsedLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/GPS_accuracy">
+
+
+                <Chronometer
+                    android:id="@+id/GPS_chrono"
+                    style="@style/Title2TextStyleGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mon_margin" />
+
+                <TextView
+                    android:id="@+id/GPS_elapsedLabel"
+                    style="@style/TextStyleGreySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/GPS_chrono"
+                    android:text="@string/elapsed_time" />
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+</ScrollView>

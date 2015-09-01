@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <include
+                android:id="@+id/l4"
+                layout="@layout/comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/AE_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/l4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/xsquare_blue"
+                android:drawablePadding="10dp"
+                android:drawableRight="@android:drawable/ic_menu_save"
+                android:text="create Evaluation"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/AE_pin_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/blue"
+                android:src="@drawable/ic_point"
+                android:tint="@color/red"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <ViewStub
+        android:id="@+id/viewStub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView17"
+        android:layout_marginTop="163dp"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView18"
+        android:layout_alignBottom="@+id/textView17"
+        android:layout_alignRight="@+id/scroll"
+        android:layout_alignEnd="@+id/scroll" />
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/image1"
+        android:src="@drawable/ic_action_person"
+        android:tint="@color/blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/text1"
+        style="@style/TextStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="start"
+        android:text="Spinner item text here"
+        android:layout_toRightOf="@id/image1"
+        android:layout_marginLeft="@dimen/sas_padding"
+        android:textStyle="normal"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:layout_toStartOf="@+id/remove" />
+
+    <ImageButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:text="Remove"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/error16"
+        android:id="@+id/remove"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

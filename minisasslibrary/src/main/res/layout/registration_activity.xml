@@ -1,0 +1,151 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@color/white"
+    tools:context="codetribe.com.minsassapps.Registration">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/signLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/topLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/hero_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:alpha="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mini_sass_logo" />
+
+                <ProgressBar
+                    android:id="@+id/signProgress"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/topLayout"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="8dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edtLogEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Email Address" />
+                <EditText
+                    android:id="@+id/edtLogPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/edtLogEmail"
+                    android:layout_marginTop="10dp"
+                    android:hint="Enter Pin"
+                    android:inputType="numberPassword" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/edtLogPassword"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/btnLogSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/register"
+                            android:text="Sign in"
+                            android:textColor="@color/white" />
+
+
+                        <View
+                            android:id="@+id/primerdivisor"
+                            android:layout_width="160dp"
+                            android:layout_height="2dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/btnLogSubmit"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/maroon" />
+
+                        <View
+                            android:id="@+id/geeline"
+                            android:layout_width="160dp"
+                            android:layout_height="2dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/btnLogSubmit"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/maroon" />
+
+                        <TextView
+                            android:id="@+id/txtor"
+                            style="@style/RedCircleSmall"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_below="@+id/btnLogSubmit"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="or"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnLogReg"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_below="@+id/txtor"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/xborder"
+                            android:text="Create new team"
+                            android:textColor="@color/blue_dark2" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/reg_layed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <include layout="@layout/register"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/regTeamLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <include layout="@layout/register_team"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
+

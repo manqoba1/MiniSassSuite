@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sifiso.codetribe.riverteamapp.EvaluationListActivity">
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.sifiso.codetribe.minisasslibrary.fragments.EvaluationListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_evaluation_list" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/mon_wide"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/RL_add"
+        style="@style/GreenCircleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp"
+        android:elevation="10dp"
+        android:text="+"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginRight="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_below="@+id/progressBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

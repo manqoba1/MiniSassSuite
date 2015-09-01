@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.sifiso.codetribe.minisasslibrary.ObservationActivity$PlaceholderFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/signLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/topLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/hero_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:alpha="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mini_sass_logo" />
+
+                <TextView
+                    android:id="@+id/txtSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/hero_top"
+                    android:layout_centerHorizontal="true"
+                    android:text="Existing observation sites"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/signProgress"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/topLayout"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/txtMandatory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:text="*Mandatory field" />
+                <EditText
+                    android:id="@+id/txtTown"
+                    android:layout_marginTop="10dp"
+                    android:hint="Select a Site*"
+                    android:focusable="false"
+                    android:textAlignment="gravity"
+                    android:background="@drawable/xborder"
+                    android:layout_below="@+id/edtRegTeamName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtTown"
+                    android:id="@+id/textK"
+                    android:text="Select a name from the drop-down list above. Names in this list are a combination of the river name, site name and the date the site was created."/>
+
+                    <Button
+                        android:layout_marginTop="40dp"
+                        android:layout_below="@+id/textK"
+                        android:textStyle="bold"
+                        android:background="@drawable/sign"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:id="@+id/btnCancel"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="Cancel"/>
+
+                    <Button
+                        android:layout_marginTop="40dp"
+                        android:layout_below="@+id/textK"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="200dp"
+                        android:textColor="@color/white"
+                        android:layout_weight="1"
+                        android:text="Use Selected Site"
+                        android:id="@+id/btnReg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="200dp"
+                        android:background="@drawable/register"/>
+                <Button
+                    android:layout_marginTop="40dp"
+                    android:layout_below="@+id/textK"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="70dp"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:text="Add new site"
+                    android:id="@+id/btnSite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="80dp"
+                   />
+
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>

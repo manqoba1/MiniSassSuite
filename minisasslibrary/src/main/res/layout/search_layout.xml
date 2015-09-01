@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SLT_searchLayout"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/SLT_hero"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hero_image_length"
+        android:scaleType="fitXY"
+        android:src="@drawable/limpoporiver" />
+
+    <RelativeLayout
+        android:id="@+id/SLT_bottomLayout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SLT_hero"
+        android:padding="@dimen/mon_padding">
+
+        <ImageView
+            android:id="@+id/SLT_imgSearch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@android:drawable/ic_menu_search"
+            android:text="Find Something"
+            android:tint="@color/blue"
+            android:visibility="gone" />
+
+        <AutoCompleteTextView
+            android:id="@+id/SLT_editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_padding_4"
+            android:layout_marginRight="@dimen/mon_wider"
+            android:layout_marginTop="@dimen/padding_top_10"
+            android:hint="Search" />
+
+        <ImageView
+            android:id="@+id/SLT_imgSearch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:src="@android:drawable/ic_search_category_default"
+            android:text="Find Something"
+            android:tint="@color/blue" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

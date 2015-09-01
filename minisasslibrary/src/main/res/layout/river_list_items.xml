@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/AR_layout0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/xwhite_rounded_corners"
+    android:padding="0dp">
+
+
+
+    <RelativeLayout
+        android:id="@+id/AR_layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+
+        <LinearLayout
+            android:id="@+id/AR_topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/AR_image_folder"
+                android:layout_width="@dimen/img_folder"
+                android:layout_height="@dimen/img_folder"
+                android:padding="5dp"
+                android:src="@drawable/folder_48" />
+
+            <TextView
+                android:id="@+id/AR_txtRiverName"
+                style="@style/Title2TextStyleBlack"
+                android:textStyle="normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name of the River" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="tap here to create evaluation"
+            android:drawableRight="@drawable/arrows_up_action"
+            android:id="@+id/textView6"
+            android:textColor="@color/absa_red"
+            android:layout_below="@+id/AR_topLayout"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout" />
+        <LinearLayout
+            android:id="@+id/AR_totalTrainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/textView6"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:id="@+id/AR_totalEvaluation"
+                style="@style/Title3TextStyleBlack"
+                android:textColor="@color/white"
+                android:background="@drawable/xgreen_oval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="17" />
+
+            <TextView
+                android:id="@+id/AR_totalTrLabel"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="View Latest Evaluations" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/AR_totalTasksLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/AR_totalStreams"
+                android:padding="5dp"
+                style="@style/Title2TextStyleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00" />
+
+            <TextView
+                android:id="@+id/AR_totalLabel"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Total Streams" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/AR_totalCompLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_below="@id/AR_totalTasksLayout"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/AR_refresh"
+                style="@style/Title2TextStyleGreen"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_refresh"
+                android:padding="5dp"
+                android:text="24" />
+
+            <TextView
+                android:id="@+id/AR_completeMsg"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/AR_refresh"
+                android:padding="5dp"
+                android:text="River Health Score" />
+
+            <TextView
+                android:id="@+id/AR_percOverallEva"
+                style="@style/Title1TextStyleRed"
+                android:layout_width="wrap_content"
+                android:textStyle="normal"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/AR_refresh"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:text="23,5 %" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/AR_actionLayout"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/AR_totalCompLayout"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:id="@+id/AR_imgMap"
+                android:src="@drawable/ic_action_map"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/AR_imgDirections"
+                android:src="@drawable/ic_action_directions"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/AR_imgPicker"
+                android:src="@drawable/ic_action_camera"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="4dp"
+            android:visibility="gone"
+            android:layout_below="@+id/textView20"
+            android:layout_alignStart="@+id/AR_totalCompLayout"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Texsdasdasdasdsdt"
+                style="@style/TextStyleBlueSmall"
+
+                android:id="@+id/AR_eva_date"
+                android:layout_below="@+id/AR_totalTrainLayout"
+                android:layout_toEndOf="@+id/AR_totalCompLayout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Textsdf"
+                android:layout_weight="1"
+                style="@style/Title3TextStyleBlack"
+                android:id="@+id/AR_Eva_score"
+                android:layout_above="@+id/AR_totalTasksLayout"
+                android:layout_alignParentEnd="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_weight="1"
+                android:src="@drawable/blue_crap"
+                android:layout_below="@+id/AR_totalTrainLayout"
+                android:layout_toEndOf="@+id/textView6" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="recent evaluation made"
+            android:drawableLeft="@drawable/arrows_down_action"
+            android:textColor="@color/green"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:id="@+id/textView20"
+            android:layout_below="@+id/AR_totalTrainLayout"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

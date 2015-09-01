@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.sifiso.codetribe.minisasslibrary.activities.ViewMoreImages">
+    <item
+        android:id="@+id/action_list"
+        android:orderInCategory="100"
+        android:title="@string/action_list"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_grid"
+        android:orderInCategory="100"
+        android:title="@string/action_grid"
+        app:showAsAction="never" />
+</menu>

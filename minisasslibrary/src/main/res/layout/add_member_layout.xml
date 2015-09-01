@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/fieldsLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fieldsLayout"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textView15"
+                style="@style/TextStyleOrangeSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Member Info"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <CheckBox
+                android:id="@+id/cbMoreMember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:text="Add more members" />
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtMemberName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:maxLines="1">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/edtMemberLastNAme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtMemberName"
+            android:hint="Last Name"
+            android:maxLines="1" />
+
+        <AutoCompleteTextView
+            android:id="@+id/edtMemberEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtMemberLastNAme"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/edtMemberPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtMemberEmail"
+            android:hint="Cellphone Number"
+            android:inputType="number"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtMemberEmail"
+            android:hint="Pin Code"
+            android:inputType="numberPassword"
+            android:maxLines="1" />
+
+        <ViewStub
+            android:id="@+id/vTub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fieldsLayout2"
+        android:elevation="10dp"
+        android:background="@color/White"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+
+        <include layout="@layout/btn_red" />
+
+    </LinearLayout>
+</RelativeLayout>

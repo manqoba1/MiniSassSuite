@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/mon_padding">
+
+    <include
+        android:id="@+id/ic1"
+        layout="@layout/hero_image_popup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ic1"
+        android:background="@drawable/xborder">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find insects in water"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/SD_done"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/xsquare_blue"
+            android:text="Done"
+            android:textColor="@color/white"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/SD_list"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>

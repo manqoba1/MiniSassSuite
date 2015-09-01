@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fieldsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/fieldsLayout1"
+    android:layout_marginTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="8dp"
+    >
+
+
+    <TextView
+        android:id="@+id/textView14"
+        style="@style/TextStyleOrangeSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Organisation Info"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/edtRegTeamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgTopLgo"
+        android:hint="Organisation Name" />
+
+    <Spinner
+        android:id="@+id/sp_org_type"
+        style="@style/TextStyleOrangeSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:focusable="false"
+
+        android:hint="Select Town"
+        android:textColorHint="@color/gray" />
+
+    <Spinner
+        android:id="@+id/sp_country"
+        style="@style/TextStyleOrangeSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:focusable="false"
+        android:hint="Select Town"
+        android:textColorHint="@color/gray" />
+
+    <Button
+        android:id="@+id/tnb_add_member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Process Member" />
+
+    <LinearLayout
+        android:id="@+id/llMember"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView13"
+            style="@style/TextStyleOrangeSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Team Members"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ListView
+            android:id="@+id/lsMember"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:isScrollContainer="true" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="left|top"
+
+    tools:context="com.sifiso.codetribe.minisasslibrary.fragments.RiverListFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/RL_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible">
+
+        <include
+
+            layout="@layout/search_layout" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:dividerHeight="@dimen/mon_divider"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/RL_search">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/MSG_countLayout">
+
+            <ListView
+                android:id="@+id/RL_riverList"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

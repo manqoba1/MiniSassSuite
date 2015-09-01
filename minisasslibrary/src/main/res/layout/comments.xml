@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/EDT_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Comment/ Notes"
+        android:inputType="textMultiLine"
+        android:textColor="@color/gray"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/AE_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EDT_comment"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/xsquare_green"
+        android:drawablePadding="10dp"
+        android:elevation="25dp"
+        android:text="Submit Results"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+</RelativeLayout>

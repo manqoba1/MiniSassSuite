@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:id="@+id/MSG_topLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/MSG_title"
+            style="@style/Title2TextStyleBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find Friends" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/MSG_title"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/MSG_allCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Select"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/MSG_btnSend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="go" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/SLT_bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/MSG_topLayout"
+        android:background="@color/White"
+        android:padding="10dp">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/SLT_editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/MSG_countLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SLT_bottomLayout"
+        android:background="@color/White"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/MSG_countLabel"
+            style="@style/Title3TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Team Members"
+            android:textColor="@color/grey2"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/MSG_count"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/MSG_countLabel"
+            android:text="@string/zero"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/MSG_selected"
+            style="@style/Title2TextStyleGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="@string/zero" />
+
+        <TextView
+            android:id="@+id/MSG_selectedLabel"
+            style="@style/Title3TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/MSG_selected"
+            android:text="Search results"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/MSG_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/MSG_countLayout" />
+
+
+</RelativeLayout>

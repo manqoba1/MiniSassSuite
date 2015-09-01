@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3"
+
+        android:layout_below="@+id/relativeLayout">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/TLI_town_uri"
+            android:scaleType="fitXY"
+            android:src="@drawable/limpoporiver" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="@color/Chocolate"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            style="@style/Title3TextStyleBlue"
+            android:id="@+id/TLI_townName"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Town team"
+            android:layout_marginTop="18dp"
+            android:id="@+id/textView9"
+            style="@style/Title2TextStyleAzure"
+            android:layout_below="@+id/TLI_townName"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            style="@style/Title2TextStyleGreen"
+            android:id="@+id/TLI_teamsCount"
+            android:layout_below="@+id/TLI_townName"
+            android:layout_alignParentEnd="true" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:id="@+id/TLI_click"
+            android:visibility="visible" />
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0"
+        android:id="@+id/TLI_map"
+        android:layout_marginRight="100dp"
+        android:padding="6dp"
+        android:layout_marginTop="65dp"
+        android:backgroundTint="@color/silver"
+        android:src="@android:drawable/ic_dialog_map"
+        android:layout_alignParentEnd="true"
+        style="@style/GreenCircleSmallMap" />
+</RelativeLayout>

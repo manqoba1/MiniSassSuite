@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:padding="8dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/regProgress"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <RelativeLayout
+            android:id="@+id/fieldsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/regImagelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Add Team Member"
+                    android:textSize="20dp"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="*Mandatory fields"
+                android:layout_below="@+id/regImagelayout"
+                android:id="@+id/txtmand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtMemberName"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/txtmand"
+                android:hint="First Name*"
+                android:background="@drawable/xborder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <EditText
+                android:id="@+id/edtMemberLastNAme"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/edtMemberName"
+                android:layout_marginTop="10dp"
+                android:hint="Last Name*"
+                android:background="@drawable/xborder"
+                android:layout_height="50dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edtMemberEmail"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/edtMemberLastNAme"
+                android:hint="Email Address*"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/xborder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <EditText
+                android:id="@+id/edtMemberPhone"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/edtMemberEmail"
+                android:background="@drawable/xborder"
+                android:hint="Cellphone Number"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <EditText
+                android:id="@+id/edtMemberPassword"
+                android:hint="Enter Pin*"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/xborder"
+                android:inputType="numberPassword"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/edtMemberPhone"
+                android:layout_height="50dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/fieldsLayout"
+            android:id="@+id/btnLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:textStyle="bold"
+                android:background="@drawable/sign"
+                android:textColor="@color/material_blue_grey_800"
+                android:id="@+id/btnCancel"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Cancel" />
+
+            <Button
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:text="Register"
+                android:id="@+id/btnReg"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/register" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

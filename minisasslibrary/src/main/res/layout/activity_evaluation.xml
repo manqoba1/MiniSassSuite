@@ -1,0 +1,170 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp"
+
+    tools:context="com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
+
+
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/result1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp">
+
+                <include
+                    android:id="@+id/l1"
+                    layout="@layout/site_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dp" />
+
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/resultTub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/result1"
+                android:layout_marginTop="5dp"
+                android:elevation="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/AE_down_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:drawableRight="@android:drawable/arrow_up_float"
+                        android:textColor="@color/White"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/AE_down_up"
+                        android:layout_alignTop="@+id/AE_down_up"
+                        android:gravity="center_vertical"
+                        android:text="Optional"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/result2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resultTub"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/l2"
+                    layout="@layout/water_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/LL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/result2"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/SL_show_insect"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue"
+                        android:elevation="25dp"
+                        android:text="Which insects group did you find?"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/result3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LL1"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/l3"
+                    layout="@layout/score_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/result4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/result3"
+                android:layout_marginTop="5dp"
+                android:elevation="@dimen/padding_top_10">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp">
+
+                    <include
+                        android:id="@+id/l4"
+                        layout="@layout/comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <ViewStub
+        android:id="@+id/viewStub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+</RelativeLayout>

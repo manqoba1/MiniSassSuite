@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:backgroundTint="@color/background_floating_material_light">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/xborder"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total score"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/TV_total_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignTop="@+id/textView"
+            android:layout_alignLeft="@+id/TV_average_score"
+            android:layout_alignStart="@+id/TV_average_score" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="10dp"
+            android:text="Number of insect Groups"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/TV_average_score"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignTop="@+id/textView3"
+            android:layout_alignRight="@+id/relativeLayout2"
+            android:layout_alignEnd="@+id/relativeLayout2" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="10dp"
+            android:text="Avarage score"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView5"
+            android:layout_toRightOf="@+id/textView3"
+            android:layout_toEndOf="@+id/textView3">
+
+            <TextView
+                android:id="@+id/TV_avg_score"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/IMG_score_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="10dp"
+                android:text="0.0"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/red" />
+
+            <ImageView
+                android:id="@+id/IMG_score_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/red_crap"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/TV_score_status"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TV_avg_score"
+                android:layout_marginTop="15dp"
+                android:text="Not specified"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/red" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

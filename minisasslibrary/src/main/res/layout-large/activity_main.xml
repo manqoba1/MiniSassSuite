@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.sifiso.codetribe.riverteamapp.MainPagerActivity">
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.sifiso.codetribe.minisasslibrary.fragments.RiverListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/river_list" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/mon_wide"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/RL_add"
+        style="@style/GreenCircleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="230dp"
+        android:layout_marginRight="44dp"
+        android:elevation="10dp"
+        android:text="+"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>
+

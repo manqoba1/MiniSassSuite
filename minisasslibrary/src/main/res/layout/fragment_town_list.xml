@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/grey"
+    android:layout_gravity="left|top"
+    tools:context="com.sifiso.codetribe.minisasslibrary.fragments.RiverListFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/FTL_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true">
+
+        <include layout="@layout/search_layout" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/FTL_search">
+
+        <ListView
+            android:id="@+id/FTL_townList"
+            android:layout_width="match_parent"
+            android:dividerHeight="5dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

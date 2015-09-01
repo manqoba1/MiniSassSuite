@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:padding="0dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/CAM_topLayout"
+        android:background="@color/white"
+        android:padding="@dimen/sas_wider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!--
+        <ProgressBar
+            android:id="@+id/CAM_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/CAM_message"
+            style="@style/TextStyleBlueSmall"
+            android:layout_toRightOf="@id/CAM_progressBar"
+            android:layout_marginLeft="@dimen/sas_padding"
+            android:layout_centerVertical="true"
+            android:text="@string/finding_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+-->
+    </RelativeLayout>
+
+ <!--   <RelativeLayout
+        android:id="@+id/CAM_gpsStatus"
+        android:background="@color/AntiqueWhite"
+        android:padding="@dimen/sas_middle"
+        android:layout_below="@id/CAM_topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/CAM_label1"
+            style="@style/TextStyleGreySmall"
+            android:text="GPS Accuracy"
+            android:layout_marginLeft="@dimen/sas_divider"
+            android:layout_marginTop="@dimen/sas_wide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/CAM_accuracy"
+            android:layout_toRightOf="@id/CAM_label1"
+            style="@style/Title2TextStyleBlue1"
+            android:text="0.00"
+            android:layout_alignBaseline="@id/CAM_label1"
+            android:layout_marginLeft="@dimen/sas_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/CAM_mLabel"
+            android:layout_toRightOf="@id/CAM_accuracy"
+            style="@style/TextStyleGreySmall"
+            android:text="metres"
+            android:layout_alignBaseline="@id/CAM_label1"
+            android:layout_marginLeft="@dimen/sas_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Chronometer
+            android:id="@+id/CAM_chrono"
+            android:layout_toRightOf="@id/CAM_mLabel"
+            android:layout_marginLeft="@dimen/sas_wide"
+            android:layout_alignBaseline="@id/CAM_label1"
+            android:textColor="@color/absa_red"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+-->
+
+    <RelativeLayout
+        android:id="@+id/CAM_imageLayout"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="match_parent">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/CAM_imageContainer"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include layout="@layout/scroller_image_template"/>
+                <include layout="@layout/scroller_image_template"/>
+                <include layout="@layout/scroller_image_template"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/CAM_imgCamera"
+        android:src="@drawable/water_cam"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/sas_wider"
+        android:layout_width="100dp"
+        android:layout_marginRight="@dimen/sas_margin"
+        android:layout_height="100dp" />
+
+    <RelativeLayout
+        android:padding="@dimen/sas_wide"
+        android:layout_alignParentBottom="true"
+        android:background="@color/AliceBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/CAM_btnStart"
+            style="@style/ButtonBlue"
+            android:background="@color/DodgerBlue"
+            android:text="@string/start_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

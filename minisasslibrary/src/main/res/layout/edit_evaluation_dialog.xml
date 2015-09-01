@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <include layout="@layout/water_test"
+        android:id="@+id/include"></include>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:background="@color/blue"
+        android:id="@+id/btn_save"
+        android:textColor="@color/White"
+        android:layout_below="@+id/include"
+        android:layout_alignRight="@+id/include"
+        android:layout_alignEnd="@+id/include" />
+</RelativeLayout>
