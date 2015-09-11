@@ -1,6 +1,7 @@
 package com.sifiso.codetribe.minisasslibrary.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +110,7 @@ public class EvaluationAdapter extends BaseAdapter {
             h.ELI_envType.setVisibility(View.GONE);
         }
 
-        if (evaluation.getConditions().getCategoryID()== 8) {
+        if (evaluation.getConditions().getCategoryID() == 8) {
             h.ELI_envType.setTextColor(mCtx.getResources().getColor(R.color.yellow_dark));
         } else {
             h.ELI_envType.setTextColor(mCtx.getResources().getColor(R.color.Peru));
@@ -253,6 +254,7 @@ public class EvaluationAdapter extends BaseAdapter {
 
     public void animateView(final View view) {
         Animation a = AnimationUtils.loadAnimation(mCtx, R.anim.grow_fade_in_center);
+
         a.setDuration(500);
         if (view == null)
             return;

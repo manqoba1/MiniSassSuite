@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.R;
@@ -29,10 +30,10 @@ public class AddMemberDialog extends DialogFragment {
     Activity activity;
     Button rsRegister;
     EditText rsMemberName, rsMemberSurname;
-    EditText rsCellphone, rsPin;
+    EditText rsCellphone, rsPin, re_edtPassword;
     CheckBox cbMoreMember;
     AutoCompleteTextView rsMemberEmail;
-
+    public ProgressBar progressBar3;
     private TeamMemberDTO teamMember;
     private AddMemberDialogListener listener;
 
@@ -58,18 +59,21 @@ public class AddMemberDialog extends DialogFragment {
     TeamMemberDTO member;
 
     private void setFields() {
+        progressBar3 = (ProgressBar) v.findViewById(R.id.progressBar3);
+        re_edtPassword = (EditText) v.findViewById(R.id.re_edtPassword);
         rsMemberName = (EditText) v.findViewById(R.id.edtMemberName);
         rsMemberSurname = (EditText) v.findViewById(R.id.edtMemberLastNAme);
         rsPin = (EditText) v.findViewById(R.id.edtPassword);
         rsPin.setVisibility(View.GONE);
+        re_edtPassword.setVisibility(View.GONE);
         rsMemberEmail = (AutoCompleteTextView) v.findViewById(R.id.edtMemberEmail);
         rsCellphone = (EditText) v.findViewById(R.id.edtMemberPhone);
 
         cbMoreMember = (CheckBox) v.findViewById(R.id.cbMoreMember);
         cbMoreMember.setVisibility(View.GONE);
         rsRegister = (Button) v.findViewById(R.id.btnLogSubmit);
-        rsRegister.setText("Join team " + teamMember.getTeamName());
-        getDialog().setTitle("Add Member");
+        rsRegister.setText("Add member");
+        getDialog().setTitle("Add Team Member");
 
         if (isFlag()) {
             rsMemberName.setText(teamMember.getFirstName());
@@ -79,6 +83,7 @@ public class AddMemberDialog extends DialogFragment {
             rsMemberEmail.setEnabled(false);
             rsPin.setText(teamMember.getPin());
             rsPin.setVisibility(View.VISIBLE);
+            re_edtPassword.setVisibility(View.GONE);
             rsRegister.setText("Submit");
             //member.setPin(rsPin.getText().toString());
             getDialog().setTitle("Edit Profile");
@@ -86,46 +91,47 @@ public class AddMemberDialog extends DialogFragment {
         rsRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Util.flashOnce(rsRegister, 100, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
+
                         if (rsMemberName.getText().toString().isEmpty()) {
                             rsMemberName.setError("Enter first name");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         if (Statics.isLetterAndNumber(rsMemberName.getText().toString())) {
                             rsMemberName.setError("First name should be letters only");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         if (rsMemberSurname.getText().toString().isEmpty()) {
                             rsMemberSurname.setError("Enter last name");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         if (Statics.isLetterAndNumber(rsMemberSurname.getText().toString())) {
                             rsMemberSurname.setError("Last name should be letters only ");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-
                         if (!Statics.rfc2822.matcher(rsMemberEmail.getText().toString()).matches()) {
                             rsMemberEmail.setError("Enter email address");
                             //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         if (rsCellphone.getText().toString().length() != 10) {
                             rsCellphone.setError("Phone number must be 10 digits long");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if (rsPin.getText().toString().isEmpty()) {
-                            rsPin.setError("Enter pin");
-                            //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+
                         member = new TeamMemberDTO();
                         member.setActiveFlag(0);
                         member.setCellphone(rsCellphone.getText().toString());
@@ -149,7 +155,9 @@ public class AddMemberDialog extends DialogFragment {
                             }
                             member.setPin(rsPin.getText().toString());
                         }
-                        //Util.showToast(ctx, "show");
+
+                        Log.d(LOG, new Gson().toJson(member));
+                        progressBar3.setVisibility(View.VISIBLE);
                         listener.membersToBeRegistered(member);
                         // dismiss();
                     }

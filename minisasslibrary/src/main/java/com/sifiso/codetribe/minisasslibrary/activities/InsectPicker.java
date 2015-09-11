@@ -113,7 +113,7 @@ public class InsectPicker extends AppCompatActivity {
 
     private void setFields() {
         SD_list = (RecyclerView) findViewById(R.id.SD_list);
-        SD_list.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        SD_list.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         //SD_list.setLayoutManager(new LinearLayoutManager(ctx,LinearLayoutManager.HORIZONTAL,false));
         SD_list.setItemAnimator(new DefaultItemAnimator());
         SD_list.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.HORIZONTAL));

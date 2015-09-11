@@ -16,6 +16,7 @@ import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
+import com.sifiso.codetribe.minisasslibrary.util.Constants;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
@@ -51,9 +52,9 @@ public class RiverAdapter extends BaseAdapter {
     }
 
     class Holder {
-        ImageView AR_image_folder, AR_imgMap, AR_refresh, AR_imgDirections, AR_imgPicker;
+        ImageView AR_image_folder, AR_imgMap, AR_refresh, AR_imgDirections, AR_imgPicker,logo_icon;
         TextView AR_totalEvaluation, AR_txtRiverName, AR_totalStreams, AR_percOverallEva, AR_totalTrLabel,
-                AR_eva_date, AR_Eva_score;
+                AR_eva_date, AR_Eva_score, AR_conditionName;
 
     }
 
@@ -66,7 +67,9 @@ public class RiverAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.river_list_items, parent,
                     false);
-            h.AR_image_folder = (ImageView) v.findViewById(R.id.AR_image_folder);
+            h.AR_conditionName = (TextView) v.findViewById(R.id.AR_conditionName);
+            h.logo_icon = (ImageView) v.findViewById(R.id.logo_icon);
+           // h.AR_image_folder = (ImageView) v.findViewById(R.id.AR_image_folder);
             h.AR_imgMap = (ImageView) v.findViewById(R.id.AR_imgMap);
             // h.AR_refresh = (ImageView) v.findViewById(R.id.AR_refresh);
             h.AR_imgDirections = (ImageView) v.findViewById(R.id.AR_imgDirections);
@@ -101,11 +104,32 @@ public class RiverAdapter extends BaseAdapter {
         h.AR_totalStreams.setText("" + dto.getStreamList().size());
         double percentage = total;//   Math.round((perc / dto.getEvaluationsiteList().size()) * 100.00) / 100.00; ;
 
-        if (percentage > 0) {
+        /*if (percentage > 0) {
             h.AR_percOverallEva.setText((Math.round(percentage * 100.00) / 100.00) + "");
         } else {
             h.AR_percOverallEva.setText("0");
+        }*/
+        if (!dto.getEvaluationsiteList().isEmpty()) {
+            if (!dto.getEvaluationsiteList().get(0).getEvaluationList().isEmpty()) {
+                h.AR_percOverallEva.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getScore() + "");
+                h.AR_conditionName.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionName());
+               // h.AR_type.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditions().getCategoryName());
+                setColorToText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionsID(), h);
+            } else {
+                h.AR_percOverallEva.setText(0 + "");
+                h.AR_conditionName.setText("Not yet evaluated");
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.gray_crap));
+            }
+        } else {
+            h.AR_percOverallEva.setText(0 + "");
+            h.AR_conditionName.setText("Not yet evaluated");
+            h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
+            h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
+            h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.gray_crap));
         }
+
         h.AR_imgDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,5 +232,66 @@ public class RiverAdapter extends BaseAdapter {
     static final int EVALUATION_VIEW = 12;
     static final int RIVER_VIEW = 13;
 
+    private void setColorToText(int condition, Holder h) {
+        switch (condition) {
+            case Constants.UNMODIFIED_NATURAL_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
+                break;
+            case Constants.LARGELY_NATURAL_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
+                break;
+            case Constants.MODERATELY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
+                break;
+            case Constants.LARGELY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
+
+                break;
+            case Constants.CRITICALLY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
+                break;
+            case Constants.UNMODIFIED_NATURAL_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
+                break;
+            case Constants.LARGELY_NATURAL_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
+                break;
+            case Constants.MODERATELY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
+                break;
+            case Constants.LARGELY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
+                break;
+            case Constants.CRITICALLY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
+                break;
+            case Constants.NOT_SPECIFIED:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.gray_crap));
+                break;
+
+        }
+    }
 
 }

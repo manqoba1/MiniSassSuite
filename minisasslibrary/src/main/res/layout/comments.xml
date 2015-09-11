@@ -11,7 +11,7 @@
         android:hint="Comment/ Notes"
         android:inputType="textMultiLine"
         android:textColor="@color/gray"
-        android:textStyle="bold" />
+        style="@style/TextStyleGray"/>
 
     <Button
         android:id="@+id/AE_create"
@@ -21,8 +21,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/xsquare_green"
         android:drawablePadding="10dp"
-        android:elevation="25dp"
-        android:text="Submit Results"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:text="Submit Observation"
+        android:textColor="@color/white" />
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -53,7 +55,8 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
     private LinearLayout FEL_search;
     private ListView FEL_list;
     private TextView RL_add;
-    private ImageView SLT_imgSearch2, SLT_hero;
+    private ImageView SLT_imgSearch2;
+    private RelativeLayout SLT_hero;
     private EditText SLT_editSearch;
     private EditEvaluationDialog editEvaluationDialog;
 
@@ -82,10 +85,10 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
         FEL_search = (LinearLayout) v.findViewById(R.id.FEL_search);
         SLT_editSearch = (EditText) v.findViewById(R.id.SLT_editSearch);
         SLT_editSearch.setVisibility(View.GONE);
-        SLT_hero = (ImageView) v.findViewById(R.id.SLT_hero);
+        SLT_hero = (RelativeLayout) v.findViewById(R.id.SLT_hero);
         SLT_imgSearch2 = (ImageView) v.findViewById(R.id.SLT_imgSearch2);
         SLT_imgSearch2.setVisibility(View.GONE);
-        SLT_hero.setImageDrawable(Util.getRandomHeroImage(ctx));
+        SLT_hero.setBackground(Util.getRandomHeroImage(ctx));
 
 
     }
@@ -159,6 +162,7 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
             @Override
             public void onEvaluationEdit(EvaluationDTO evaluation) {
                 editEvaluationDialog = new EditEvaluationDialog();
+
                 editEvaluationDialog.show(getFragmentManager(), "Edit Evaluation");
                 editEvaluationDialog.setEvaluation(evaluation);
                 editEvaluationDialog.setListener(new EditEvaluationDialog.EditEvaluationDialogListener() {
@@ -176,7 +180,7 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
             @Override
             public void onViewInsect(List<EvaluationInsectDTO> insectImage) {
 
-                Util.showPopupInsectsSelected(ctx, activity, insectImage, SLT_hero, ctx.getResources().getString(R.string.insect_selected), new Util.UtilPopupInsectListener() {
+                Util.showPopupInsectsSelected(ctx, activity, insectImage, FEL_search, ctx.getResources().getString(R.string.insect_selected), new Util.UtilPopupInsectListener() {
                     @Override
                     public void onInsectSelected(InsectDTO insect) {
                         Intent intent = new Intent(activity.getApplicationContext(), InsectBrowser.class);
@@ -187,6 +191,8 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
                 });
             }
         });
+
+
         FEL_list.setAdapter(adapter);
     }
 

@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
-   <fragment
-       android:id="@+id/fragment"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:name="com.sifiso.codetribe.minisasslibrary.fragments.RegisterFragment"
-       tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.sifiso.codetribe.minisasslibrary.fragments.RegisterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_register" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

@@ -17,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.internal.er;
 import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
@@ -50,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
         setContentView(R.layout.activity_register);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Team member");
+        getSupportActionBar().setTitle("Sign Up");
         activity = this;
         ctx = getApplicationContext();
         countryCode = "ZA";

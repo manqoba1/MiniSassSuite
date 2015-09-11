@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author aubreyM
  */
-public class CountryDTO implements Serializable {
+public class CountryDTO implements Serializable,Comparable<CountryDTO> {
 
     private static final long serialVersionUID = 1L;
     private Integer countryID;
@@ -123,4 +123,9 @@ public class CountryDTO implements Serializable {
         return "com.boha.minisass.data.Country[ countryID=" + countryID + " ]";
     }
 
+    @Override
+    public int compareTo(CountryDTO another) {
+
+        return this.countryName.compareTo(another.countryName);
+    }
 }

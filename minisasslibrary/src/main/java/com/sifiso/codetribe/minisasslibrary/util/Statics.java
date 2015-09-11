@@ -90,7 +90,7 @@ public class Statics {
     public static boolean isLetterAndNumber(String l) {
         String n = ".*[0-9].*";
         String a = ".*[A-Z].*";
-        String s = ".*[0-9!#$%&'*+/=?^_`{|}~-].*";
+        String s = ".*[0-9!#$%&'*+/=?^_`{|}~].*";
 
         return l.matches(s) ;
 

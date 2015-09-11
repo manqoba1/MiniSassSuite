@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +34,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
+import com.sifiso.codetribe.minisasslibrary.activities.AboutActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.MapsActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.ProfileActivity;
+import com.sifiso.codetribe.minisasslibrary.activities.SettingsActivity;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverPartDTO;
@@ -96,13 +99,14 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             response = (ResponseDTO) savedInstanceState.getSerializable("response");
             evaluationSiteList = (List<EvaluationSiteDTO>) savedInstanceState.getSerializable("evaluationSite");
             index = savedInstanceState.getInt("index");
+
             if (response != null) {
                 buildPages();
-            } else {
-                getCachedRiverData();
             }
-
+        } else {
+            getCachedRiverData();
         }
+
 
     }
 
@@ -157,10 +161,12 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     @Override
     protected void onSaveInstanceState(Bundle data) {
-        data.putSerializable("response", response);
-        data.putSerializable("evaluationSite", (java.io.Serializable) evaluationSiteList);
-        data.putInt("index", index);
-        super.onSaveInstanceState(data);
+        if (response != null) {
+            data.putSerializable("response", response);
+            data.putSerializable("evaluationSite", (java.io.Serializable) evaluationSiteList);
+            data.putInt("index", index);
+            super.onSaveInstanceState(data);
+        }
     }
 
     private void buildPages() {
@@ -213,9 +219,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
         if (response == null) {
             getCachedRiverData();
-        } else {
+        } /*else {
+            getRefreshCachedData();
             progressBar.setVisibility(View.GONE);
-        }
+        }*/
         // startActivity(new Intent(MainPagerActivity.this, SplashActivity.class));
 
         return true;
@@ -227,15 +234,23 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent;
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.log_out:
                 SharedUtil.clearTeam(ctx);
-                Intent intent = new Intent(MainPagerActivity.this, SignActivity.class);
+                intent = new Intent(MainPagerActivity.this, SignActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.about_us:
+                intent = new Intent(MainPagerActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.setting:
+                intent = new Intent(MainPagerActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
        /* switch (id) {
             case R.id.add_member:
@@ -271,7 +286,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     public void onRefreshEvaluation(List<EvaluationSiteDTO> siteList, int index, String riverName) {
         Log.d(LOG, "onclick" + siteList.toString());
         if (siteList.size() == 0) {
-            Util.showToast(ctx, "Unfortunately there are no evaluations made yet on this river : " + riverName);
+            Util.showToast(ctx, "Unfortunately there are no evaluations made yet on " + riverName + " river");
             return;
         }
         this.index = index;
@@ -287,7 +302,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     @Override
     public void onRefreshMap(RiverDTO river, int result) {
         if (river.getEvaluationsiteList().size() == 0) {
-            Util.showToast(ctx, "Unfortunately there are no evaluations to display on : " + river.getRiverName() + " river");
+            Util.showToast(ctx, "Unfortunately there are no evaluations to display on " + river.getRiverName().trim() + " river");
             return;
         }
         Intent intent = new Intent(MainPagerActivity.this, MapsActivity.class);
@@ -351,7 +366,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             setLoc(location);
             stopLocationUpdates();
-            getCachedRiverData();
+            // getCachedRiverData();
             // getRiversAroundMe();
         }
         Log.e(LOG, "####### onLocationChanged");
@@ -455,6 +470,35 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         }
     }
 
+    private void getRefreshCachedData() {
+        CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
+            @Override
+            public void onFileDataDeserialized(final ResponseDTO r) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (r != null) {
+                            response = r;
+                            buildPages();
+                        }
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onDataCached(ResponseDTO response) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
     private void getCachedRiverData() {
         final WebCheckResult w = WebCheck.checkNetworkAvailability(ctx);
         CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
@@ -467,12 +511,13 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                         progressBar.setVisibility(View.GONE);
                         response = respond;
                         if (respond != null) {
-
                             buildPages();
                         }
-                        if (w.isWifiConnected() || w.isMobileConnected()) {
+                        if (w.isWifiConnected()) {
                             getRiversAroundMe();
                             // getData();
+                        } else if (w.isMobileConnected()) {
+                            getRiversAroundMe();
                         }
                     }
                 });
@@ -519,7 +564,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 public void run() {
                     riverListFragment.refreshListStop();
                 }
-            }, 50000);
+            }, 5000);
             return;
         }
         if (isBusy) {
@@ -529,7 +574,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 public void run() {
                     riverListFragment.refreshListStop();
                 }
-            }, 50000);
+            }, 5000);
 
             // riverListFragment.refreshListStop();
             return;
@@ -546,13 +591,16 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         w.setRadius(5);
         isBusy = true;
         //riverListFragment.refreshListStart();
-        progressBar.setVisibility(View.VISIBLE);
+        if (riverListFragment != null) {
+            riverListFragment.refreshListStart();
+        }
+        //progressBar.setVisibility(View.VISIBLE);
         BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 isBusy = false;
 
-                progressBar.setVisibility(View.GONE);
+
                 Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
                 if (!ErrorUtil.checkServerError(ctx, r)) {
                     return;
@@ -574,7 +622,19 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                         if (riverListFragment != null) {
                             riverListFragment.refreshListStop();
                         }
-                        getData();
+                        try {
+                            if (SharedUtil.getRiverLoadedFlag(ctx) == 1) {
+                                SharedUtil.setRiverLoadedFlag(ctx, 0);
+                                getData();
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                if (riverListFragment != null) {
+                                    riverListFragment.refreshListStop();
+                                }
+                            }
+                        } catch (Exception e) {
+
+                        }
                     }
 
                     @Override
@@ -589,6 +649,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 isBusy = false;
                 //riverListFragment.refreshListStop();
                 progressBar.setVisibility(View.GONE);
+                if (riverListFragment != null) {
+                    riverListFragment.refreshListStop();
+                }
                 Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
 
@@ -598,7 +661,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     @Override
                     public void run() {
                         isBusy = false;
-                        //riverListFragment.refreshListStop();
+                        if (riverListFragment != null) {
+                            riverListFragment.refreshListStop();
+                        }
                         progressBar.setVisibility(View.GONE);
                         if (!message.equals(null)) {
 
@@ -624,6 +689,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if (riverListFragment != null) {
+                            riverListFragment.refreshListStop();
+                        }
                         Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
                         if (!ErrorUtil.checkServerError(ctx, r)) {
                             return;
@@ -654,6 +723,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             @Override
             public void onVolleyError(VolleyError error) {
                 isBusy = false;
+                if (riverListFragment != null) {
+                    riverListFragment.refreshListStop();
+                }
                 Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
 
@@ -664,6 +736,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     public void run() {
                         isBusy = false;
                         //riverListFragment.refreshListStop();
+                        if (riverListFragment != null) {
+                            riverListFragment.refreshListStop();
+                        }
                         progressBar.setVisibility(View.GONE);
                         if (!message.equals(null)) {
 
@@ -707,6 +782,17 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (riverListFragment != null) {
+            if (riverListFragment.refreshLayout.isRefreshing()) {
+                riverListFragment.refreshListStop();
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
+
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -722,6 +808,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     @Override
                     public void onTasksSynced(int goodResponses, int badResponses) {
                         Log.w(LOG, "@@ cached requests done, good: " + goodResponses + " bad: " + badResponses);
+                        getRefreshCachedData();
                         if (goodResponses > 0) {
                             getRiversAroundMe();
                         }

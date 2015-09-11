@@ -386,13 +386,13 @@ public class Util {
                         R.drawable.banner_river3);
             case 9:
                 return ctx.getResources().getDrawable(
-                        R.drawable.banner_water1);
+                        R.drawable.minisass_home2);
             case 10:
                 return ctx.getResources().getDrawable(
-                        R.drawable.banner_water2);
+                        R.drawable.minisass_main4);
             case 11:
                 return ctx.getResources().getDrawable(
-                        R.drawable.banner_water3);
+                        R.drawable.minisass_main_2);
             case 12:
                 return ctx.getResources().getDrawable(
                         R.drawable.banner_water4);
@@ -403,12 +403,6 @@ public class Util {
                 return ctx.getResources().getDrawable(
                         R.drawable.banner_water6);
             case 15:
-                return ctx.getResources().getDrawable(
-                        R.drawable.banner_water7);
-            case 16:
-                return ctx.getResources().getDrawable(
-                        R.drawable.banner_water8);
-            case 17:
                 return ctx.getResources().getDrawable(
                         R.drawable.banner_water9);
 
@@ -704,9 +698,9 @@ public class Util {
         } else {
             txt.setVisibility(View.GONE);
         }
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+       /* ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
         img.setImageDrawable(getRandomHeroImage(ctx));
-
+*/
         pop.setPromptView(v);
 
         pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
@@ -741,12 +735,12 @@ public class Util {
         } else {
             txt.setVisibility(View.GONE);
         }
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomHeroImage(ctx));
+        /*ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(getRandomHeroImage(ctx));*/
 
-        pop.setPromptView(v);
+        //pop.setPromptView(v);
 
-        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_BELOW);
         pop.setAdapter(new PopupSiteAdapter(ctx, R.layout.xxsimple_spinner_item,
                 list, true));
         Log.d(LOG, list.size() + " pop up length");
@@ -765,7 +759,21 @@ public class Util {
         });
         pop.show();
     }
-
+    public static String getRandomPin() {
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random(System.currentTimeMillis());
+        int x = rand.nextInt(9);
+        if (x == 0) {
+            x = 3;
+        }
+        sb.append(x);
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        return sb.toString();
+    }
     public static void flashOnce(View view, long duration, final UtilAnimationListener listener) {
         ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
         an.setRepeatMode(ObjectAnimator.REVERSE);

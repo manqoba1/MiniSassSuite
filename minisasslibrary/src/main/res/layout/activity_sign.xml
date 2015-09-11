@@ -31,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:padding="@dimen/mon_padding"
-            android:text="Welcome to the Notice board" />
+            android:text="Welcome to the MiniSASS" />
 
         <RelativeLayout
             android:id="@+id/SI_layout0"
@@ -49,6 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:padding="@dimen/mon_padding"
+                android:gravity="center"
+                android:textColor="@color/red"
                 android:text="Connect your WIFI"
                 android:visibility="gone" />
 
@@ -81,7 +83,7 @@
                 android:layout_marginLeft="@dimen/mon_padding"
                 android:layout_marginTop="@dimen/mon_wide"
                 android:inputType="textEmailAddress"
-                android:hint="Enter EMAIL" />
+                android:hint="Enter email" />
 
 
             <EditText
@@ -91,7 +93,7 @@
                 android:layout_below="@id/SI_txtEmail"
                 android:layout_marginLeft="@dimen/mon_padding"
                 android:layout_marginTop="8dp"
-                android:hint="Enter PIN"
+                android:hint="Enter password"
                 android:inputType="number" />
 
 

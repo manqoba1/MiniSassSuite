@@ -39,6 +39,7 @@ public class EditEvaluationDialog extends DialogFragment {
     }
 
     private void setFields() {
+        getDialog().setTitle("Edit Observation");
         WC_score = (EditText) view.findViewById(R.id.WC_score);
         WT_score = (EditText) view.findViewById(R.id.WT_score);
         WP_score = (EditText) view.findViewById(R.id.WP_score);

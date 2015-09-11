@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sifiso.codetribe.minisasslibrary.R;
@@ -43,10 +44,12 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     private Context ctx;
     private Activity activity;
     private AutoCompleteTextView SLT_editSearch;
-    private TextView RL_add;
-    private ImageView SLT_imgSearch2, SLT_hero;
+    private TextView RL_add,SI_welcome;
+    private ImageView SLT_imgSearch2;
+    private RelativeLayout SLT_hero;
     private ListView RL_riverList;
-    private SwipeRefreshLayout refreshLayout;
+
+    public SwipeRefreshLayout refreshLayout;
     private int index2;
 
     public static RiverListFragment newInstance(ResponseDTO resp, int indexList) {
@@ -102,8 +105,9 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
 
     private void setField() {
         SLT_editSearch = (AutoCompleteTextView) v.findViewById(R.id.SLT_editSearch);
-        SLT_hero = (ImageView) v.findViewById(R.id.SLT_hero);
-
+        SLT_hero = (RelativeLayout) v.findViewById(R.id.SLT_hero);
+        SI_welcome = (TextView) v.findViewById(R.id.SI_welcome);
+        SI_welcome.setText("Observations");
         SLT_imgSearch2 = (ImageView) v.findViewById(R.id.SLT_imgSearch2);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(this);
@@ -116,7 +120,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
             }
         });
         RL_riverList = (ListView) v.findViewById(R.id.RL_riverList);
-        SLT_hero.setImageDrawable(Util.getRandomHeroImage(ctx));
+        SLT_hero.setBackground(Util.getRandomHeroImage(ctx));
 
     }
 

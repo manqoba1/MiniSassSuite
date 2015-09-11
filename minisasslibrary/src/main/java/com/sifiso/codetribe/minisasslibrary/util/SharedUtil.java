@@ -34,7 +34,8 @@ public class SharedUtil {
             LOG = "SharedUtil",
             SESSION_ID = "sessionID",
             REMINDER_TIME = "reminderTime",
-            APP_VERSION = "appVersion";
+            APP_VERSION = "appVersion",
+            ALL_RIVERS_LOADED = "river_loaded";
 
     public static ImageLocation getImageLocation(Context ctx) {
         SharedPreferences sp = PreferenceManager
@@ -46,6 +47,22 @@ public class SharedUtil {
         return gson.fromJson(s, ImageLocation.class);
     }
 
+    public static void setRiverLoadedFlag(Context ctx, int flag){
+
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = sp.edit();
+
+        ed.putInt(ALL_RIVERS_LOADED, flag);
+        ed.commit();
+        Log.e(LOG, "SharedUtil, RIVER LOADED flag: " + flag+ " SAVED IN SharedPreferences");
+    }
+    public static int getRiverLoadedFlag(Context ctx){
+        // if flag is 1 means load all rivers if 0 mean don't load
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        int flag = sp.getInt(ALL_RIVERS_LOADED, 1);;
+        return flag;
+    }
     public static void clearTeam(Context ctx) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         sp.edit().remove(TEAM_MEMBER_JSON).commit();
@@ -79,7 +96,7 @@ public class SharedUtil {
 
         ed.putString(TEAM_MEMBER_JSON, gson.toJson(evi));
         ed.commit();
-        Log.e(LOG, "SharedUtil, LOCATION IMAGE: " + new Gson().toJson(evi) + " SAVED IN SharedPreferences");
+        Log.e(LOG, "SharedUtil, USER INFO: " + new Gson().toJson(evi) + " SAVED IN SharedPreferences");
 
     }
 

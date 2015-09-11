@@ -493,7 +493,7 @@ public class PictureActivity extends AppCompatActivity implements LocationListen
         if (currentSessionPhotos.size() == 1) {
 //            imageContainerLayout.removeAllViews();
         }
-        View v = inflater.inflate(R.layout.scroller_image_template, null);
+        View v = inflater.inflate(R.layout.scroller_sifiso_template, null);
         ImageView img = (ImageView) v.findViewById(R.id.image);
         TextView num = (TextView) v.findViewById(R.id.number);
         num.setText(" "+ currentSessionPhotos.size());

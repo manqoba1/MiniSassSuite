@@ -2,23 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/SLT_searchLayout"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/SLT_hero"
         android:layout_width="match_parent"
         android:layout_height="@dimen/hero_image_length"
-        android:scaleType="fitXY"
-        android:src="@drawable/limpoporiver" />
+        android:background="@drawable/limpoporiver"
+        android:scaleType="fitXY">
+
+        <TextView
+            android:id="@+id/SI_welcome"
+            style="@style/Title1TextStyleWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Observations"
+            android:textSize="28sp"
+            android:gravity="center"
+            android:padding="@dimen/mon_padding" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/SLT_bottomLayout"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@+id/SLT_hero"
-        android:padding="@dimen/mon_padding">
+        android:padding="@dimen/mon_padding"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/SLT_imgSearch1"

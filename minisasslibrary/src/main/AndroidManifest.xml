@@ -114,7 +114,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_password" >
+            android:label="@string/title_activity_forgot_password" />
+        <activity
+            android:name=".activities.TeamMemberActivity"
+            android:label="@string/title_activity_team_member"
+            android:parentActivityName=".activities.ProfileActivity" >
+        </activity>
+        <activity
+            android:name=".activities.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView"
             android:layout_marginTop="10dp"
-            android:text="Number of insect Groups"
+            android:text="Number of macroinvertebrates"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -86,17 +86,19 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:id="@+id/TV_score_status"
-                style="@style/TextStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/TV_avg_score"
-                android:layout_marginTop="15dp"
-                android:text="Not specified"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/red" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/TV_score_status"
+            style="@style/TextStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Not specified"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_alignRight="@+id/relativeLayout2"
+            android:layout_alignEnd="@+id/relativeLayout2" />
 
     </RelativeLayout>
 

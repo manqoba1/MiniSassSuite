@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,11 +59,12 @@ public class SignActivity extends AppCompatActivity {
     Context ctx;
     Button bsRegister, bsSignin;
     EditText esPin;
+    TextView SI_wifi;
     String email, townList;
     ProgressBar sign_progress;
     AutoCompleteTextView esEmail;
     TextView SI_app, SI_welcome;
-    ImageView SI_banner;
+    RelativeLayout SI_banner;
     WebCheckResult wr;
     Menu mMenu;
 
@@ -88,7 +91,9 @@ public class SignActivity extends AppCompatActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Team member sign in");
+        getSupportActionBar().setTitle("Sign In");
+        getSupportActionBar().setElevation(8);
+        getSupportActionBar().setShowHideAnimationEnabled(true);
         return true;
     }
 
@@ -125,20 +130,21 @@ public class SignActivity extends AppCompatActivity {
     public void setFields() {
 
         SI_app = (TextView) findViewById(R.id.SI_app);
-        SI_banner = (ImageView) findViewById(R.id.SI_banner);
-        SI_banner.setImageDrawable(Util.getRandomHeroImage(ctx));
+        SI_wifi = (TextView) findViewById(R.id.SI_wifi);
+        SI_banner = (RelativeLayout) findViewById(R.id.SI_banner);
+        SI_banner.setBackground(Util.getRandomHeroImage(ctx));
         SI_banner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(SI_banner, 100, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        SI_banner.setImageDrawable(Util.getRandomHeroImage(ctx));
+                        SI_banner.setBackground(Util.getRandomHeroImage(ctx));
                     }
                 });
             }
         });
-        SI_app.setText("MiniSASS App Sign in");
+        SI_app.setText(ctx.getResources().getString(R.string.sign_in_text));
         SI_welcome = (TextView) findViewById(R.id.SI_welcome);
         bsSignin = (Button) findViewById(R.id.btnLogSubmit);
         bsSignin.setText("Sign In");
@@ -146,7 +152,19 @@ public class SignActivity extends AppCompatActivity {
         esPin = (EditText) findViewById(R.id.SI_pin);
         sign_progress = (ProgressBar) findViewById(R.id.progressBar);
 
-
+       /* Palette.from(bitmap).maximumColorCount(numberOfColors).generate(new Palette.PaletteAsyncListener() {
+            @Overridebitmap
+            public void onGenerated(Palette palette) {
+                // Get the "vibrant" color swatch based on the bitmap
+                Palette.Swatch vibrant = palette.getVibrantSwatch();
+                if (vibrant != null) {
+                    // Set the background color of a layout based on the vibrant color
+                    containerView.setBackgroundColor(vibrant.getRgb());
+                    // Update the title TextView with the proper text color
+                    titleView.setTextColor(vibrant.getTitleTextColor());
+                }
+            }
+        });*/
         bsSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,16 +261,17 @@ public class SignActivity extends AppCompatActivity {
     }
 
     AddTeamsDialog addTeamDialog;
-ProgressDialog pd;
+    ProgressDialog pd;
+
     public void sendSignIn() {
 
         if (esEmail.getText() == null) {
-            Toast.makeText(ctx, "Enter Email", Toast.LENGTH_SHORT).show();
+            esEmail.setError("Enter email");
             return;
         }
 
         if (esPin.getText().toString().isEmpty()) {
-            Toast.makeText(ctx, "Invalid Pin", Toast.LENGTH_SHORT).show();
+            esPin.setError("Enter password");
             return;
         }
 
@@ -276,7 +295,7 @@ ProgressDialog pd;
                     @Override
                     public void run() {
                         //setRefreshActionButtonState(false);
-pd.dismiss();
+                        pd.dismiss();
                         // Log.d(LOG,resp.getTeamMember().getEmail());
                         if (!ErrorUtil.checkServerError(ctx, resp)) {
                             return;
@@ -328,13 +347,14 @@ pd.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       // setRefreshActionButtonState(false);
+                        // setRefreshActionButtonState(false);
                         pd.dismiss();
                         bsSignin.setEnabled(true);
                         if (!error.getMessage().equals(null)) {
 
                             Log.e(LOG, error.getMessage());
-                            Util.showErrorToast(ctx, error.getMessage());
+
+                           // Util.showErrorToast(ctx, error.getMessage());
 
                         }
                     }
@@ -351,9 +371,16 @@ pd.dismiss();
                         pd.dismiss();
                         bsSignin.setEnabled(true);
                         if (!message.equals(null)) {
+                            SI_wifi.setVisibility(View.VISIBLE);
+                            Util.shakeX(SI_wifi, 100, 4, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
 
+                                }
+                            });
+                            SI_wifi.setText("Sign In Failed. We can not find your email or password. Check and Try again.");
                             Log.e(LOG, message);
-                            Util.showErrorToast(ctx, message);
+                            //Util.showErrorToast(ctx, "Sign In Failed. We can not find your email or password. Check and Try again.");
 
                         }
                     }
@@ -370,7 +397,7 @@ pd.dismiss();
         Account[] accts = am.getAccounts();
         if (accts.length == 0) {
             Toast.makeText(ctx, "No Accounts found. Please create one and try again", Toast.LENGTH_LONG).show();
-            finish();
+            //finish();
             return;
         }
 

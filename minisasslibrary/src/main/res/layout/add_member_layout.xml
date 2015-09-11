@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:id="@+id/fieldsLayout2"
         android:layout_width="match_parent"
@@ -21,20 +22,20 @@
 
             <TextView
                 android:id="@+id/textView15"
-                style="@style/TextStyleOrangeSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Member Info"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/Black" />
 
             <CheckBox
                 android:id="@+id/cbMoreMember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="invisible"
-                android:text="Add more members" />
+                android:text="Add more members"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
@@ -43,7 +44,7 @@
             android:id="@+id/edtMemberName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name"
+            android:hint="First name"
             android:maxLines="1">
 
         </EditText>
@@ -53,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edtMemberName"
-            android:hint="Last Name"
+            android:hint="Last name"
             android:maxLines="1" />
 
         <AutoCompleteTextView
@@ -61,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edtMemberLastNAme"
-            android:hint="Email Address"
+            android:hint="Email address"
             android:inputType="textEmailAddress"
             android:maxLines="1" />
 
@@ -70,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edtMemberEmail"
-            android:hint="Cellphone Number"
+            android:hint="Cellphone number"
             android:inputType="number"
             android:maxLines="1" />
 
@@ -79,24 +80,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edtMemberEmail"
-            android:hint="Pin Code"
-            android:inputType="numberPassword"
+            android:hint="Password"
+            android:inputType="textPassword"
             android:maxLines="1" />
 
-        <ViewStub
-            android:id="@+id/vTub"
+        <EditText
+            android:id="@+id/re_edtPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtMemberEmail"
+            android:hint="Confirm password"
+            android:inputType="textPassword"
+            android:maxLines="1" />
 
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/padding_top_10"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fieldsLayout2"
-        android:elevation="10dp"
         android:background="@color/White"
         android:orientation="horizontal"
         android:padding="10dp">

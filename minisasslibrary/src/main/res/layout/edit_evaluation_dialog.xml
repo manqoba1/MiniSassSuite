@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Update"
-        android:background="@color/blue"
+        android:background="@color/lime_A700"
         android:id="@+id/btn_save"
         android:textColor="@color/White"
         android:layout_below="@+id/include"

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_weight="0.7"
-            android:text="Water clarity"
+            android:text="Water clarity \t   (cm)"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -34,10 +34,9 @@
             android:ems="4"
             android:textColor="@color/gray"
             android:gravity="center"
-            android:hint="0"
             android:layout_weight="2.3"
             android:inputType="number"
-            android:text="0.0"
+            android:hint="0.0"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -56,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Water Temperature"
+            android:text="Water Temperature \t   (\u2103) "
             android:layout_weight="0.7"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -71,9 +70,8 @@
             android:layout_weight="2.3"
             android:textColor="@color/gray"
             android:gravity="center"
-            android:hint="0"
+            android:hint="0.0"
             android:inputType="numberDecimal"
-            android:text="0.0"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -92,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="pH"
+            android:text="pH \t   (pH units)"
             android:layout_weight="0.7"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -106,9 +104,8 @@
             android:ems="4"
             android:textColor="@color/gray"
             android:gravity="center"
-            android:hint="0"
+            android:hint="0.0"
             android:inputType="numberDecimal"
-            android:text="0.0"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -122,13 +119,13 @@
         android:weightSum="3"
         android:layout_marginTop="10dp">
 
-        <TextView
+         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Oxygen Level"
+            android:text="Dissolved Oxygen \t   (mg/l)"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
@@ -140,9 +137,8 @@
             android:ems="4"
             android:textColor="@color/gray"
             android:gravity="center"
-            android:hint="0"
+            android:hint="0.0"
             android:inputType="numberDecimal"
-            android:text="0.0"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -161,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Conductivity"
+            android:text="Electrical Conductivity \t   (\u00B5/cm) "
             android:layout_weight="0.7"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -176,9 +172,8 @@
             android:ems="4"
             android:gravity="center"
             android:textColor="@color/gray"
-            android:hint="0"
+            android:hint="0.0"
             android:inputType="numberDecimal"
-            android:text="0.0"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 

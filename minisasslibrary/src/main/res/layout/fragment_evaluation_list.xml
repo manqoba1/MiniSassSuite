@@ -2,33 +2,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/White"
     tools:context="com.sifiso.codetribe.minisasslibrary.fragments.EvaluationListFragment">
-
-
-    <ListView
-
-        android:id="@+id/FEL_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/FEL_search"
-        android:layout_centerHorizontal="true"
-        android:dividerHeight="5dp" />
 
 
     <LinearLayout
         android:id="@+id/FEL_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/hero_image_length"
+        android:background="@drawable/limpoporiver"
+        android:elevation="8dp"
         android:orientation="vertical">
 
         <include
-
             layout="@layout/search_layout"
-
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:elevation="4dp" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/FEL_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FEL_search"
+        android:layout_margin="5dp"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

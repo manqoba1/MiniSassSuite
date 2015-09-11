@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/PHOTO_image"
-            android:src="@drawable/banner_water2"
+            android:src="@drawable/mini_trans"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

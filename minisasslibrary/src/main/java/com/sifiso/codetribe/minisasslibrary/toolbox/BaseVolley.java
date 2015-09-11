@@ -299,7 +299,7 @@ public class BaseVolley {
     protected ImageLoader imageLoader;
     protected static String suff;
     static final String LOG = "BaseVolley";
-    static final int MAX_RETRIES = 10;
+    static final int MAX_RETRIES = 2;
     static final long SLEEP_TIME = 3000;
 
 

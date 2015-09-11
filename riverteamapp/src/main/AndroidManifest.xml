@@ -69,11 +69,7 @@
             android:name=".SignActivity"
             android:label="@string/title_activity_sign"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.sifiso.codetribe.minisasslibrary.activities.SplashActivity"
@@ -81,7 +77,11 @@
         <activity
             android:name=".Welcome"
             android:label="@string/title_activity_welcome">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".EvaluationListActivity"

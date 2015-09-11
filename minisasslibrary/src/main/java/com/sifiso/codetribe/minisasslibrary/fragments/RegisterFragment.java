@@ -29,12 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.internal.in;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.activities.ForgotPasswordActivity;
 import com.sifiso.codetribe.minisasslibrary.adapters.MemberToBeAddedAdapter;
@@ -53,6 +53,7 @@ import com.sifiso.codetribe.minisasslibrary.util.Util;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -68,10 +69,9 @@ public class RegisterFragment extends Fragment implements PageFragment {
     Activity activity;
     Button rsRegister;
     EditText rsMemberName, rsMemberSurname;
-    EditText rsCellphone, rsPin;
+    EditText rsCellphone, rsPin,re_edtPassword;
     CheckBox cbMoreMember;
     Spinner sp_org_type, sp_country;
-    ViewStub viewStub;
     View v;
     String email;
     Integer countryID, orgaTypeID;
@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
     ListView lsMember;
     LinearLayout llMember;
     TextView textView13;
-    ImageView imgTopLgo;
+    RelativeLayout imgTopLgo;
     private RegisterFragmentListener mListener;
 
 
@@ -142,6 +142,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
         for (TeamDTO t : response.getTeamList()) {
             teamSpinner.add(t.getTeamName());
         }
+        Collections.sort(countrySpinner);
         teamAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, teamSpinner);
         countryAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, countrySpinner);
         orgtypeAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, orgTypeSpinner);
@@ -250,10 +251,23 @@ boolean activateWatcher;
 
     boolean isMoreMember, isFound;
     MemberToBeAddedAdapter memberToBeAddedAdapter;
-
+    TextView SI_app;
     public void setFields() {
-        imgTopLgo = (ImageView) v.findViewById(R.id.imgTopLgo);
-        imgTopLgo.setImageDrawable(Util.getRandomHeroImage(ctx));
+        SI_app = (TextView) v.findViewById(R.id.SI_app);
+        SI_app.setText(ctx.getResources().getString(R.string.registration_message));
+        imgTopLgo = (RelativeLayout) v.findViewById(R.id.imgTopLgo);
+        imgTopLgo.setBackground(Util.getRandomHeroImage(ctx));
+        imgTopLgo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(imgTopLgo, 100, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        imgTopLgo.setBackground(Util.getRandomHeroImage(ctx));
+                    }
+                });
+            }
+        });
         rsRegister = (Button) v.findViewById(R.id.btnLogSubmit);
         textView13 = (TextView) v.findViewById(R.id.textView13);
         llMember = (LinearLayout) v.findViewById(R.id.llMember);
@@ -263,9 +277,9 @@ boolean activateWatcher;
         rsMemberName = (EditText) v.findViewById(R.id.edtMemberName);
         rsMemberSurname = (EditText) v.findViewById(R.id.edtMemberLastNAme);
         rsPin = (EditText) v.findViewById(R.id.edtPassword);
+        re_edtPassword = (EditText) v.findViewById(R.id.re_edtPassword);
         rsMemberEmail = (AutoCompleteTextView) v.findViewById(R.id.edtMemberEmail);
         rsCellphone = (EditText) v.findViewById(R.id.edtMemberPhone);
-        viewStub = (ViewStub) v.findViewById(R.id.vTub);
         lsMember = (ListView) v.findViewById(R.id.lsMember);
         rsMemberEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -316,7 +330,6 @@ boolean activateWatcher;
                     public void onAnimationEnded() {
 
                         if (rsTeamName.getText().toString().isEmpty()) {
-                            //Toast.makeText(ctx, "Enter Team Name", Toast.LENGTH_SHORT).show();
                             rsTeamName.setError("Enter team name");
                             return;
                         }
@@ -327,19 +340,20 @@ boolean activateWatcher;
                         }
                         if(!activateWatcher) {
                             if (countryID == null) {
-                                Util.showErrorToast(ctx, "Choose a country");
+                                Util.showErrorToast(ctx, "Select a country");
                                 //Toast.makeText(ctx, "Select Town", Toast.LENGTH_SHORT).show();
                                 return;
                             }
 
                             if (orgaTypeID == null) {
-                                Util.showErrorToast(ctx, "Choose a Organisation type");
+                                Util.showErrorToast(ctx, "Select an organisation type");
                                 //Toast.makeText(ctx, "Select Town", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         }
                         if (rsMemberName.getText().toString().isEmpty()) {
                             rsMemberName.setError("Enter first name");
+
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -354,12 +368,16 @@ boolean activateWatcher;
                             return;
                         }
                         if (Statics.isLetterAndNumber(rsMemberSurname.getText().toString())) {
-                            rsMemberSurname.setError("Last name should be letters only ");
+                            rsMemberSurname.setError("Last name should be letters only");
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-
+                        if (rsMemberEmail.getText().toString().isEmpty()) {
+                            rsMemberEmail.setError("Enter email address");
+                            //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         if (!Statics.rfc2822.matcher(rsMemberEmail.getText().toString()).matches()) {
                             rsMemberEmail.setError("Incorrect email address format");
                             //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
@@ -371,8 +389,13 @@ boolean activateWatcher;
                             return;
                         }
                         if (rsPin.getText().toString().isEmpty()) {
-                            rsPin.setError("Enter pin");
+                            rsPin.setError("Enter password");
                             //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(!re_edtPassword.getText().toString().equals(rsPin.getText().toString())){
+                            re_edtPassword.setError("password mismatch");
+                            rsPin.setError("password mismatch");
                             return;
                         }
                         sendRegistration();

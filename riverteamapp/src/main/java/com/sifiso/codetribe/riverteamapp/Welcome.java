@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,6 +26,7 @@ import com.sifiso.codetribe.minisasslibrary.util.GCMUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
+import com.sifiso.codetribe.minisasslibrary.util.Util;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.Timer;
@@ -37,6 +39,7 @@ public class Welcome extends AppCompatActivity {
     Context ctx;
     Button bLogin, bReg;
     private Integer teamID, teamMemberID;
+    RelativeLayout holderFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,8 @@ public class Welcome extends AppCompatActivity {
         ctx = getApplicationContext();
         bLogin = (Button) findViewById(R.id.btnwLog);
         bReg = (Button) findViewById(R.id.btnCreate);
-
+        holderFrame = (RelativeLayout) findViewById(R.id.holderFrame);
+        holderFrame.setBackground(Util.getRandomHeroImage(ctx));
         imageView = (ImageView) findViewById(R.id.imgBackground);
         // imageText = (TextView) findViewById(com.sifiso.codetribe.minisasslibrary.R.id.imageText);
         //flashImages();

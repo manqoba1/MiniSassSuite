@@ -73,10 +73,6 @@ public class RandomPics {
                     v.setImageDrawable(ctx.getResources().getDrawable(R.drawable.olifantsriver));
                     txt.setText("Olifants River");
                     break;
-                case 10:
-                    v.setImageDrawable(ctx.getResources().getDrawable(R.drawable.orangeriver));
-                    txt.setText("Orange River");
-                    break;
                 case 11:
                     v.setImageDrawable(ctx.getResources().getDrawable(R.drawable.tungelariver));
                     txt.setText("Tungela River");

@@ -1,175 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/TOP_PL"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/P_TNAME"
-        style="@style/Title2TextStyleBlack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/Beige"
-        android:elevation="8dp"
-        android:gravity="center"
-        android:text="Team Name"
-        android:textColor="@color/Black" />
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/P_LAY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="8dp"
-        android:padding="8dp"
-        android:layout_below="@+id/P_TNAME"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:id="@+id/TOP_PL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/AP_PP"
-            android:layout_width="@dimen/pp_image_width"
-            android:layout_height="@dimen/pp_image_height"
-            android:background="@color/grey"
-            android:elevation="8dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/boy"
-            android:layout_alignTop="@+id/P_edit"
-            android:layout_toLeftOf="@+id/P_name"
-            android:layout_toStartOf="@+id/P_name" />
-
-
-        <ImageView
-            android:id="@+id/P_ICON"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_pic"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/dot_green"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/P_EVN_count"
-            android:layout_alignStart="@+id/P_EVN_count" />
+            android:elevation="8dp">
 
-        <TextView
-            android:id="@+id/P_name"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/P_TNAME"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/Beige"
+                    android:gravity="center"
+                    android:text="Team Name"
+                    android:textColor="@color/Black" />
+
+                <ImageView
+                    android:id="@+id/AP_PP"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pp_image_height"
+                    android:layout_below="@+id/P_TNAME"
+                    android:scaleType="fitXY"
+
+                    android:src="@drawable/boy" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:layout_marginLeft="5dp"
-            android:text="Name and Surname"
-            android:layout_below="@+id/P_ICON"
-            android:layout_toRightOf="@+id/P_CE"
-            android:layout_toEndOf="@+id/P_CE" />
+            android:layout_below="@+id/card_pic"
+            android:layout_margin="10dp"
+            android:elevation="4dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/P_phone"
-            android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/P_LAY"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp">
+
+
+                <RelativeLayout
+                    android:id="@+id/top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_top_10"
+                    android:layout_weight="2"
+
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/P_name"
+                        style="@style/style_fam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_weight="1"
+
+                        android:gravity="center"
+                        android:padding="5dp"
+
+                        android:text="Name and Surname" />
+
+                    <View
+                        android:id="@+id/v1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/P_name"
+                        android:background="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/P_phone"
+                        style="@style/style_fam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/v1"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+
+                        android:text="Phone number" />
+
+                    <View
+                        android:id="@+id/v2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/P_phone"
+                        android:background="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/P_email"
+                        style="@style/style_fam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/v2"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Email" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/top"
+                    android:layout_marginTop="@dimen/padding_top_10"
+
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_top_10">
+
+                    <TextView
+                        android:id="@+id/P_CE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed Evaluations: " />
+
+                    <TextView
+                        android:id="@+id/P_EVN_count"
+                        style="@style/TextColorGrayAndBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="00"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:text="Phone number"
-            android:layout_marginLeft="5dp"
-            android:layout_below="@+id/P_email"
-            android:layout_toRightOf="@+id/AP_PP"
-            android:layout_toEndOf="@+id/AP_PP" />
+            android:layout_below="@+id/card1"
+            android:layout_margin="10dp"
+            android:elevation="4dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/P_email"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/add_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+
+                <Button
+                    android:id="@+id/P_add_member"
+                    style="@style/ButtonNavyBlueSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add team member" />
+
+                <Button
+                    android:id="@+id/P_inviteMember"
+                    style="@style/ButtonNavyBlueSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:text="Invite member"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:paddingLeft="5dp"
-            android:text="Email"
-            android:layout_below="@+id/P_name"
-            android:layout_toRightOf="@+id/AP_PP"
-            android:layout_toEndOf="@+id/AP_PP" />
+            android:layout_below="@+id/card2"
+            android:layout_margin="10dp"
+            android:elevation="4dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/P_CE"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@+id/AP_PP"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Completed Evaluations: " />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
-        <TextView
-            android:id="@+id/P_EVN_count"
-            style="@style/BlueCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:text="00"
-            android:visibility="visible"
-            android:layout_below="@+id/AP_PP"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+                <Button
+                    android:id="@+id/PMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/xborder"
+                    android:drawableRight="@android:drawable/ic_media_next"
+                    android:text="Team Members" />
 
-
-        <ImageView
-            android:id="@+id/P_edit"
-            android:layout_width="@dimen/icon_edit"
-            android:layout_height="@dimen/icon_edit"
-            android:layout_marginLeft="10dp"
-            android:src="@android:drawable/ic_menu_edit"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/P_name"
-            android:layout_alignStart="@+id/P_name"
-            android:layout_above="@+id/P_name" />
-
-
+                <Button
+                    android:id="@+id/PTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/PMember"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/xborder"
+                    android:drawableRight="@android:drawable/ic_media_next"
+                    android:text="Teams" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/add_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:layout_below="@+id/P_LAY"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-
-        <Button
-            android:id="@+id/P_add_member"
-            style="@style/ButtonNavyBlueSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:layout_weight="1"
-            android:text="Add team member" />
-
-        <Button
-            android:id="@+id/P_inviteMember"
-            style="@style/ButtonNavyBlueSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:visibility="gone"
-            android:text="Invite member" />
-    </LinearLayout>
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/SITE_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="8dp"
-        android:layout_below="@+id/add_layout"
-        android:layout_marginTop="5dp">
-
-        <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/pager_title_strip"
-            style="@style/PagerSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/blue"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:textColor="#fff"
-            android:visibility="gone" />
-    </android.support.v4.view.ViewPager>
-</RelativeLayout>
+</ScrollView>

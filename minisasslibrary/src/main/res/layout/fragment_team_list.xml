@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical"
-    android:padding="6dp" >
+    android:paddingTop="6dp" >
 
     <RelativeLayout
         android:id="@+id/TEAM_layout0"
@@ -80,7 +80,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/TEAM_layout1"
-        android:layout_marginTop="5dp"
         android:background="@color/grey" />
 
 </RelativeLayout>

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="@dimen/mon_wide"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 
     <TextView
@@ -32,6 +32,8 @@
         android:layout_marginTop="230dp"
         android:layout_marginRight="44dp"
         android:elevation="10dp"
+
+        android:shadowRadius="20"
         android:text="+"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

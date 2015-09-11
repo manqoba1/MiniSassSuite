@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
+import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,22 +65,31 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
     }
 
     @Override
-    public void onBindViewHolder(Holder h, final int position) {
+    public void onBindViewHolder(final Holder h, final int position) {
         final InsectImageDTO insect = mList.get(position);
 
         int rID = mContext.getResources().getIdentifier(insect.getUri(), "drawable", mContext.getPackageName());
         Log.d("TAG", new Gson().toJson(insect));
         h.INSC_image.setImageResource(rID);
-        h.INSC_image.setOnClickListener(new View.OnClickListener() {
+        h.INSC_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("TAG", new Gson().toJson(insect));
-                listener.onViewMoreImages(insect, position);
+                Util.flashOnce(h.INSC_more, 100, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onViewMoreImages(insect, position);
+                    }
+                });
             }
         });
-        h.INSC_name.setText(insect.getInsect().getGroupName());
-        Statics.setRobotoFontLight(mContext, h.INSC_name);
 
+        if(insect.getInsectimagelistList().size() < 2){
+            h.INSC_more.setVisibility(View.GONE);
+        }else{
+            h.INSC_more.setVisibility(View.VISIBLE);
+        }
+        h.INSC_more.setText(insect.getInsectimagelistList().size()+"");
         h.INSC_box.setText(insect.getInsect().getGroupName());
         h.INSC_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -116,13 +126,13 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
     public class Holder extends RecyclerView.ViewHolder {
         protected ImageView INSC_image;
         protected CheckBox INSC_box;
-        private TextView INSC_name;
+        private TextView INSC_more;
 
         public Holder(View itemView) {
             super(itemView);
             INSC_box = (CheckBox) itemView.findViewById(R.id.INSC_box);
             INSC_image = (ImageView) itemView.findViewById(R.id.INSC_image);
-            INSC_name = (TextView) itemView.findViewById(R.id.INSC_name);
+            INSC_more = (TextView) itemView.findViewById(R.id.INSC_more);
         }
     }
 }

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/orangeriver"
+    android:background="@drawable/minisass_home2"
+    android:id="@+id/holderFrame"
     tools:context="com.sifiso.codetribe.riverteamapp.Welcome">
 
     <ScrollView
@@ -10,97 +11,60 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-
             android:layout_width="match_parent"
+            android:padding="5dp"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imgBackground"
+
+                android:id="@+id/im2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/orangeriver" />
+                android:layout_height="250dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtWelcome"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher" />
 
-            <ImageView
 
+            <TextView
+
+                android:id="@+id/txtWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="44dp"
+                android:gravity="center"
+                android:text="Welcome to the miniSASS BETA App"
+                android:textColor="@color/blue_700"
+
+                android:textSize="30dp"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/btnwLog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/mini_trans" />
+                android:background="@drawable/xborder"
+                android:text="Sign In"
+                android:layout_marginTop="40dp"
+                android:textColor="@color/white"
+               android:layout_below="@+id/im2" />
 
-            <RelativeLayout
-                android:id="@+id/toplog"
+            <Button
+                android:id="@+id/btnCreate"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="80dp"
-                android:padding="8dp">
-
-                <RelativeLayout
-                    android:id="@+id/welcomeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-
-                        android:id="@+id/txtWelcome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="80dp"
-                        android:text="Welcome Aboard!"
-                        android:textColor="@color/white"
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtifAccount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txtWelcome"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center"
-                        android:padding="16dp"
-                        android:text="If you belong to a team login with your email or simply register a new team"
-                        android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-
-                        />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/btnlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/welcomeLayout"
-                    android:layout_marginTop="20dp">
-
-
-                    <Button
-                        android:id="@+id/btnwLog"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/xborder"
-                        android:text="Login"
-                        android:textColor="@color/white" />
-
-                    <Button
-                        android:id="@+id/btnCreate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/btnwLog"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/xborder"
-                        android:text="Register New Team"
-                        android:textColor="@color/white" />
-
-
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_top_10"
+                android:background="@drawable/xborder"
+                android:text="Sign Up"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+               android:layout_below="@+id/btnwLog"/>
         </RelativeLayout>
-
     </ScrollView>
+
+
 </RelativeLayout>

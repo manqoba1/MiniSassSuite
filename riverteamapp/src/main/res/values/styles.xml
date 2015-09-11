@@ -3,12 +3,12 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/blue_dark2</item>
-        <item name="android:textColorPrimary">@color/transparent_black</item>
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorPrimaryDark">@color/light_blue_900</item>
+        <item name="colorAccent">@color/lime_A700</item>
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
 
     </style>
 
@@ -18,7 +18,6 @@
         <item name="android:background">@color/blue</item>
         <item name="android:textStyle">normal</item>
     </style>
-
 
 
 </resources>

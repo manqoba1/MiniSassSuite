@@ -1,115 +1,138 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".SignActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mon_wide"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/SI_banner"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/mini_sass_logo" />
-
-        <TextView
-            android:id="@+id/SI_welcome"
-            style="@style/Title1TextStyleWhite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:padding="@dimen/mon_padding"
-            android:text="Welcome to the Notice board" />
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/SI_layout0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/SI_banner"
-            android:background="@color/white"
-            android:padding="@dimen/mon_padding">
+            android:layout_height="wrap_content">
 
-
-            <TextView
-                android:id="@+id/SI_wifi"
-                style="@style/TextStyleGreenSmall"
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:padding="@dimen/mon_padding"
-                android:text="Connect your WIFI"
+                android:layout_margin="@dimen/mon_wide"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/SI_header"
-                style="@style/Title3TextStyleBlue"
+            <RelativeLayout
+                android:id="@+id/SI_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/header_image_size"
+
+                android:background="@drawable/water_drop_photos"
+                android:elevation="8dp"
+
+                android:scaleType="fitXY">
+
+                <TextView
+                    android:id="@+id/SI_welcome"
+                    style="@style/Title1TextStyleWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+
+                    android:padding="@dimen/mon_padding"
+                    android:text="@string/message_notes2" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    style="@style/Title1TextStyleWhite2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/SI_welcome"
+
+                    android:gravity="center"
+                    android:text="@string/message_notes3"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/SI_layout0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/SI_wifi"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/mon_padding"
-                android:text="Invitation to Monitor Platform"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/SI_app"
-                style="@style/Title3TextStyleBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/SI_header"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/mon_padding"
-                android:text="App Name Here" />
-
-            <AutoCompleteTextView
-                android:id="@+id/SI_txtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/SI_app"
-                android:layout_marginLeft="@dimen/mon_padding"
-                android:layout_marginTop="@dimen/mon_wide"
-                android:inputType="textEmailAddress"
-                android:hint="Enter EMAIL" />
+                android:layout_below="@id/SI_banner"
+                android:background="@color/white"
+                android:padding="@dimen/mon_padding">
 
 
-            <EditText
-                android:id="@+id/SI_pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/SI_txtEmail"
-                android:layout_marginLeft="@dimen/mon_padding"
-                android:layout_marginTop="8dp"
-                android:hint="Enter PIN"
-                android:inputType="number" />
+                <TextView
+                    android:id="@+id/SI_wifi"
+                    style="@style/TextStyleGreenSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:padding="@dimen/mon_padding"
+                    android:text="Connect your WIFI"
+                    android:textColor="@color/red"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/SI_header"
+                    style="@style/Title3TextStyleBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SI_wifi"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:text="Invitation to Monitor Platform"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/SI_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SI_header"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:text="App Name Here" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/SI_txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SI_app"
+                    android:layout_marginLeft="@dimen/mon_padding"
+                    android:layout_marginTop="@dimen/mon_wide"
+                    android:hint="Enter email"
+                    android:inputType="textEmailAddress" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/SI_pin"
-                android:layout_marginTop="15dp"
-                android:elevation="10dp"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                <EditText
+                    android:id="@+id/SI_pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SI_txtEmail"
+                    android:layout_marginLeft="@dimen/mon_padding"
+                    android:layout_marginTop="8dp"
+                    android:hint="Enter password"
+                    android:inputType="textPassword" />
 
 
-                <include layout="@layout/btn_red" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SI_pin"
+                    android:layout_marginTop="15dp"
+                    android:elevation="10dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-            </LinearLayout>
+
+                    <include layout="@layout/btn_red" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
         </RelativeLayout>
-
-    </RelativeLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

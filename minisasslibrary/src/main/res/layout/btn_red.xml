@@ -2,16 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:elevation="20dp"
     android:layout_height="wrap_content">
 
 
 
         <Button
             android:id="@+id/btnLogSubmit"
-            android:text="Red"
+            android:text="Sign In"
             android:padding="16dp"
-            android:background="@color/blue"
+            android:background="@color/lime_A700"
             android:textColor="@color/white"
             android:minWidth="100dp"
             android:layout_width="match_parent"

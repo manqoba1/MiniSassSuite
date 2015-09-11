@@ -20,7 +20,7 @@ public interface Constants {
     public static final int CRITICALLY_MODIFIED_SAND = 9;
     public static final int LARGELY_MODIFIED_SAND = 16;
 
-    public static final int UNMODIFIED_NATURAL_ROCK= 13;
+    public static final int UNMODIFIED_NATURAL_ROCK = 13;
     public static final int LARGELY_NATURAL_ROCK = 14;
     public static final int MODERATELY_MODIFIED_ROCK = 15;
     public static final int CRITICALLY_MODIFIED_ROCK = 17;
@@ -50,4 +50,18 @@ public interface Constants {
     static final String THUMB_URI = "thumbUri";
 
 
+    //drafts
+    static final String SP_RIVER_ID = "spRiverID";
+    static final String SP_RIVER_NAME = "spRiverName";
+    static final String SP_STREAM_ID = "spStreamID";
+    static final String SP_STREAM_NAME = "spStreamName";
+    static final String SP_CATEGORY_ID = "spCategoryID";
+    static final String SP_CATEGORY_NAME = "spCategoryName";
+    static final String SP_WC = "spWC";
+    static final String SP_WT = "spWT";
+    static final String SP_PH = "spPH";
+    static final String SP_OL = "spOL";
+    static final String SP_C = "spC";
+    static final String SP_SELECTED_INSECTS_LIST = "spSELECTED_INSECTS_LIST";
+    static final String SP_COMMENT = "spComment";
 }

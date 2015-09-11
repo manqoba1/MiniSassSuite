@@ -32,7 +32,7 @@
                 android:id="@+id/result1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="10dp">
+                android:elevation="4dp">
 
                 <include
                     android:id="@+id/l1"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result1"
                 android:layout_marginTop="5dp"
-                android:elevation="10dp">
+                android:elevation="4dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -102,7 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result2"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:elevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -117,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/blue"
                         android:elevation="25dp"
-                        android:text="Which insects group did you find?"
+                        android:text="Add macroinvertebrates"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -143,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result3"
                 android:layout_marginTop="5dp"
-                android:elevation="@dimen/padding_top_10">
+                android:elevation="4dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

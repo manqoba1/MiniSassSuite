@@ -3,11 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-   
+
+    <item
+        android:id="@+id/about_us"
+        android:orderInCategory="100"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/dicotomas"
+        android:orderInCategory="100"
+        android:title="@string/action_dicotomas_key"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/how_to"
+        android:orderInCategory="100"
+        android:title="@string/action_how_to"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/minisass_org"
+        android:orderInCategory="100"
+        android:title="@string/action_minisass"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/youtube"
+        android:orderInCategory="100"
+        android:title="@string/action_youtube"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/facebook"
+        android:orderInCategory="100"
+        android:title="@string/action_facebook"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/setting"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/log_out"
         android:orderInCategory="100"
         android:title="@string/action_log_out"
-
         app:showAsAction="never" />
+
+
 </menu>
