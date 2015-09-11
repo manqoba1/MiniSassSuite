@@ -3,9 +3,9 @@
     android:id="@+id/AR_layout0"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
-    android:gravity="left|center"
-    android:padding="0dp">
+    android:layout_margin="6dp"
+    android:background="@color/white"
+    android:elevation="1dp">
 
     <RelativeLayout
         android:id="@+id/rel2"
@@ -271,6 +271,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:src="@android:drawable/ic_menu_edit" />
 
             <ImageView

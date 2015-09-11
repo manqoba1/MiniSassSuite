@@ -247,10 +247,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 intent = new Intent(MainPagerActivity.this, AboutActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.setting:
+            /*case R.id.setting:
                 intent = new Intent(MainPagerActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
         }
        /* switch (id) {
             case R.id.add_member:

@@ -175,7 +175,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         setRefreshActionButtonState(false);
 
                         // Log.d(LOG,resp.getTeamMember().getEmail());
-                        if (!ErrorUtil.checkServerError(ctx, resp)) {
+                        if (resp.getStatusCode() > 0) {
                             return;
                         }
 
@@ -193,6 +193,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 SI_wifi.setText(resp.getMessage());
                                 SI_wifi.setVisibility(View.VISIBLE);
                                 //Util.shakeX();
+                                Util.shakeX(SI_wifi, 100, 4, new Util.UtilAnimationListener() {
+                                    @Override
+                                    public void onAnimationEnded() {
+
+                                    }
+                                });
                                 SharedUtil.storeEmail(ctx, esEmail.getText().toString());
 
                             }
@@ -230,9 +236,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         bsSignin.setEnabled(true);
                         if (!message.equals(null)) {
 
-                            Log.e(LOG, message);
-                            Util.showErrorToast(ctx, message);
+                           // SI_wifi.setTextColor(ctx.getResources().getColor(R.color.red_700));
+                            SI_wifi.setVisibility(View.VISIBLE);
+                            Util.shakeX(SI_wifi, 100, 4, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
 
+                                }
+                            });
+                            SI_wifi.setText("Please check your email address and try again");
                         }
                     }
                 });

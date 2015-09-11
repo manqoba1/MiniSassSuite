@@ -111,19 +111,20 @@ public class Util {
         final TextView subTxt = (TextView) actionView.findViewById(R.id.ACTION_BAR_sub_text);
         ImageView logo = (ImageView) actionView.findViewById(R.id.ACTION_BAR_logo);
         txt.setText(text);
-        subTxt.setText("Team " + team);
+        subTxt.setText(team);
         if (team.equals("") || team.equals(null)) {
             subTxt.setVisibility(View.GONE);
         } else {
             subTxt.setVisibility(View.VISIBLE);
         }
-        if (image == null || image.equals("")) {
+        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
+        /*if (image == null || image.equals("")) {
             logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
         } else {
             CircleTransform transform = new CircleTransform();
             Picasso.with(ctx).load(image).placeholder(ctx.getResources().getDrawable(R.drawable.ic_launcher)).transform(transform).into(logo);
 
-        }
+        }*/
 
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override

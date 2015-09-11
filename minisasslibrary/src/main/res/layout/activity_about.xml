@@ -11,21 +11,62 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:elevation="4dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView11"
-                style="@style/Title2TextStyleBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="Team"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:id="@+id/teamLayout"
+                android:elevation="4dp">
 
+                <TextView
+                    android:id="@+id/textView12"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Team"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_below="@+id/teamLayout"
+                android:id="@+id/partnersLayout"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Partners"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_below="@+id/partnersLayout"
+                android:id="@+id/sponsorsLayout"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/textView31"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Sponsors"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </RelativeLayout>
         </RelativeLayout>
-
     </ScrollView>
 
 

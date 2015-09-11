@@ -95,7 +95,7 @@ public class EvaluationAdapter extends BaseAdapter {
         }
         final EvaluationDTO evaluation = mList.get(position);
 
-        h.ELI_team.setText("Team " + evaluation.getTeamName());
+        h.ELI_team.setText(evaluation.getTeamName());
         h.ELI_txtCount.setText((position + 1) + "");
         h.ELI_date.setText(Util.getLongDate(new Date(evaluation.getEvaluationDate())));
         h.ELI_score.setText((Math.round(evaluation.getScore() * 100.00) / 100.00) + "");

@@ -297,7 +297,7 @@ public class SignActivity extends AppCompatActivity {
                         //setRefreshActionButtonState(false);
                         pd.dismiss();
                         // Log.d(LOG,resp.getTeamMember().getEmail());
-                        if (!ErrorUtil.checkServerError(ctx, resp)) {
+                        if (resp.getStatusCode() > 0) {
                             return;
                         }
                         // Log.d(LOG,resp.getTeamMember().getEmail());

@@ -50,7 +50,7 @@ public class Welcome extends AppCompatActivity {
         bLogin = (Button) findViewById(R.id.btnwLog);
         bReg = (Button) findViewById(R.id.btnCreate);
         holderFrame = (RelativeLayout) findViewById(R.id.holderFrame);
-        holderFrame.setBackground(Util.getRandomHeroImage(ctx));
+       // holderFrame.setBackground(Util.getRandomHeroImage(ctx));
         imageView = (ImageView) findViewById(R.id.imgBackground);
         // imageText = (TextView) findViewById(com.sifiso.codetribe.minisasslibrary.R.id.imageText);
         //flashImages();

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/holderFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/minisass_home2"
@@ -11,8 +12,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:padding="5dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <ImageView
 
@@ -41,26 +42,27 @@
                 android:textColor="@color/blue_700"
                 android:textSize="36dp"
                 android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnwLog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/im2"
+                android:layout_marginTop="70dp"
                 android:background="@drawable/xborder"
                 android:text="Sign In"
-                android:layout_marginTop="70dp"
-                android:textColor="@color/white"
-                android:layout_below="@+id/im2" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/btnwLog"
                 android:layout_marginTop="@dimen/padding_top_10"
                 android:background="@drawable/xborder"
                 android:text="Sign Up"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/btnwLog"/>
+                android:textColor="@color/white" />
         </RelativeLayout>
     </ScrollView>
 

@@ -33,16 +33,6 @@
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/global_tracker" />
 
-        <receiver
-            android:name=".GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.boha.cmauthor" />
-            </intent-filter>
-        </receiver>
-
         <service
             android:name=".GcmIntentService"
             android:exported="false">

@@ -152,7 +152,7 @@
        AIzaSyBwOWDuadjGmsvN8drvijcWpyGXRySTzbs
     </string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
-    <string name="title_activity_team_member">TeamMemberActivity</string>
+    <string name="title_activity_team_member">Team Members</string>
     <string name="registration_message">Sign up to become a river health monitor.</string>
     <string name="message_notes">miniSASS is a simple tool which can be used by anyone to monitor the health of a river. You collect a sample of macroinvertebrates (small animals) from the water, and depending on which groups are found, you have a measure of the general river health and water quality in that river.</string>
     <string name="message_notes2">Stream Assessment Scoring System</string>
