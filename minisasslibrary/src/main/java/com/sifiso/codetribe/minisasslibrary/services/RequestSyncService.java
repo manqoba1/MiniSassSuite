@@ -13,6 +13,7 @@ import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
 import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
+import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtilForRequests;
 
 import java.io.BufferedReader;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class RequestSyncService extends IntentService {
 
-    static  final String LOG = RequestSyncService.class.getSimpleName();
+    static final String LOG = RequestSyncService.class.getSimpleName();
     static final Gson gson = new Gson();
     RequestSyncListener requestSyncListener;
     RequestCache requestCache;
@@ -51,7 +52,7 @@ public class RequestSyncService extends IntentService {
             if (cache != null) {
                 requestCache = cache;
                 Log.i(LOG, "RequestCache returned From disk with the following entries: "
-                + requestCache.getRequestCacheEntryList().size());
+                        + requestCache.getRequestCacheEntryList().size());
                 print();
                 controlRequestUpload();
             } else {
@@ -64,7 +65,7 @@ public class RequestSyncService extends IntentService {
             requestSyncListener.onTasksSynced(0, 0);
         } catch (Exception e) {
             Log.e(LOG, "there's an issue with the sync", e);
-            requestSyncListener.onTasksSynced(0,0);
+            requestSyncListener.onTasksSynced(0, 0);
         }
 
     }
@@ -76,7 +77,7 @@ public class RequestSyncService extends IntentService {
         String line;
         try {
             br = new BufferedReader(new InputStreamReader(is));
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
         } finally {
@@ -90,7 +91,7 @@ public class RequestSyncService extends IntentService {
 
     private void controlRequestUpload() {
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(getApplicationContext());
-        if (wcr.isWifiConnected()||wcr.isMobileConnected()) {
+        if (wcr.isWifiConnected() || wcr.isMobileConnected()) {
             Log.i(LOG, "WIFI connected, preparing to send cached requests to the cloud");
             RequestList list = new RequestList();
             for (RequestCacheEntry rce : requestCache.getRequestCacheEntryList()) {
@@ -102,14 +103,14 @@ public class RequestSyncService extends IntentService {
                 return;
             }
             Log.w(LOG, "sending cached request list:" + list.getRequests().size());
-            WebSocketUtilForRequests.sendRequest(getApplicationContext(), list, new WebSocketUtilForRequests.WebSocketListener() {
+            WebSocketUtilForRequests.sendRequest(getApplicationContext(), Statics.REQUEST_ENDPOINT, list, new WebSocketUtilForRequests.WebSocketListener() {
                 @Override
                 public void onMessage(ResponseDTO response) {
                     if (!ErrorUtil.checkServerError(getApplicationContext(), response)) {
                         return;
                     }
                     Log.i(LOG, "Cached requests have been sent. positive responses: " + response.getGoodCount() +
-                            "negative responses:" + response.getBadCount());
+                            " negative responses: " + response.getBadCount());
 
                     for (RequestCacheEntry rce : requestCache.getRequestCacheEntryList()) {
                         rce.setDateUploaded(new Date());
@@ -128,6 +129,7 @@ public class RequestSyncService extends IntentService {
                     requestSyncListener.onError(message);
                 }
             });
+
         } else {
             Log.e(LOG, "unable to connect WIFI, unable to sync requests");
         }
@@ -141,6 +143,7 @@ public class RequestSyncService extends IntentService {
             }
         }
         Log.i(LOG, "cache is now clean: " + list.size());
+        requestCache = new RequestCache();
         requestCache.setRequestCacheEntryList(list);
         CacheUtil.cacheRequest(getApplicationContext(), requestCache, null);
     }
@@ -151,6 +154,7 @@ public class RequestSyncService extends IntentService {
 
         }
     }
+
     public class LocalBinder extends Binder {
         public RequestSyncService getService() {
             return RequestSyncService.this;
@@ -158,8 +162,12 @@ public class RequestSyncService extends IntentService {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {return mBinder; }
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
     private final IBinder mBinder = new LocalBinder();
+
     public void startSyncCachedRequests(RequestSyncListener rsl) {
         requestSyncListener = rsl;
         onHandleIntent(null);
@@ -167,6 +175,7 @@ public class RequestSyncService extends IntentService {
 
     public interface RequestSyncListener {
         public void onTasksSynced(int goodResponses, int badResponses);
+
         public void onError(String message);
     }
 

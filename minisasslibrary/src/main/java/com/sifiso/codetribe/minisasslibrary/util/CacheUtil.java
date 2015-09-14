@@ -59,6 +59,7 @@ public class CacheUtil implements Serializable {
 
     public static void cacheRequest(Context context, RequestCache cache, CacheRequestListener listener) {
         requestCache = cache;
+        Log.i(LOG, "cache Entries is now clean: " + cache.getRequestCacheEntryList().size());
         dataType = CACHE_REQUEST;
         cacheListener = listener;
         ctx = context;
@@ -245,13 +246,13 @@ public class CacheUtil implements Serializable {
 
         @Override
         protected ResponseDTO doInBackground(Void... voids) {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO resp = new ResponseDTO();
             FileInputStream stream;
             try {
                 switch (dataType) {
                     case CACHE_RIVER:
                         stream = ctx.openFileInput(JSON_RIVER);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ river data cache retrieved");
                         break;
                     case CACHE_EVALUATION:
@@ -259,34 +260,34 @@ public class CacheUtil implements Serializable {
                         break;
                     case CACHE_REGISTER_DATA:
                         stream = ctx.openFileInput(JSON_REGISTER_DATA);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ company data cache retrieved");
                         break;
                     case CACHE_REQUEST:
                         stream = ctx.openFileInput(JSON_REQUEST);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ request cache retrieved");
                         break;
 
                     case CACHE_DATA:
                         stream = ctx.openFileInput(JSON_DATA);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ company data cache retrieved");
                         break;
                     case CACHE_SEARCH_DATA:
                         stream = ctx.openFileInput(JSON_SEARCH);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ country cache retrieved");
                         break;
 
                     case CACHE_RIVER_DATA:
                         stream = ctx.openFileInput(JSON_RIVER);
-                        response = getData(stream);
+                        resp = getData(stream);
                         Log.i(LOG, "++ country cache retrieved");
                         break;
 
                 }
-                response.setStatusCode(0);
+
 
             } catch (FileNotFoundException e) {
                 Log.d(LOG, "#### cache file not found - returning a new response object, type = " + dataType);
@@ -294,8 +295,8 @@ public class CacheUtil implements Serializable {
             } catch (IOException e) {
                 Log.v(LOG, "------------ Failed to retrieve cache", e);
             }
-
-            return response;
+//            resp.setStatusCode(0);
+            return resp;
         }
 
         @Override

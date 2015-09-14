@@ -600,54 +600,54 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             ELI_remarks.setText(myMarker.getRemarks());
             switch (myMarker.getConditionsID()) {
                 case Constants.UNMODIFIED_NATURAL_SAND:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
                     break;
                 case Constants.LARGELY_NATURAL_SAND:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green_700));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
                     break;
                 case Constants.MODERATELY_MODIFIED_SAND:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
                     break;
                 case Constants.LARGELY_MODIFIED_SAND:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red_900));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
 
                     break;
                 case Constants.CRITICALLY_MODIFIED_SAND:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
                     break;
                 case Constants.UNMODIFIED_NATURAL_ROCK:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
                     break;
                 case Constants.LARGELY_NATURAL_ROCK:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green_700));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
                     break;
                 case Constants.MODERATELY_MODIFIED_ROCK:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
                     break;
                 case Constants.LARGELY_MODIFIED_ROCK:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red_900));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
                     break;
                 case Constants.CRITICALLY_MODIFIED_ROCK:
-                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple));
-                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                    ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                    ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
                     ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
                     break;
 

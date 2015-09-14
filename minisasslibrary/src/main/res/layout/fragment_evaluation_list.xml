@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/FEL_search"
         android:layout_margin="5dp"
+        android:dividerHeight="3dp"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

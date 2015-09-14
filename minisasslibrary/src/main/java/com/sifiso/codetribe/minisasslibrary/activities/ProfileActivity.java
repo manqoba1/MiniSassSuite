@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,20 +80,10 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
         setFields();
         setRefreshActionButtonState(true);
+
+
     }
 
-    public void setRefreshActionButtonState(final boolean refreshing) {
-        if (mMenu != null) {
-            final MenuItem refreshItem = mMenu.findItem(R.id.menu_refresh);
-            if (refreshItem != null) {
-                if (refreshing) {
-                    refreshItem.setActionView(R.layout.action_bar_progess);
-                } else {
-                    refreshItem.setActionView(null);
-                }
-            }
-        }
-    }
 
     private void checkConnection() {
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
@@ -269,12 +258,25 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profile, menu);
-        setRefreshActionButtonState(true);
+        mMenu = menu;
         WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
-        if (wr.isWifiConnected() || wr.isWifiConnected()) {
+        if (wr.isWifiConnected() || wr.isMobileConnected()) {
             getProfileData();
         }
         return true;
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.menu_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 
     @Override
@@ -388,7 +390,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                         public void onBitmapsResized(Bitmaps bitmaps) {
                             AP_PP.setImageBitmap(bitmaps.getLargeBitmap());
                             // Bitmap bitmap = AP_PP.getDrawingCache();
-                            Palette.from(bitmaps.getLargeBitmap()).generate(new Palette.PaletteAsyncListener() {
+                           /* Palette.from(bitmaps.getLargeBitmap()).generate(new Palette.PaletteAsyncListener() {
                                 @Override
                                 public void onGenerated(Palette palette) {
                                     Palette.Swatch aSwitch = palette.getMutedSwatch();
@@ -399,7 +401,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
                                     }
                                 }
-                            });
+                            });*/
                             try {
                                 fImage = ImageUtil.getFileFromBitmap(bitmaps.getLargeBitmap(), "picM" + System.currentTimeMillis() + ".jpg");
                                 uploadProfileImageToCDN(teamMember, fImage);
@@ -426,7 +428,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                                 @Override
                                 public void onBitmapsResized(Bitmaps bitmaps) {
                                     AP_PP.setImageBitmap(bitmaps.getLargeBitmap());
-                                    Palette.from(bitmaps.getLargeBitmap()).generate(new Palette.PaletteAsyncListener() {
+                                   /* Palette.from(bitmaps.getLargeBitmap()).generate(new Palette.PaletteAsyncListener() {
                                         @Override
                                         public void onGenerated(Palette palette) {
                                             Palette.Swatch aSwitch = palette.getMutedSwatch();
@@ -437,7 +439,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
                                             }
                                         }
-                                    });
+                                    });*/
                                     try {
                                         fImage = ImageUtil.getFileFromBitmap(bitmaps.getLargeBitmap(), "picM" + System.currentTimeMillis() + ".jpg");
                                         uploadProfileImageToCDN(teamMember, fImage);
@@ -549,7 +551,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
                         @Override
                         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                            /*Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                 @Override
                                 public void onGenerated(Palette palette) {
                                     Palette.Swatch aSwitch = palette.getMutedSwatch();
@@ -559,7 +561,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
                                     }
                                 }
-                            });
+                            });*/
                         }
 
                         @Override
@@ -612,13 +614,9 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
         RequestDTO w = new RequestDTO();
         w.setRequestType(RequestDTO.GET_MEMBER);
         w.setTeamMemberID(teamMember.getTeamMemberID());
-        runOnUiThread(new Runnable() {
 
-            @Override
-            public void run() {
-                setRefreshActionButtonState(true);
-            }
-        });
+        setRefreshActionButtonState(true);
+
         BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO r) {
@@ -626,10 +624,10 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
-                        Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
-                        if (!ErrorUtil.checkServerError(ctx, r)) {
+                        if (r.getStatusCode() > 0) {
                             return;
                         }
+                        Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
                         if (r.getTeamMember() != null) {
                             teamMember = r.getTeamMember();
                             SharedUtil.saveTeamMember(ctx, r.getTeamMember());

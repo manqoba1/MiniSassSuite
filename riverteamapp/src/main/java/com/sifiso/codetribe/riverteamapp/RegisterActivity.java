@@ -32,6 +32,8 @@ import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
+import java.util.HashMap;
+
 
 public class RegisterActivity extends AppCompatActivity implements RegisterFragment.RegisterFragmentListener {
 

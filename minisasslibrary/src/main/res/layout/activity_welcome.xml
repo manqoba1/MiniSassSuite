@@ -38,7 +38,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="44dp"
                 android:gravity="center"
-                android:text="Welcome to the miniSASS BETA App"
+                android:text="Welcome to the miniSASS (BETA) App"
                 android:textColor="@color/blue_700"
 
                 android:textSize="30dp"

@@ -39,6 +39,7 @@ import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -148,6 +149,7 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
         View v = inf.inflate(R.layout.hero_layout, null);
         // FEL_list.addHeaderView(v);
         // FEL_list.addFooterView(v);
+        Collections.sort(evaluationList);
         adapter = new EvaluationAdapter(ctx, evaluationList, new EvaluationAdapter.EvaluationAdapterListener() {
             @Override
             public void onEvaluationContribute(EvaluationDTO evaluation) {

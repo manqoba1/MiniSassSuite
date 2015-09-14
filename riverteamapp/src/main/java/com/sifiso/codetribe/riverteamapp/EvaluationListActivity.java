@@ -1,11 +1,13 @@
 package com.sifiso.codetribe.riverteamapp;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +52,7 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
         tracker = new GPSTracker(ctx);
         getSupportActionBar().setTitle(evaluationSiteList.get(0).getRiverName());
         setFields();
+      //  handleIntent(getIntent());
     }
 
     private void setFields() {
@@ -70,11 +73,34 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
+    Menu mMenu;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_evaluation_list, menu);
+        mMenu = menu;
+        /*SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));*/
         return true;
+    }
+
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(com.sifiso.codetribe.minisasslibrary.R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(com.sifiso.codetribe.minisasslibrary.R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 
     @Override
@@ -86,7 +112,7 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
 
     @Override
     protected void onResume() {
-        overridePendingTransition(R.anim.slide_out_left,R.anim.slide_in_right);
+        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
 
         super.onResume();
     }
@@ -99,9 +125,7 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
         if (id == android.R.id.home) {
             finish();
         }

@@ -76,6 +76,7 @@ import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
+import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -152,7 +153,9 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 Util.expandOrCollapse(llSiteLayout, 100, false, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-
+                        llSiteLayout.setVisibility(View.GONE);
+                        WT_sp_river.setEnabled(true);
+                        WT_sp_category.setEnabled(true);
                     }
                 });
             }
@@ -799,36 +802,36 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             if (average > 6.9) {
                 status = "Unmodified(NATURAL condition)";
                 statusCondition = Constants.UNMODIFIED_NATURAL_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.blue));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.blue));
+                TV_score_status.setTextColor(getResources().getColor(R.color.blue_900));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.blue_900));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
                 //IMG_score_icon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
             } else if (average > 5.8 && average < 6.9) {
                 status = "Largely natural/few modifications(GOOD condition)";
                 statusCondition = Constants.LARGELY_NATURAL_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.green));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.green));
+                TV_score_status.setTextColor(getResources().getColor(R.color.green_700));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.green_700));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
             } else if (average > 4.9 && average < 5.8) {
                 status = "Moderately modified(FAIR condition)";
                 statusCondition = Constants.MODERATELY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.orange));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.orange));
+                TV_score_status.setTextColor(getResources().getColor(R.color.orange_400));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.orange_400));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
             } else if (average > 4.3 && average < 4.9) {
                 status = "Largely modified(POOR condition)";
                 statusCondition = Constants.LARGELY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.red));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.red));
+                TV_score_status.setTextColor(getResources().getColor(R.color.red_900));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.red_900));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
             } else if (average < 4.3) {
                 status = "Seriously/critically modified";
                 statusCondition = Constants.CRITICALLY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.purple));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.purple));
+                TV_score_status.setTextColor(getResources().getColor(R.color.purple_800));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.purple_800));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
                 //IMG_score_icon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
             }
@@ -837,36 +840,36 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             if (average > 7.9) {
                 status = "Unmodified(NATURAL condition)";
                 statusCondition = Constants.UNMODIFIED_NATURAL_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.blue));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.blue));
+                TV_score_status.setTextColor(getResources().getColor(R.color.blue_900));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.blue_900));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
                 //IMG_score_icon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
             } else if (average > 6.8 && average < 7.9) {
                 status = "Largely natural/few modifications(GOOD condition)";
                 statusCondition = Constants.LARGELY_NATURAL_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.green));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.green));
+                TV_score_status.setTextColor(getResources().getColor(R.color.green_700));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.green_700));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
             } else if (average > 6.1 && average < 6.8) {
                 status = "Moderately modified(FAIR condition)";
                 statusCondition = Constants.MODERATELY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.orange));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.orange));
+                TV_score_status.setTextColor(getResources().getColor(R.color.orange_400));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.orange_400));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
             } else if (average > 5.1 && average < 6.1) {
                 status = "Largely modified(POOR condition)";
                 statusCondition = Constants.LARGELY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.red));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.red));
+                TV_score_status.setTextColor(getResources().getColor(R.color.red_900));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.red_900));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
                 // IMG_score_icon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
             } else if (average < 5.1) {
                 status = "Seriously/critically modified";
                 statusCondition = Constants.CRITICALLY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.purple));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.purple));
+                TV_score_status.setTextColor(getResources().getColor(R.color.purple_800));
+                TV_avg_score.setTextColor(getResources().getColor(R.color.purple_800));
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
                 //IMG_score_icon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
             }
@@ -874,7 +877,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         TV_score_status.setText(status);
 
         Log.e(LOG, "Check conditionID : " + conditionID + " " + statusCondition + " " + categoryID);
-        conditionID = conditionIDFunc(response.getCategoryList(), statusCondition, categoryID);
+        conditionID = statusCondition;//conditionIDFunc(response.getCategoryList(), statusCondition, categoryID);
 
         Log.e(LOG, "Check conditionID : " + conditionID);
     }
@@ -923,11 +926,11 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
     private void sendRequest(final RequestDTO request) {
         //setProgressDialog();
-        BaseVolley.getRemoteData(Statics.SERVLET_TEST, request, ctx, new BaseVolley.BohaVolleyListener() {
+        /*BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 if (response.getStatusCode() > 0) {
-                    addRequestToCache(request);
+                    return;
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -949,25 +952,34 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             @Override
             public void onVolleyError(VolleyError error) {
 
-                addRequestToCache(request);
+                //addRequestToCache(request);
             }
 
             @Override
             public void onError(String message) {
                 addRequestToCache(request);
+
             }
-        });
-       /* WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, request, new WebSocketUtil.WebSocketListener() {
+        });*/
+        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, request, new WebSocketUtil.WebSocketListener() {
             @Override
             public void onMessage(ResponseDTO response) {
                 if (response.getStatusCode() > 0) {
-                    addRequestToCache(request);
+                    //addRequestToCache(request);
+                    return;
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             // cleanForm();
-                            showImageDialog();
+                            //setRefreshActionButtonState(false);
+                            isInsectsPickerBack = true;
+                            isBusy = false;
+                            pd.dismiss();
+                            ToastUtil.toast(ctx, "Observation successfully saved");
+                            cleanForm();
+                            getRiversAroundMe();
+                            //showImageDialog();
                         }
                     });
                 }
@@ -982,7 +994,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             public void onError(String message) {
                 addRequestToCache(request);
             }
-        });*/
+        });
     }
 
     private void addRequestToCache(RequestDTO request) {

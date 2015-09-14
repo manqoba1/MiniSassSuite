@@ -194,54 +194,54 @@ public class EvaluationAdapter extends BaseAdapter {
         h.ELI_remarks.setText(evaluation.getRemarks());
         switch (evaluation.getConditionsID()) {
             case Constants.UNMODIFIED_NATURAL_SAND:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
                 break;
             case Constants.LARGELY_NATURAL_SAND:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green_700));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
                 break;
             case Constants.MODERATELY_MODIFIED_SAND:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
                 break;
             case Constants.LARGELY_MODIFIED_SAND:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red_900));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
 
                 break;
             case Constants.CRITICALLY_MODIFIED_SAND:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
                 break;
             case Constants.UNMODIFIED_NATURAL_ROCK:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
                 break;
             case Constants.LARGELY_NATURAL_ROCK:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.green_700));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
                 break;
             case Constants.MODERATELY_MODIFIED_ROCK:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
                 break;
             case Constants.LARGELY_MODIFIED_ROCK:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.red_900));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
                 break;
             case Constants.CRITICALLY_MODIFIED_ROCK:
-                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple));
-                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
                 h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
                 break;
 
@@ -251,7 +251,62 @@ public class EvaluationAdapter extends BaseAdapter {
         animateView(v);
         return v;
     }
+/* case Constants.UNMODIFIED_NATURAL_SAND:
+                h.ELI_score.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.ELI_condition.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.ELI_condition_image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
+                break;
+            case Constants.LARGELY_NATURAL_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
+                break;
+            case Constants.MODERATELY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
+                break;
+            case Constants.LARGELY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
 
+                break;
+            case Constants.CRITICALLY_MODIFIED_SAND:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
+                break;
+            case Constants.UNMODIFIED_NATURAL_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.blue_900));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.blue_crap));
+                break;
+            case Constants.LARGELY_NATURAL_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.green_700));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.green_crap));
+                break;
+            case Constants.MODERATELY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.orange_400));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.orange_crap));
+                break;
+            case Constants.LARGELY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.red_900));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.red_crap));
+                break;
+            case Constants.CRITICALLY_MODIFIED_ROCK:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.purple_800));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.purple_crap));
+                break;
+            case Constants.NOT_SPECIFIED:
+                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
+                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.gray_crap));
+                break;*/
     public void animateView(final View view) {
         Animation a = AnimationUtils.loadAnimation(mCtx, R.anim.grow_fade_in_center);
 

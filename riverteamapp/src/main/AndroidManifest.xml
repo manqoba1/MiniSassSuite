@@ -33,13 +33,13 @@
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/global_tracker" />
 
-        <service
+        <!--<service
             android:name=".GcmIntentService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-        </service>
+        </service>-->
 
         <activity
             android:name=".MainPagerActivity"
@@ -75,7 +75,17 @@
         </activity>
         <activity
             android:name=".EvaluationListActivity"
-            android:label="@string/title_activity_evaluation_list"></activity>
+            android:label="@string/title_activity_evaluation_list">
+            <!-- to identify this activity as "searchable" -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
 
 
     </application>

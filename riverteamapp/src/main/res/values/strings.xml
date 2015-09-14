@@ -15,4 +15,5 @@
     <string name="message_notes2">Stream Assessment Scoring System</string>
     <string name="message_notes3">A community river health monitoring app</string>
     <string name="sign_in_text">Sign in to find the rivers and sites nearest to you</string>
+    <string name="action_search">Search Observation</string>
 </resources>

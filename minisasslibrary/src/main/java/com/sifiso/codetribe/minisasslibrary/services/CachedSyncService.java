@@ -13,6 +13,7 @@ import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
 import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
+import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtilForRequests;
 
 import java.io.BufferedReader;
@@ -102,7 +103,7 @@ public class CachedSyncService extends IntentService {
             }
             Log.w(LOG, "### sending list of cached requests: " + list.getRequests().size());
 
-            WebSocketUtilForRequests.sendRequest(getApplicationContext(), list, new WebSocketUtilForRequests.WebSocketListener() {
+            WebSocketUtilForRequests.sendRequest(getApplicationContext(), Statics.REQUEST_ENDPOINT,list, new WebSocketUtilForRequests.WebSocketListener() {
                 @Override
                 public void onMessage(ResponseDTO response) {
                     if (!ErrorUtil.checkServerError(getApplicationContext(), response)) {

@@ -55,7 +55,9 @@ import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RegisterFragment extends Fragment implements PageFragment {
     public interface RegisterFragmentListener {
@@ -69,7 +71,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
     Activity activity;
     Button rsRegister;
     EditText rsMemberName, rsMemberSurname;
-    EditText rsCellphone, rsPin,re_edtPassword;
+    EditText rsCellphone, rsPin, re_edtPassword;
     CheckBox cbMoreMember;
     Spinner sp_org_type, sp_country;
     View v;
@@ -82,7 +84,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
     TextView textView13;
     RelativeLayout imgTopLgo;
     private RegisterFragmentListener mListener;
-
+    Map<Integer, String> organisationType;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -124,6 +126,17 @@ public class RegisterFragment extends Fragment implements PageFragment {
     ArrayAdapter<String> countryAdapter;
     ArrayAdapter<String> orgtypeAdapter;
     ArrayAdapter<String> teamAdapter;
+
+    private void setOrganisationTypeHash() {
+        organisationType = new HashMap<>();
+        organisationType.put(3, "Conservancy");
+        organisationType.put(6, "Consultancy");
+        organisationType.put(5, "Government Department");
+        organisationType.put(2, "NGO");
+        organisationType.put(7, "Other");
+        organisationType.put(4, "Private Individual");
+        organisationType.put(1, "School");
+    }
 
     private void setSpinners() {
         if (countrySpinner == null && orgTypeSpinner == null && teamSpinner == null) {
@@ -195,18 +208,18 @@ public class RegisterFragment extends Fragment implements PageFragment {
                 rsTeamName.setText(teamName);
                 sp_country.setVisibility(View.GONE);
                 sp_org_type.setVisibility(View.GONE);
-                activateWatcher=true;
+                activateWatcher = true;
             }
         });
         rsTeamName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(activateWatcher){
+                if (activateWatcher) {
 
-                        sp_country.setVisibility(View.VISIBLE);
-                        sp_org_type.setVisibility(View.VISIBLE);
+                    sp_country.setVisibility(View.VISIBLE);
+                    sp_org_type.setVisibility(View.VISIBLE);
                     activateWatcher = false;
-                    teamID=null;
+                    teamID = null;
                 }
             }
 
@@ -222,7 +235,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
         });
     }
 
-boolean activateWatcher;
+    boolean activateWatcher;
     String teamName;
     int indexS;
     Integer teamID;
@@ -252,6 +265,7 @@ boolean activateWatcher;
     boolean isMoreMember, isFound;
     MemberToBeAddedAdapter memberToBeAddedAdapter;
     TextView SI_app;
+
     public void setFields() {
         SI_app = (TextView) v.findViewById(R.id.SI_app);
         SI_app.setText(ctx.getResources().getString(R.string.registration_message));
@@ -284,10 +298,10 @@ boolean activateWatcher;
         rsMemberEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(!memberToBeRegistered.isEmpty()) {
+                if (!memberToBeRegistered.isEmpty()) {
                     memberToBeRegistered.clear();
                 }
-                Log.d(LOG,"List size"+memberToBeRegistered.size());
+                Log.d(LOG, "List size" + memberToBeRegistered.size());
                 //Backg
             }
 
@@ -338,7 +352,7 @@ boolean activateWatcher;
                             // Toast.makeText(ctx, "Enter Last Name", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if(!activateWatcher) {
+                        if (!activateWatcher) {
                             if (countryID == null) {
                                 Util.showErrorToast(ctx, "Select a country");
                                 //Toast.makeText(ctx, "Select Town", Toast.LENGTH_SHORT).show();
@@ -393,7 +407,7 @@ boolean activateWatcher;
                             //Toast.makeText(ctx, "Enter Email Address", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if(!re_edtPassword.getText().toString().equals(rsPin.getText().toString())){
+                        if (!re_edtPassword.getText().toString().equals(rsPin.getText().toString())) {
                             re_edtPassword.setError("password mismatch");
                             rsPin.setError("password mismatch");
                             return;
@@ -435,7 +449,7 @@ boolean activateWatcher;
         t.setPin(rsPin.getText().toString());
         t.setActiveFlag(0);
         t.setDateRegistered(new Date().getTime());
-        if(!memberToBeRegistered.contains(t)) {
+        if (!memberToBeRegistered.contains(t)) {
             memberToBeRegistered.add(0, t);
         }
 

@@ -219,10 +219,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
         if (response == null) {
             getCachedRiverData();
-        } /*else {
-            getRefreshCachedData();
+        } else {
+            // getRefreshCachedData();
             progressBar.setVisibility(View.GONE);
-        }*/
+        }
         // startActivity(new Intent(MainPagerActivity.this, SplashActivity.class));
 
         return true;
@@ -366,10 +366,14 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             setLoc(location);
             stopLocationUpdates();
-            // getCachedRiverData();
-            // getRiversAroundMe();
+            if (SharedUtil.getRiverLoadedFlag(ctx) == 1) {
+                isBusy = false;
+                getRiversAroundMe();
+            } else {
+                getCachedRiverData();
+            }
         }
-        Log.e(LOG, "####### onLocationChanged");
+        Log.e(LOG, "####### onLocationChanged " + location.getAccuracy());
     }
 
 
@@ -410,9 +414,31 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         }
         if (location.getAccuracy() > ACCURACY_LIMIT) {
             startLocationUpdates();
+            Log.w(LOG, "## requesting location1 ....lastLocation: "
+                    + location.getLatitude() + " "
+                    + location.getLongitude() + " acc: "
+                    + location.getAccuracy());
         } else {
-            // getCachedRiverData();
-            // getRiversAroundMe();
+            Log.w(LOG, "## requesting location2 ....lastLocation: "
+                    + location.getLatitude() + " "
+                    + location.getLongitude() + " acc: "
+                    + location.getAccuracy());
+            if (SharedUtil.getRiverLoadedFlag(ctx) == 1) {
+                Log.w(LOG, "## requesting location3 ....lastLocation: "
+                        + location.getLatitude() + " "
+                        + location.getLongitude() + " acc: "
+                        + location.getAccuracy());
+                isBusy = false;
+                getRiversAroundMe();
+            } else {
+                Log.w(LOG, "## requesting location4 ....lastLocation: "
+                        + location.getLatitude() + " "
+                        + location.getLongitude() + " acc: "
+                        + location.getAccuracy());
+                getCachedRiverData();
+            }
+
+
         }
     }
 
@@ -508,6 +534,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     @Override
                     public void run() {
                         Log.d(LOG, new Gson().toJson(respond));
+
                         progressBar.setVisibility(View.GONE);
                         response = respond;
                         if (respond != null) {
@@ -515,10 +542,13 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                         }
                         if (w.isWifiConnected()) {
                             getRiversAroundMe();
+                            return;
                             // getData();
                         } else if (w.isMobileConnected()) {
                             getRiversAroundMe();
+                            return;
                         }
+
                     }
                 });
 
@@ -553,28 +583,22 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     private void getRiversAroundMe() {
         if (location == null) {
             Toast.makeText(ctx, "Busy...getting rivers ...t", Toast.LENGTH_SHORT).show();
-            if (!isLocatorOn) {
+            /*if (!isLocatorOn) {
                 showSettingDialog();
                 isLocatorOn = true;
-            }
+            }*/
             // getRiversAroundMe();
             //riverListFragment.refreshListStop();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    riverListFragment.refreshListStop();
-                }
-            }, 5000);
+
+            riverListFragment.refreshListStop();
+
             return;
         }
         if (isBusy) {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    riverListFragment.refreshListStop();
-                }
-            }, 5000);
+
+            riverListFragment.refreshListStop();
+
 
             // riverListFragment.refreshListStop();
             return;
@@ -624,7 +648,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                         }
                         try {
                             if (SharedUtil.getRiverLoadedFlag(ctx) == 1) {
-                                SharedUtil.setRiverLoadedFlag(ctx, 0);
+
                                 getData();
                             } else {
                                 progressBar.setVisibility(View.GONE);
@@ -706,7 +730,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
                             @Override
                             public void onDataCached(ResponseDTO r) {
-
+                                SharedUtil.setRiverLoadedFlag(ctx, 0);
                             }
 
                             @Override
@@ -808,6 +832,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     @Override
                     public void onTasksSynced(int goodResponses, int badResponses) {
                         Log.w(LOG, "@@ cached requests done, good: " + goodResponses + " bad: " + badResponses);
+
                         getRefreshCachedData();
                         if (goodResponses > 0) {
                             getRiversAroundMe();

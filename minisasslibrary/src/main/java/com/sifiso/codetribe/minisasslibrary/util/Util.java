@@ -1452,7 +1452,7 @@ public class Util {
     }
 
     public static String getLongDate(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("EEEE, dd MMM yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("EEEE, dd MMM yyyy HH:mm:ss");
         return df.format(date);
     }
 

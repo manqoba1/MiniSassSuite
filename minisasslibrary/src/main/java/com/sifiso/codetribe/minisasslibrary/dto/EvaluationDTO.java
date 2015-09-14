@@ -8,12 +8,13 @@ package com.sifiso.codetribe.minisasslibrary.dto;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ImagesDTO;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author aubreyM
  */
-public class EvaluationDTO implements Serializable{
+public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
 
     private static final long serialVersionUID = 1L;
     private Integer evaluationID, teamMemberID, conditionsID, evaluationSiteID;
@@ -240,4 +241,31 @@ public class EvaluationDTO implements Serializable{
     }
 
 
+    @Override
+    public int compareTo(EvaluationDTO another) {
+/*the first one sorts from oldest to newest
+        Date thisDate = new Date(this.evaluationDate);
+        Date anotherDate = new Date(another.evaluationDate);
+
+        if (thisDate.after(anotherDate)) {
+            return 1;
+        }
+        if (thisDate.before(anotherDate)) {
+            return -1;
+        }
+        return 0;*/
+        //the following one sorts from newest to oldest
+        Date thisDate = new Date(this.evaluationDate);
+        Date anotherDate = new Date(another.evaluationDate);
+
+        if (thisDate.after(anotherDate)) {
+            return -1;
+        }
+        if (thisDate.before(anotherDate)) {
+            return 1;
+        }
+        return 0;
+
+
+    }
 }

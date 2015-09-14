@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal|center"
     android:background="@drawable/xborder_toast"
-    android:padding="5dip"
-    app:layout_gravity="top">
+    android:padding="5dip">
 
     <ImageView
         android:id="@+id/imgTOASTOK"

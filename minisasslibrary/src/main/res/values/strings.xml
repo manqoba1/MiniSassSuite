@@ -24,7 +24,7 @@
     <string name="action_youtube">Youtube</string>
     <string name="action_facebook">Facebook</string>
     <string name="action_minisass">MiniSASS.org</string>
-    <string name="action_dicotomas_key">Dicotomas Key</string>
+    <string name="action_dicotomas_key">Dichotomous Key</string>
     <string name="action_how_to">How to</string>
     <string name="more_rivers">All River</string>
     <string name="done_label">Done</string>
@@ -162,4 +162,5 @@
     <string name="sifiso_message">I have a diploma in computer science(Technical Applications) and have sound knowledge in mobile development. hjjsdfhfhsdjkjfjksd jksdjfjhsjd sjdfsdj jsdj dhj</string>
     <string name="kurisani_message">the industry\'s standard dummy text ever since </string>
     <string name="chris_message">the industry\'s standard dummy text ever since </string>
+    <string name="search_hint">Search an observation</string>
 </resources>
