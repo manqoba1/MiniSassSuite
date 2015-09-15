@@ -15,12 +15,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.CheckResult;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -79,6 +76,7 @@ import com.sifiso.codetribe.minisasslibrary.util.Util;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -275,7 +273,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     @Override
                     public void onTasksSynced(int goodResponses, int badResponses) {
                         if (goodResponses > 0) {
-                            getRiversAroundMe();
+                           // getRiversAroundMe();
                         }
                     }
 
@@ -301,6 +299,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         }
     };
 
+    static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -312,7 +311,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("New Observation");
-        getSupportActionBar().setSubtitle(Util.getLongDate(new Date()));
+        getSupportActionBar().setSubtitle(sdf.format(new Date()));
         teamMember = SharedUtil.getTeamMember(ctx);
 
         setField();
@@ -691,7 +690,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 } else {
 
                     Log.d(LOG, "Insect Select " + insectImageList.size());
-                    Intent intent = new Intent(EvaluationActivity.this, InsectPicker.class);
+                    Intent intent = new Intent(EvaluationActivity.this, InsectPickerActivity.class);
                     intent.putExtra("insetImageList", (java.io.Serializable) response.getInsectimageDTOList());
                     startActivityForResult(intent, INSECT_DATA);
                 }
@@ -978,8 +977,9 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                             pd.dismiss();
                             ToastUtil.toast(ctx, "Observation successfully saved");
                             cleanForm();
-                            getRiversAroundMe();
+                            //getRiversAroundMe();
                             //showImageDialog();
+                            finish();
                         }
                     });
                 }
@@ -1281,87 +1281,108 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
     boolean isBusy, isFromAddingEvaluation;
 
     private void getRiversAroundMe() {
-        if (location == null) {
-            Toast.makeText(ctx, "Invalid Location ...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (isBusy) {
-            Toast.makeText(ctx, "Rivers Loaded ...", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-
-        RequestDTO w = new RequestDTO();
-        w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
-        w.setLatitude(location.getLatitude());
-        w.setLongitude(location.getLongitude());
-        w.setRadius(5);
-        isBusy = true;
-        //Util.showToast(ctx, "Loading new data");
-        if (!isFromAddingEvaluation) {
-            setRefreshActionButtonState(true);
-        }
-
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
             @Override
-            public void onResponseReceived(ResponseDTO r) {
-                isBusy = false;
-//                progressBar.setVisibility(View.GONE);
-                setRefreshActionButtonState(false);
-                if (r.getStatusCode() > 0) {
-                    Toast.makeText(ctx, r.getMessage(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                response = new ResponseDTO();
+            public void onFileDataDeserialized(ResponseDTO r) {
                 response = r;
-                Log.d(LOG, new Gson().toJson(r));
                 buildUI();
-                CacheUtil.cacheData(ctx, r, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
-                    @Override
-                    public void onFileDataDeserialized(ResponseDTO response) {
+            }
 
-                    }
-
-                    @Override
-                    public void onDataCached(ResponseDTO response) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+            @Override
+            public void onDataCached(ResponseDTO response) {
 
             }
 
             @Override
-            public void onVolleyError(VolleyError error) {
-                isBusy = false;
-                setRefreshActionButtonState(false);
-                //Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                Util.collapse(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        WT_sp_riverConnected.setVisibility(View.GONE);
-                    }
-                });
-                Util.expand(WT_sp_river, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        WT_sp_river.setVisibility(View.VISIBLE);
-                    }
-                });
-                getCachedRiverData();
-            }
+            public void onError() {
 
-            @Override
-            public void onError(String message) {
-                isBusy = false;
-                setRefreshActionButtonState(false);
             }
         });
 
+//
+//
+//        if (location == null) {
+//            Toast.makeText(ctx, "Invalid Location ...", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (isBusy) {
+//            Toast.makeText(ctx, "Rivers Loaded ...", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//
+//        RequestDTO w = new RequestDTO();
+//        w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
+//        w.setLatitude(location.getLatitude());
+//        w.setLongitude(location.getLongitude());
+//        w.setRadius(1);
+//        isBusy = true;
+//        //Util.showToast(ctx, "Loading new data");
+//        if (!isFromAddingEvaluation) {
+//            setRefreshActionButtonState(true);
+//        }
+//
+//        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+//            @Override
+//            public void onResponseReceived(ResponseDTO r) {
+//                isBusy = false;
+////                progressBar.setVisibility(View.GONE);
+//                setRefreshActionButtonState(false);
+//                if (r.getStatusCode() > 0) {
+//                    Toast.makeText(ctx, r.getMessage(), Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                response = new ResponseDTO();
+//                response = r;
+//                Log.d(LOG, new Gson().toJson(r));
+//                buildUI();
+//                CacheUtil.cacheData(ctx, r, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
+//                    @Override
+//                    public void onFileDataDeserialized(ResponseDTO response) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onDataCached(ResponseDTO response) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            public void onVolleyError(VolleyError error) {
+//                isBusy = false;
+//                setRefreshActionButtonState(false);
+//                //Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
+//                Util.collapse(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        WT_sp_riverConnected.setVisibility(View.GONE);
+//                    }
+//                });
+//                Util.expand(WT_sp_river, 200, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        WT_sp_river.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//                getCachedRiverData();
+//            }
+//
+//            @Override
+//            public void onError(String message) {
+//                isBusy = false;
+//                setRefreshActionButtonState(false);
+//            }
+//        });
+//
 
     }
 

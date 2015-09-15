@@ -51,8 +51,6 @@ import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.TeamMemberDTO;
-import com.sifiso.codetribe.minisasslibrary.viewsUtil.CircleTransform;
-import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 
@@ -99,6 +97,22 @@ public class Util {
     static Random random = new Random(System.currentTimeMillis());
     static int maxFlashes, count;
     private static int MAX_IMAGE_DIMENSION = 720;
+
+    public static ImageView setCustomActionBar(Context ctx,
+                                               ActionBar actionBar, String text, Drawable image) {
+        actionBar.setDisplayShowCustomEnabled(true);
+        LayoutInflater inflator = (LayoutInflater)
+                ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.action_bar_logo, null);
+        TextView txt = (TextView) v.findViewById(R.id.ACTION_BAR_text);
+        ImageView logo = (ImageView) v.findViewById(R.id.ACTION_BAR_logo);
+        txt.setText(text);
+        //
+        logo.setImageDrawable(image);
+        actionBar.setCustomView(v);
+        actionBar.setTitle("");
+        return logo;
+    }
 
     public static void setCustomActionBar(Context ctx,
                                           ActionBar actionBar, String text, String team, String image, final ActinBarListener listener) {
@@ -427,17 +441,15 @@ public class Util {
         }
         ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
         img.setImageDrawable(getRandomHeroImage(ctx));
-        Double b = new Double("" + getWindowWidth(act));
-        Double c = b / new Double("1.5");
-        //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(getWindowWidth(act), 100);
-        //img.setLayoutParams(layoutParams);
+
         pop.setPromptView(v);
         pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
         pop.setAdapter(new PopupAdapter(ctx, R.layout.xxsimple_spinner_item,
                 list, false));
         pop.setAnchorView(anchorView);
+        pop.setWidth(600);
+        pop.setHorizontalOffset(56);
         pop.setModal(true);
-        pop.setWidth(c.intValue());
         pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

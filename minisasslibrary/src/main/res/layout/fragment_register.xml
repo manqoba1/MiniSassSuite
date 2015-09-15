@@ -67,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:padding="6dp">
+                android:padding="@dimen/mon_margin">
 
 
                 <TextView

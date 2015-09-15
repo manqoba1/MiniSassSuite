@@ -74,16 +74,13 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".activities.GPSscanner"
             android:label="@string/title_activity_gpsscanner"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.InsectPicker"
+            android:name=".activities.InsectPickerActivity"
             android:label="@string/title_activity_insect_picker" />
         <activity
             android:name=".activities.EvaluationActivity"
@@ -102,7 +99,7 @@
             android:name=".activities.InsectBrowser"
             android:label="@string/title_activity_insect_browser" />
         <activity
-            android:name=".activities.ViewMoreImages"
+            android:name=".activities.ViewMoreImagesActivity"
             android:label="@string/title_activity_view_more_images" />
         <activity
             android:name=".activities.ProfileActivity"

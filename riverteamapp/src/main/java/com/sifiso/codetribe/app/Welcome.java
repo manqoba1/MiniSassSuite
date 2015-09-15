@@ -1,11 +1,10 @@
-package com.sifiso.codetribe.riverteamapp;
+package com.sifiso.codetribe.app;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +25,6 @@ import com.sifiso.codetribe.minisasslibrary.util.GCMUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
-import com.sifiso.codetribe.minisasslibrary.util.Util;
 import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.Timer;
@@ -34,7 +32,7 @@ import java.util.Timer;
 
 public class Welcome extends AppCompatActivity {
     ImageView imageView;
-    TextView imageText;
+    TextView txtWelcome;
     Timer timer;
     Context ctx;
     Button bLogin, bReg;
@@ -49,6 +47,8 @@ public class Welcome extends AppCompatActivity {
         ctx = getApplicationContext();
         bLogin = (Button) findViewById(R.id.btnwLog);
         bReg = (Button) findViewById(R.id.btnCreate);
+        txtWelcome = (TextView) findViewById(R.id.txtWelcome);
+        Statics.setRobotoFontLight(ctx,txtWelcome);
         holderFrame = (RelativeLayout) findViewById(R.id.holderFrame);
        // holderFrame.setBackground(Util.getRandomHeroImage(ctx));
         imageView = (ImageView) findViewById(R.id.imgBackground);

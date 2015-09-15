@@ -1,4 +1,4 @@
-package com.sifiso.codetribe.riverteamapp;
+package com.sifiso.codetribe.app;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

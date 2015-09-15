@@ -1,13 +1,10 @@
-package com.sifiso.codetribe.riverteamapp;
+package com.sifiso.codetribe.app;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +16,6 @@ import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.MapsActivity;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import com.sifiso.codetribe.minisasslibrary.fragments.EvaluationListFragment;
 import com.sifiso.codetribe.minisasslibrary.services.CreateEvaluationListener;
 import com.sifiso.codetribe.minisasslibrary.util.GPSTracker;

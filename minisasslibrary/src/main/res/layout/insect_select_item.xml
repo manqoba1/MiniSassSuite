@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_pic"
+    android:padding="@dimen/mon_margin"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     android:layout_marginBottom="6dp"
-    android:elevation="4dp">
+
+    android:elevation="@dimen/mon_padding">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,11 +15,10 @@
 
         <ImageView
             android:id="@+id/INSC_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="400dp"
+            android:layout_height="600dp"
             android:layout_alignParentTop="true"
-
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/othermayfly13" />
 
 
@@ -25,7 +26,7 @@
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/INSC_image"
+            android:layout_alignParentBottom="true"
             android:background="@color/light_blue_500"
             android:padding="10dp">
 

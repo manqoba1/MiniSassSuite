@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/beige_pale"
+    android:padding="@dimen/mon_margin"
     android:orientation="vertical">
 
     <EditText
@@ -15,12 +17,15 @@
 
     <Button
         android:id="@+id/AE_create"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/EDT_comment"
+        android:layout_marginTop="@dimen/mon_margin"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/xsquare_green"
-        android:drawablePadding="10dp"
+        style="@style/ButtonRed"
+        android:paddingRight="@dimen/mon_margin"
+        android:drawableLeft="@android:drawable/ic_menu_send"
+        android:drawablePadding="@dimen/mon_divider"
         android:text="Submit Observation"
         android:textColor="@color/white" />
 </RelativeLayout>

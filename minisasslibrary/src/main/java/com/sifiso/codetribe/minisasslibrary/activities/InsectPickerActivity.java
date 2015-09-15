@@ -3,9 +3,9 @@ package com.sifiso.codetribe.minisasslibrary.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -15,13 +15,15 @@ import android.view.MenuItem;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.adapters.InsectSelectionAdapter;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
+import com.sifiso.codetribe.minisasslibrary.dto.InsectImageListDTO;
 import com.sifiso.codetribe.minisasslibrary.util.DividerItemDecoration;
+import com.sifiso.codetribe.minisasslibrary.util.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsectPicker extends AppCompatActivity {
-    static final String LOG = InsectPicker.class.getSimpleName();
+public class InsectPickerActivity extends AppCompatActivity {
+    static final String LOG = InsectPickerActivity.class.getSimpleName();
     Context ctx;
     double total = 0.0;
     private InsectSelectionAdapter adapter;
@@ -57,16 +59,35 @@ public class InsectPicker extends AppCompatActivity {
 
             @Override
             public void onViewMoreImages(InsectImageDTO insect, int index) {
-                intent = new Intent(InsectPicker.this, ViewMoreImages.class);
+                intent = new Intent(InsectPickerActivity.this, ViewMoreImagesActivity.class);
                 intent.putExtra("insetImageList", (java.io.Serializable) mRawImages);
                 intent.putExtra("insect", insect);
                 startActivityForResult(intent, RETURN_PICKER);
             }
         });
+        LinearLayoutManager llm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL, false);
+        SD_list.setLayoutManager(llm);
+        SD_list.addItemDecoration(new SpacesItemDecoration(4));
         SD_list.setAdapter(adapter);
 
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        switch (reqCode) {
+            case RETURN_PICKER:
+                if (resCode == RESULT_OK) {
+                    selectedFromViewMore = (InsectImageListDTO)data.getSerializableExtra("insectImageListDTO");
+                    viewMoreIndex = data.getIntExtra("position",0);
+                    //TODO - WHAT HAPPENS TO THIS SELECTION??
+                    mSelectedImages.add(selectedFromViewMore.getInsectimage());
+                    onBackPressed();
+                }
+                break;
+        }
+    }
+    InsectImageListDTO selectedFromViewMore;
+    int viewMoreIndex;
 
     private void collectCheckedInsects(InsectImageDTO mDtos) {
         if (mSelectedImages == null) {
@@ -86,7 +107,7 @@ public class InsectPicker extends AppCompatActivity {
             mDtos.selected = false;
         }
         Log.e(LOG, mSelectedImages.size() + " count");
-        intent = new Intent(InsectPicker.this, EvaluationActivity.class);
+        intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
         intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
         intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
         setResult(INSECT_DATA, intent);
@@ -104,7 +125,7 @@ public class InsectPicker extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        intent = new Intent(InsectPicker.this, EvaluationActivity.class);
+        intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
         intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
         intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
         setResult(INSECT_DATA, intent);
@@ -138,7 +159,7 @@ public class InsectPicker extends AppCompatActivity {
             return true;
         }
         if (id == android.R.id.home) {
-            intent = new Intent(InsectPicker.this, EvaluationActivity.class);
+            intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
             intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
             intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
             setResult(INSECT_DATA, intent);

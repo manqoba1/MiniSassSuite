@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/grey"
 
     tools:context="com.sifiso.codetribe.minisasslibrary.fragments.RiverListFragment">
 
@@ -16,6 +17,10 @@
         android:elevation="8dp"
         android:visibility="visible">
 
+        <RelativeLayout
+            android:id="@+id/handle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
 
         <include
             layout="@layout/search_layout"
@@ -25,18 +30,18 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/RL_search">
+        android:layout_below="@+id/RL_search"
+        android:padding="@dimen/mon_divider">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_below="@+id/MSG_countLayout">
+            android:layout_below="@+id/MSG_countLayout"
+            android:layout_margin="5dp">
 
             <ListView
                 android:id="@+id/RL_riverList"
-
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </android.support.v4.widget.SwipeRefreshLayout>

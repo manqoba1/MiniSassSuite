@@ -49,7 +49,7 @@ public class ViewMoreImageAdapter extends RecyclerView.Adapter<ViewMoreImageAdap
     }
 
     @Override
-    public void onBindViewHolder(Holder h, int position) {
+    public void onBindViewHolder(Holder h, final int position) {
         final InsectImageListDTO insect = mList.get(position);
 
         int rID = mContext.getResources().getIdentifier(insect.getUrl(), "drawable", mContext.getPackageName());
@@ -57,7 +57,12 @@ public class ViewMoreImageAdapter extends RecyclerView.Adapter<ViewMoreImageAdap
         h.INSC_image.setImageResource(rID);
         h.INSC_name.setText(insect.getImageName());
 
-       // h.INSC_box.setText(insect.getImageName());
+        h.INSC_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onInsectSelected(insect,position);
+            }
+        });
 
     }
 
@@ -73,7 +78,6 @@ public class ViewMoreImageAdapter extends RecyclerView.Adapter<ViewMoreImageAdap
 
         public Holder(View itemView) {
             super(itemView);
-           // INSC_box = (CheckBox) itemView.findViewById(R.id.INSC_box);
             INSC_image = (ImageView) itemView.findViewById(R.id.INSC_image);
             INSC_name = (TextView) itemView.findViewById(R.id.INSC_name);
         }

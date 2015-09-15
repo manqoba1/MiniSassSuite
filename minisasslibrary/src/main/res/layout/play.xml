@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_top_10"
-    tools:context="com.sifiso.codetribe.riverteamapp.Welcome">
+    tools:context="com.sifiso.codetribe.app.Welcome">
 
 
     <SeekBar

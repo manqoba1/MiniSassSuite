@@ -7,10 +7,9 @@
 
     <ImageView
         android:id="@+id/ACTION_BAR_logo"
-        android:src="@drawable/xblack_oval_small"
-        android:layout_width="48dp"
-        android:scaleType="centerCrop"
-        android:layout_height="48dp" />
+        android:src="@drawable/ic_launcher"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -36,7 +35,7 @@
             android:text="Municipality Name"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

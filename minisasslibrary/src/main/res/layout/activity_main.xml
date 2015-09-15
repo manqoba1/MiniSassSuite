@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.sifiso.codetribe.riverteamapp.MainPagerActivity">
+    tools:context="com.sifiso.codetribe.app.MainPagerActivity">
 
     <fragment
         android:id="@+id/fragment"
@@ -22,20 +22,17 @@
         android:visibility="visible" />
 
 
-    <TextView
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/RL_add"
-        style="@style/GreenCircleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="24dp"
-        android:layout_marginTop="135dp"
+        android:layout_marginTop="144dp"
         android:elevation="20dp"
         android:shadowRadius="10"
-        android:text="+"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="visible" />
+        android:src="@android:drawable/ic_menu_search" />
 
 </RelativeLayout>
 

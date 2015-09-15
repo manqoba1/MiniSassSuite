@@ -72,7 +72,6 @@ public class BohaRequest extends Request<ResponseDTO> {
                     bab.append(buffer, 0, size);
                 }
                 resp = new String(bab.toByteArray());
-                Log.e(LOG, "Unable to complete request: " + resp.length());
                 dto = gson.fromJson(resp, ResponseDTO.class);
             }
         } catch (Exception e) {

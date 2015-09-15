@@ -27,7 +27,6 @@ import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import com.sifiso.codetribe.minisasslibrary.services.CreateEvaluationListener;
-import com.sifiso.codetribe.minisasslibrary.util.GPSTracker;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
@@ -48,6 +47,8 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     private ImageView SLT_imgSearch2;
     private RelativeLayout SLT_hero;
     private ListView RL_riverList;
+    TextView txtCount;
+    View handle;
 
     public SwipeRefreshLayout refreshLayout;
     private int index2;
@@ -83,8 +84,6 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         v = inflater.inflate(R.layout.river_list, container, false);
         ctx = getActivity().getApplicationContext();
         activity = getActivity();
-        getActivity().setTitle("MiniSASS Rivers");
-        GPSTracker tracker = new GPSTracker(ctx);
         setField();
         return v;
     }
@@ -104,9 +103,12 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     }
 
     private void setField() {
+        handle = v.findViewById(R.id.handle);
         SLT_editSearch = (AutoCompleteTextView) v.findViewById(R.id.SLT_editSearch);
         SLT_hero = (RelativeLayout) v.findViewById(R.id.SLT_hero);
         SI_welcome = (TextView) v.findViewById(R.id.SI_welcome);
+        txtCount = (TextView) v.findViewById(R.id.SI_count);
+        txtCount.setText("0");
         SI_welcome.setText("Observations");
         SLT_imgSearch2 = (ImageView) v.findViewById(R.id.SLT_imgSearch2);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
@@ -186,10 +188,26 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
 
     private void setListView() {
 
+        txtCount.setText("" + response.getRiverList().size());
         riverAdapter = new RiverAdapter(response.getRiverList(), ctx, new RiverAdapter.RiverAdapterListener() {
             @Override
-            public void onDirection(Double latitude, Double longitude) {
-                mListener.onDirection(latitude, longitude);
+            public void onDirectionRequired(final List<EvaluationSiteDTO> siteList) {
+                if (siteList.size() == 1) {
+                    mListener.onDirection(siteList.get(0).getLatitude(), siteList.get(0).getLongitude());
+                    return;
+                }
+                List<String> list = new ArrayList<>();
+                for (EvaluationSiteDTO x: siteList) {
+                    list.add(x.getSiteName());
+                }
+                Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle,
+                        "Select Observation Site", new Util.UtilPopupListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        EvaluationSiteDTO site = siteList.get(index);
+                        mListener.onDirection(site.getLatitude(),site.getLongitude());
+                    }
+                });
             }
 
             @Override
@@ -217,6 +235,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         View v = inf.inflate(R.layout.hero_layout, null);
         // RL_riverList.addHeaderView(v);
 
+        RL_riverList.setDividerHeight(4);
         RL_riverList.setAdapter(riverAdapter);
         RL_riverList.setVerticalScrollbarPosition(index2);
 

@@ -1,5 +1,6 @@
 package com.sifiso.codetribe.minisasslibrary.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -31,7 +32,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dialogs.EditEvaluationDialog;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationDTO;
@@ -45,7 +45,6 @@ import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
 import com.sifiso.codetribe.minisasslibrary.util.Constants;
 import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
-import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.text.SimpleDateFormat;
@@ -90,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         mCtx = MapsActivity.this;
+        activity = this;
         mMarkersHashMap = new HashMap<Marker, EvaluationDTO>();
         evaluationImage = (EvaluationImageDTO) getIntent().getSerializableExtra("evaluationImage");
         evaluation = (EvaluationDTO) getIntent().getSerializableExtra("evaluation");
@@ -101,27 +101,15 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        //txtCount = (TextView) findViewById(R.id.count);
-        //textMap = (TextView) findViewById(R.id.textMap);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-//        text = (TextView) findViewById(R.id.textMap);
-
-        // textMap.setText(river.getRiverName());
-        //  txtCount.setText(river.getEvaluationSiteList().size() + "");
-
-//        progressBar.setVisibility(View.GONE);
-        //Statics.setRobotoFontBold(ctx, text);
-
         topLayout = findViewById(R.id.top);
-
 
         googleMap = mapFragment.getMap();
         if (googleMap == null) {
             Util.showToast(mCtx, getString(R.string.map_unavailable));
-            // finish();
             return;
         }
 
@@ -135,13 +123,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     }
 
     static final int EVALUATION_VIEW = 12;
-    static final int RIVER_VIEW = 13;
-
-    private List<Polyline> polylines = new ArrayList<Polyline>();
-    private List<LatLng> iterateList = new ArrayList<LatLng>();
-
-
-    private void setEvaluationMarkers() {
+        private void setEvaluationMarkers() {
         googleMap.clear();
 
         if (!river.getEvaluationsiteList().isEmpty()) {
@@ -198,56 +180,36 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                     }
                     index++;
                     Log.d(LOG, "" + index + " " + eva.getEvaluationSite());
-                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eva.getEvaluationSite().getLatitude(), eva.getEvaluationSite().getLongitude())).icon(desc)
+                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eva.getEvaluationSite().getLatitude(),
+                            eva.getEvaluationSite().getLongitude())).icon(desc)
+                            .title(eva.getEvaluationSite().getRiverName())
                             .snippet(eva.getRemarks());
                     //markerOptions.
                     final Marker m = googleMap.addMarker(markerOptions);
                     mMarkersHashMap.put(m, eva);
                     markers.add(m);
-                    googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(new MarkerInfoWindowAdapterListener() {
-                        @Override
-                        public void onEditEvaluation(EvaluationDTO evaluation) {
-                            editEvaluationDialog = new EditEvaluationDialog();
-                            editEvaluationDialog.show(getSupportFragmentManager(), "Edit Evaluation");
-                            editEvaluationDialog.setEvaluation(evaluation);
-                            editEvaluationDialog.setListener(new EditEvaluationDialog.EditEvaluationDialogListener() {
-                                @Override
-                                public void onSaveUpdate(EvaluationDTO evaluation) {
-                                    if (evaluation.getEvaluationID() == null) {
-                                        ToastUtil.errorToast(mCtx, "Evaluation can not be edited");
-                                        return;
-                                    }
-                                    editEvaluation(evaluation);
-                                }
-                            });
 
-                        }
-
-                        @Override
-                        public void onDirection(EvaluationDTO evaluation) {
-                            startDirectionsMap(evaluation.getEvaluationSite().getLatitude(), evaluation.getEvaluationSite().getLongitude());
-                        }
-                    }));
                 }
 
             }
+
             googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
                 public void onMapLoaded() {
                     //ensure that all markers in bounds
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for (Marker marker : markers) {
-                        builder.include(marker.getPosition());
+                    if (markers.size() > 1) {
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                        for (Marker marker : markers) {
+                            builder.include(marker.getPosition());
+                        }
+                        LatLngBounds bounds = builder.build();
+                        int padding = 100; // offset from edges of the map in pixels
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                        googleMap.animateCamera(cu);
+                    } else {
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(markers.get(0).getPosition(),15);
+                        googleMap.moveCamera(cu);
                     }
-
-                    LatLngBounds bounds = builder.build();
-                    int padding = 10; // offset from edges of the map in pixels
-
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                    //   txtCount.setText("" + markers.size());
-                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
-                    googleMap.animateCamera(cu);
-                    setTitle(river.getRiverName());
                 }
             });
 
@@ -298,10 +260,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    //CameraUpdate cu = CameraUpdateFactory.newLatLng(marker.getPosition());
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10f);
-                    googleMap.animateCamera(cu);
-                    marker.showInfoWindow();
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f);
+                    googleMap.moveCamera(cu);
+
+                    //marker.showInfoWindow();
+                    //showPopup(location.getLatitude(),location.getLongitude(), marker.getTitle());
 
                     return true;
                 }
@@ -314,12 +277,15 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
     List<String> list;
 
+    Activity activity;
+
     private void showPopup(final double lat, final double lng, String title) {
         list = new ArrayList<>();
         list.add("Directions");
-        list.add("Status Report");
+        list.add("Last Evaluation");
 
-        Util.showPopupBasicWithHeroImage(MapsActivity.this, MapsActivity.this, list, topLayout, mCtx.getString(R.string.select_action), new Util.UtilPopupListener() {
+        Util.showPopupBasicWithHeroImage(MapsActivity.this, MapsActivity.this, list,
+                topLayout, mCtx.getString(R.string.select_action), new Util.UtilPopupListener() {
             @Override
             public void onItemSelected(int index) {
                 switch (index) {

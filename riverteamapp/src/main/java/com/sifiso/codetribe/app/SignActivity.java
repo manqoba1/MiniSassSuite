@@ -1,4 +1,4 @@
-package com.sifiso.codetribe.riverteamapp;
+package com.sifiso.codetribe.app;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -8,9 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +46,6 @@ import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +75,10 @@ public class SignActivity extends AppCompatActivity {
         setFields();
 
         getEmail();
+        Util.setCustomActionBar(ctx, getSupportActionBar(),
+                "Sign In", ContextCompat.getDrawable(ctx, R.drawable.ic_launcher));
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -87,11 +89,11 @@ public class SignActivity extends AppCompatActivity {
         //getCachedData();
         mMenu = menu;
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Sign In");
-        getSupportActionBar().setElevation(8);
-        getSupportActionBar().setShowHideAnimationEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("Sign In");
+//        getSupportActionBar().setElevation(8);
+//        getSupportActionBar().setShowHideAnimationEnabled(true);
         return true;
     }
 

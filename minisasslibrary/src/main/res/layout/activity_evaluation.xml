@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="2dp"
+    android:padding="@dimen/mon_margin"
 
     tools:context="com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity">
 
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result1"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/mon_wide"
                 android:elevation="4dp">
 
                 <RelativeLayout
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result2"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/mon_margin"
                 android:elevation="4dp">
 
                 <LinearLayout
@@ -143,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result3"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/mon_margin"
                 android:elevation="4dp">
 
                 <RelativeLayout

@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -26,7 +25,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -50,7 +48,6 @@ import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -144,10 +141,12 @@ public class RegisterFragment extends Fragment implements PageFragment {
             orgTypeSpinner = new ArrayList<>();
             teamSpinner = new ArrayList<>();
         }
-        countrySpinner.add("Choose country");
+
         for (CountryDTO c : response.getCountryList()) {
             countrySpinner.add(c.getCountryName());
         }
+        Collections.sort(countrySpinner);
+        countrySpinner.add(0,"Choose country");
         orgTypeSpinner.add("Choose organisation type");
         for (OrganisationtypeDTO c : response.getOrganisationtypeList()) {
             orgTypeSpinner.add(c.getOrganisationName());
@@ -155,7 +154,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
         for (TeamDTO t : response.getTeamList()) {
             teamSpinner.add(t.getTeamName());
         }
-        Collections.sort(countrySpinner);
+
         teamAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, teamSpinner);
         countryAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, countrySpinner);
         orgtypeAdapter = new ArrayAdapter<String>(ctx, R.layout.xxsimple_spinner_dropdown_item, orgTypeSpinner);

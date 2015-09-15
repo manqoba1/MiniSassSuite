@@ -1,7 +1,7 @@
 package com.sifiso.codetribe.minisasslibrary.adapters;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
@@ -55,6 +54,7 @@ public class RiverAdapter extends BaseAdapter {
         ImageView AR_image_folder, AR_imgMap, AR_refresh, AR_imgDirections, AR_imgPicker,logo_icon;
         TextView AR_totalEvaluation, AR_txtRiverName, AR_totalStreams, AR_percOverallEva, AR_totalTrLabel,
                 AR_eva_date, AR_Eva_score, AR_conditionName;
+        View scoreView, actionsView;
 
     }
 
@@ -67,6 +67,8 @@ public class RiverAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.river_list_items, parent,
                     false);
+            h.scoreView = v.findViewById(R.id.score_lay);
+            h.actionsView = v.findViewById(R.id.AR_actionLayout);
             h.AR_conditionName = (TextView) v.findViewById(R.id.AR_conditionName);
             h.logo_icon = (ImageView) v.findViewById(R.id.logo_icon);
            // h.AR_image_folder = (ImageView) v.findViewById(R.id.AR_image_folder);
@@ -86,13 +88,12 @@ public class RiverAdapter extends BaseAdapter {
         } else {
             h = (Holder) v.getTag();
         }
-        final RiverDTO dto = mList.get(position);
+        final RiverDTO river = mList.get(position);
 
 
-        Log.d("RiverAdapter", "Mentor 2" + new Gson().toJson(dto.getEvaluationsiteList()));
         double perc = 0.0;
         double total = 0.0;
-        for (EvaluationSiteDTO es : dto.getEvaluationsiteList()) {
+        for (EvaluationSiteDTO es : river.getEvaluationsiteList()) {
             for (EvaluationDTO e : es.getEvaluationList()) {
                 if (e.getScore() != null) {
                     if (e.getScore() != 0) {
@@ -101,33 +102,31 @@ public class RiverAdapter extends BaseAdapter {
                 }
             }
         }
-        h.AR_totalStreams.setText("" + dto.getStreamList().size());
-        double percentage = total;//   Math.round((perc / dto.getEvaluationsiteList().size()) * 100.00) / 100.00; ;
-
-        /*if (percentage > 0) {
-            h.AR_percOverallEva.setText((Math.round(percentage * 100.00) / 100.00) + "");
-        } else {
-            h.AR_percOverallEva.setText("0");
-        }*/
-        if (!dto.getEvaluationsiteList().isEmpty()) {
-            if (!dto.getEvaluationsiteList().get(0).getEvaluationList().isEmpty()) {
-                h.AR_percOverallEva.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getScore() + "");
-                h.AR_conditionName.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionName());
-               // h.AR_type.setText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditions().getCategoryName());
-                setColorToText(dto.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionsID(), h);
+        h.AR_totalStreams.setText("" + river.getStreamList().size());
+        if (!river.getEvaluationsiteList().isEmpty()) {
+            if (!river.getEvaluationsiteList().get(0).getEvaluationList().isEmpty()) {
+                h.AR_percOverallEva.setText(river.getEvaluationsiteList().get(0).getEvaluationList().get(0).getScore() + "");
+                h.AR_conditionName.setText(river.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionName());
+                setColorToText(river.getEvaluationsiteList().get(0).getEvaluationList().get(0).getConditionsID(), h);
+                h.scoreView.setVisibility(View.VISIBLE);
+                h.actionsView.setVisibility(View.VISIBLE);
             } else {
+                h.scoreView.setVisibility(View.GONE);
+                h.actionsView.setVisibility(View.GONE);
                 h.AR_percOverallEva.setText(0 + "");
                 h.AR_conditionName.setText("No Observation(s) yet");
-                h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
-                h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
-                h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
+                h.AR_percOverallEva.setTextColor(ContextCompat.getColor(mCtx, R.color.gray));
+                h.AR_conditionName.setTextColor(ContextCompat.getColor(mCtx,R.color.gray));
+                h.logo_icon.setImageDrawable(ContextCompat.getDrawable(mCtx,R.drawable.ic_action_edit));
             }
         } else {
+            h.scoreView.setVisibility(View.GONE);
+            h.actionsView.setVisibility(View.GONE);
             h.AR_percOverallEva.setText(0 + "");
             h.AR_conditionName.setText("No Observation(s) yet");
-            h.AR_percOverallEva.setTextColor(mCtx.getResources().getColor(R.color.gray));
-            h.AR_conditionName.setTextColor(mCtx.getResources().getColor(R.color.gray));
-            h.logo_icon.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
+            h.AR_percOverallEva.setTextColor(ContextCompat.getColor(mCtx, R.color.gray));
+            h.AR_conditionName.setTextColor(ContextCompat.getColor(mCtx, R.color.gray));
+            h.logo_icon.setImageDrawable(ContextCompat.getDrawable(mCtx, R.drawable.ic_action_edit));
         }
 
         h.AR_imgDirections.setOnClickListener(new View.OnClickListener() {
@@ -137,20 +136,20 @@ public class RiverAdapter extends BaseAdapter {
                 Util.flashOnce(h.AR_imgDirections, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        mListener.onDirection(dto.getNearestLatitude(), dto.getNearestLongitude());
+                        mListener.onDirectionRequired(river.getEvaluationsiteList());
                     }
                 });
             }
         });
-        h.AR_txtRiverName.setText(dto.getRiverName().trim() + " River");
+        h.AR_txtRiverName.setText(river.getRiverName().trim() + " River");
         h.AR_txtRiverName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(h.AR_txtRiverName, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        if (dto.getEvaluationsiteList() != null) {
-                            mListener.onCreateEvaluation(dto);
+                        if (river.getEvaluationsiteList() != null) {
+                            mListener.onCreateEvaluation(river);
                         } else {
                             ToastUtil.toast(mCtx, "No Observation(s) yet");
                         }
@@ -158,16 +157,16 @@ public class RiverAdapter extends BaseAdapter {
                 });
             }
         });
-        h.AR_totalEvaluation.setText("" + dto.getEvaluationsiteList().size());
+        h.AR_totalEvaluation.setText("" + river.getEvaluationsiteList().size());
         h.AR_totalEvaluation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ToastUtil.toast(mCtx,dto.getRiverName());
+                //ToastUtil.toast(mCtx,river.getRiverName());
                 Util.flashOnce(h.AR_totalEvaluation, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        if (dto.getEvaluationsiteList() != null) {
-                            mListener.onEvaluationRequest(dto.getEvaluationsiteList(), position, dto.getRiverName().trim());
+                        if (river.getEvaluationsiteList() != null) {
+                            mListener.onEvaluationRequest(river.getEvaluationsiteList(), position, river.getRiverName().trim());
                         } else {
                             ToastUtil.toast(mCtx, "No Observation(s) yet");
                         }
@@ -178,12 +177,12 @@ public class RiverAdapter extends BaseAdapter {
         h.AR_totalTrLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ToastUtil.toast(mCtx,dto.getRiverName());
+                //ToastUtil.toast(mCtx,river.getRiverName());
                 Util.flashOnce(h.AR_totalTrLabel, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        if (dto.getEvaluationsiteList() != null) {
-                            mListener.onEvaluationRequest(dto.getEvaluationsiteList(), position, dto.getRiverName().trim());
+                        if (river.getEvaluationsiteList() != null) {
+                            mListener.onEvaluationRequest(river.getEvaluationsiteList(), position, river.getRiverName().trim());
                         } else {
                             ToastUtil.toast(mCtx, "No Observation(s) yet");
                         }
@@ -198,7 +197,7 @@ public class RiverAdapter extends BaseAdapter {
                 Util.flashOnce(h.AR_imgMap, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        mListener.onMapRequest(dto, RIVER_VIEW);
+                        mListener.onMapRequest(river, RIVER_VIEW);
                     }
                 });
 
@@ -226,7 +225,7 @@ public class RiverAdapter extends BaseAdapter {
 
         public void onMapRequest(RiverDTO river, int result);
 
-        public void onDirection(Double latitude, Double longitude);
+        public void onDirectionRequired(List<EvaluationSiteDTO> siteList);
     }
 
     static final int EVALUATION_VIEW = 12;

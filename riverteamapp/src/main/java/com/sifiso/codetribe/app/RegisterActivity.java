@@ -1,13 +1,12 @@
-package com.sifiso.codetribe.riverteamapp;
+package com.sifiso.codetribe.app;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -15,24 +14,18 @@ import android.view.MenuItem;
 
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import com.sifiso.codetribe.minisasslibrary.fragments.RegisterFragment;
 import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
-import com.sifiso.codetribe.minisasslibrary.toolbox.BohaVolley;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
-import com.sifiso.codetribe.minisasslibrary.util.DataUtil;
 import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
-
-import java.util.HashMap;
 
 
 public class RegisterActivity extends AppCompatActivity implements RegisterFragment.RegisterFragmentListener {
@@ -51,12 +44,15 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
         setContentView(R.layout.activity_register);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Sign Up");
+
         activity = this;
         ctx = getApplicationContext();
         countryCode = "ZA";
         registerFragment = (RegisterFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        // buildPages();
+
+//        getSupportActionBar().setTitle("Sign Up");
+        Util.setCustomActionBar(ctx, getSupportActionBar(), "Sign Up",
+                ContextCompat.getDrawable(ctx, R.drawable.ic_launcher));
     }
 
     private void buildPages() {
