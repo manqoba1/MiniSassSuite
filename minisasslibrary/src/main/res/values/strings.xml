@@ -9,7 +9,7 @@
     <string name="join_team">Join Team</string>
     <string name="save_team">Save Team</string>
     <string name="create_new_team">Create New Team</string>
-    <string name="insect_selected">Macroinvertebrates</string>
+    <string name="insect_selected">Macro-invertebrates</string>
     <string name="app_name">MiniSass</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_list">list view</string>
@@ -25,7 +25,7 @@
     <string name="action_facebook">Facebook</string>
     <string name="action_minisass">MiniSASS.org</string>
     <string name="action_dicotomas_key">Dichotomous Key</string>
-    <string name="action_how_to">How to</string>
+    <string name="action_how_to">How To</string>
     <string name="more_rivers">All River</string>
     <string name="done_label">Done</string>
     <string name="map_unavailable">Map Unavailable, please try again</string>
@@ -138,10 +138,10 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_gpsscanner">GPS scanner</string>
-    <string name="title_activity_insect_picker">Choose macroinvertebrates</string>
+    <string name="title_activity_insect_picker">Choose macro-invertebrates</string>
     <string name="title_activity_evaluation">Create Evaluation</string>
     <string name="title_activity_inse">Inse</string>
-    <string name="title_activity_insect_browser">InsectBrowser</string>
+    <string name="title_activity_insect_browser">Insect Browser</string>
     <string name="title_activity_minnisass_maps">MinisassMap</string>
     <string name="title_activity_view_more_images">ViewMoreImages</string>
     <string name="title_activity_just">Map</string>

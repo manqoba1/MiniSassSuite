@@ -137,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                 startActivity(intent);
             }
         });
+        PTeam.setVisibility(View.GONE);
         PMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

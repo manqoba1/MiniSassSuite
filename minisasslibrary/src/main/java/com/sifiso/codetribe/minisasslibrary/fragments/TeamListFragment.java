@@ -177,6 +177,7 @@ public class TeamListFragment extends Fragment implements PageInterface, PageFra
     }
 
     private void setList() {
+
         adapter = new TeamAdapter(ctx, R.layout.team_item, teamList);
         if (teamList == null || teamList.isEmpty()) {
             Log.e(LOG, "TeamList is empty or null!");

@@ -115,7 +115,7 @@ public class Util {
     }
 
     public static void setCustomActionBar(Context ctx,
-                                          ActionBar actionBar, String text, String team, String image, final ActinBarListener listener) {
+                                          ActionBar actionBar, String text, String team, Drawable image, final ActinBarListener listener) {
         actionBar.setDisplayShowCustomEnabled(true);
 
         LayoutInflater inflator = (LayoutInflater)
@@ -131,7 +131,7 @@ public class Util {
         } else {
             subTxt.setVisibility(View.VISIBLE);
         }
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
+        logo.setImageDrawable(image);
         /*if (image == null || image.equals("")) {
             logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
         } else {

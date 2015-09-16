@@ -31,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.sifiso.codetribe.minisasslibrary.activities.AboutActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.MapsActivity;
+import com.sifiso.codetribe.minisasslibrary.activities.ProfileActivity;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.TeamMemberDTO;
@@ -89,8 +90,14 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             location.setLongitude(savedInstanceState.getDouble("longitude"));
             stopLocationUpdates();
         }
-
-        Util.setCustomActionBar(ctx, getSupportActionBar(), "MiniSass", ContextCompat.getDrawable(ctx, R.drawable.ic_launcher));
+        teamMember = SharedUtil.getTeamMember(ctx);
+        Util.setCustomActionBar(ctx, getSupportActionBar(), teamMember.getFirstName()+ " "+teamMember.getLastName(),teamMember.getTeamName(), ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
+            @Override
+            public void onEvokeProfile() {
+                Intent i = new Intent(MainPagerActivity.this, ProfileActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 
@@ -199,10 +206,14 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 intent = new Intent(MainPagerActivity.this, AboutActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.profile:
+                intent = new Intent(MainPagerActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.dicotomas:
                 intent = new Intent(Intent.ACTION_VIEW);
                 String root="http://docs.google.com/viewerng/viewer?embedded=true&url=http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf";
-                intent.setData(Uri.parse(root+"http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
+                intent.setData(Uri.parse(root + "http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 //Util.showToast(ctx,"Under Constructions");

@@ -70,6 +70,7 @@ public class TeamMemberListFragment extends Fragment implements PageInterface,Pa
 			Bundle saved) {
 		Log.i(LOG, "#### onCreateView");
 		ctx = getActivity();
+
 		teamMember = SharedUtil.getTeamMember(ctx);
 		inflater = getActivity().getLayoutInflater();
 		view = inflater.inflate(R.layout.fragment_teammember_list, container,
@@ -128,6 +129,7 @@ public class TeamMemberListFragment extends Fragment implements PageInterface,Pa
 				addMember();
 			}
 		});
+
 	}
 
 	private void addMember() {

@@ -50,8 +50,10 @@ public class TeamMemberActivity extends AppCompatActivity implements BusyListene
         } else {
             teamMember = (TeamMemberDTO) getIntent().getSerializableExtra("teamMember");
             pagerIdex = getIntent().getIntExtra("index", 1);
+
         }
         setFields();
+
     }
 
     @Override
@@ -76,7 +78,7 @@ public class TeamMemberActivity extends AppCompatActivity implements BusyListene
         teamListFragment.setArguments(data);
 
         pageFragmentList.add(teamMemberListFragment);
-        pageFragmentList.add(teamListFragment);
+        //pageFragmentList.add(teamListFragment);
 
         initializeAdapter();
 
@@ -108,6 +110,11 @@ public class TeamMemberActivity extends AppCompatActivity implements BusyListene
             adapter = new PagerAdapter(getSupportFragmentManager());
             mPager.setAdapter(adapter);
             mPager.setCurrentItem(pagerIdex);
+            if(pagerIdex == 0){
+                getSupportActionBar().setTitle("Team members");
+            }else{
+                getSupportActionBar().setTitle("Teams");
+            }
             mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageSelected(int arg0) {
