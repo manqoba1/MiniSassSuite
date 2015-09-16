@@ -27,6 +27,31 @@
             android:layout_marginLeft="@dimen/mon_margin"
             android:layout_alignParentBottom="true"
             android:padding="@dimen/mon_padding" />
+        <RelativeLayout
+            android:layout_above="@id/SI_welcome"
+            android:padding="@dimen/mon_padding"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/SI_radius"
+                style="@style/Title3TextStyleBlue"
+                android:text="20"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <SeekBar
+                android:id="@+id/SI_seekBar"
+                android:progress="20"
+                android:max="100"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
     </RelativeLayout>
 
     <TextView
