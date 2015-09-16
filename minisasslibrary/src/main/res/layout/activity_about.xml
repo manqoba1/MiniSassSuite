@@ -126,7 +126,7 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="@dimen/mon_hero_height_large_200"
                             android:scaleType="centerCrop"
                             android:src="@drawable/sifiso_pic" />
@@ -139,7 +139,7 @@
                             android:text="Sifiso Mtshweni" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="@dimen/mon_hero_height_large_200"
                             android:scaleType="centerCrop"
                             android:src="@drawable/sasa_pic" />
@@ -161,7 +161,7 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="@dimen/mon_hero_height_large_200"
                             android:scaleType="centerCrop"
                             android:src="@drawable/chris_pic" />
@@ -173,10 +173,10 @@
                             android:padding="@dimen/padding_top_10"
                             android:text="Chris Skosana" />
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="@dimen/mon_hero_height_large_200"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/chris_pic" />
+                            android:src="@drawable/aubreymlb" />
 
                         <TextView
                             style="@style/TextStyleBold"
@@ -200,17 +200,22 @@
                 android:background="@drawable/xborder"
                 android:elevation="4dp"
                 android:padding="@dimen/padding_top_10">
+                <RelativeLayout
+                    android:id="@+id/layoutx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/textView14"
                     style="@style/Title3TextStyleBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="Partners"
+                    android:text="Partners: Swipe right to see all partners"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="14sp" />
+                </RelativeLayout>
                 <HorizontalScrollView
-                    android:layout_below="@+id/textView14"
+                    android:layout_below="@+id/layoutx"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content">
@@ -221,48 +226,48 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/logo_variation" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/wessalogo" />
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/wrc_logo" />
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="150dp"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/mlab_logo" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/codetribe_logo" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/dwas_logo_rgb" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:src="@drawable/logo_dst" />
