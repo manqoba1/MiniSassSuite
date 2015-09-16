@@ -45,6 +45,7 @@ import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
+import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.Date;
@@ -178,6 +179,34 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 intent = new Intent(MainPagerActivity.this, AboutActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.dicotomas:
+                intent = new Intent(Intent.ACTION_VIEW);
+                String root="http://docs.google.com/viewerng/viewer?embedded=true&url=http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf";
+                intent.setData(Uri.parse(root+"http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                //Util.showToast(ctx,"Under Constructions");
+                break;
+            case R.id.how_to:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://www.minisass.mobi/how_to.php"));
+                startActivity(intent);
+                break;
+            case R.id.minisass_org:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://www.minisass.org"));
+                startActivity(intent);
+                break;
+            case R.id.youtube:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.youtube.com/channel/UCub24hwrLi52WR9C24uTbaQ"));
+                startActivity(intent);
+                break;
+            case R.id.facebook:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.facebook.com/Minisass-Mini-Stream-Assessment-Scoring-System-544121315643167/timeline/"));
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

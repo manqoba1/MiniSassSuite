@@ -163,4 +163,22 @@
     <string name="kurisani_message">the industry\'s standard dummy text ever since </string>
     <string name="chris_message">the industry\'s standard dummy text ever since </string>
     <string name="search_hint">Search an observation</string>
+       <string name="about_minisass">miniSASS is a simple tool which can be used by anyone to monitor the health of a river. You collect a sample of macro-invertebrates (small animals) from the water, and depending on which groups are found, you have a measure of the general river health and water quality in that river. 
+\n\n
+Anyone can learn how to collect a miniSASS sample on a river. Once you have collected a sample you look for the different bug groups and score whether they were found.  The score then tells you the health class of the river, ranging across five categories from natural to very poor. 
+\n\n
+The latest addition to the miniSASS toolkit is the miniSASS app which helps you find rivers and observation sites based on your location and provides you with an easy to use screen to create a new observation
+</string>
+
+    <string name="the_app">The miniSASS app is result of a partnership between the Department of Science &amp; Technology, The Water Research Commission, WESSA, Groundtruth, mLab Southern Africa and its CodeTribe Academy to demonstrate the value of mobile technology for citizen science projects and ICT skills development. The App is launched as a public beta and will continue to evolve and improve based on public user feedback.
+</string>
+    <string name="dti_info">The vision of the DST is to promote “Increased well-being and prosperity through science, technology and innovation”. This is facilitated by our mission which is to “provide leadership, an enabling environment, and resources for science, technology and innovation in support of South Africa’s development. The Socio-Economic innovation partnerships programme, in particular,  enhances the growth and development priorities of government through targeted S&amp;T-based interventions and the development of strategic innovation partnerships with other government departments, industry, research institutions and communities. Interventions include high-potential R&amp;D-led industrial development programmes, technology support programmes for industry, introducing new approaches to government service delivery and planning, strengthening science-based policy development and decision-making, demonstrating technology-led opportunities for creating sustainable jobs and wealth creation, and strengthening the contribution of technology to sustainable human settlements.
+ 
+</string>
+    <string name="development_info">The miniSASS app was developed by a talented team of young developers who applied their newly acquired skills to develop the miniSASS App.
+\n\n
+The developers were trained at the CodeTribe Academy, a coding skills development programme hosted by The Innovation Hub and mLab Southern Africa.
+\n\n
+Meet the Team:
+</string>
 </resources>
