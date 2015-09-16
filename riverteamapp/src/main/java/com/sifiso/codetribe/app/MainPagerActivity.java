@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -77,7 +79,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         riverListFragment = (RiverListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        setField();
+        setFields();
 
         if (savedInstanceState != null) {
             Log.w(LOG, "savedInstanceState is not null - getting location");
@@ -93,7 +95,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     int index;
 
-    private void setField() {
+    private void setFields() {
         RL_add = (FloatingActionButton) findViewById(R.id.RL_add);
 
         RL_add.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +116,24 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 .addApi(LocationServices.API)
                 .build();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtRadius = (TextView)findViewById(R.id.SI_radius);
+        seekBar = (SeekBar)findViewById(R.id.SI_seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                txtRadius.setText("" + seekBar.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
     }
 
@@ -264,6 +284,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     boolean mRequestingLocationUpdates;
 
     protected void startLocationUpdates() {
+        Log.w(LOG, "## startLocationUpdates ....");
         if (mGoogleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
             LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -275,7 +296,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.e(LOG, "####### onLocationChanged " + location.getAccuracy());
+        Log.i(LOG, "####### onLocationChanged " + location.getAccuracy());
         this.location = location;
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             stopLocationUpdates();
@@ -389,8 +410,8 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                         response = respond;
-                        if (response.getRiverList() == null || response.getRiverList().isEmpty()) {
-                            startLocationUpdates();
+                        if (response.getRiverList() != null || !response.getRiverList().isEmpty()) {
+                            buildPages();
                         }
 
                     }
@@ -423,26 +444,31 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     }
 
-    boolean isLocatorOn;
+    TextView txtRadius;
+    SeekBar seekBar;
 
     private void getRiversAroundMe() {
-
+        if (isBusy) {
+            Log.e(LOG,"### getRiversAroundMe is BUSY!!!");
+            return;
+        }
+        Log.d(LOG, "############### getRiversAroundMe");
         RequestDTO w = new RequestDTO();
         w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
         w.setLatitude(location.getLatitude());
         w.setLongitude(location.getLongitude());
-        w.setRadius(40);
+        w.setRadius(seekBar.getProgress());
         isBusy = true;
         if (riverListFragment != null) {
             riverListFragment.refreshListStart();
         }
+        isBusy = true;
         setRefreshActionButtonState(true);
         BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 isBusy = false;
                 setRefreshActionButtonState(false);
-                Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
                 if (!ErrorUtil.checkServerError(ctx, r)) {
                     return;
                 }
