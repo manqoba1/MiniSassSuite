@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by aubreyM on 2014/06/30.
@@ -88,7 +90,43 @@ public class CacheUtil implements Serializable {
         response.setLastCacheDate(new Date());
         utilListener = cacheUtilListener;
         ctx = context;
-        new CacheTask().execute();
+
+        //add rivers to cache - keep history of rivers searched
+        getCachedData(context, dataType, new CacheUtilListener() {
+            @Override
+            public void onFileDataDeserialized(ResponseDTO r) {
+                final HashMap<Integer, RiverDTO> map = new HashMap<Integer, RiverDTO>();
+                if (r.getRiverList() == null) {
+                    r.setRiverList(new ArrayList<RiverDTO>());
+                }
+                for (RiverDTO river : r.getRiverList()) {
+                    map.put(river.getRiverID(), river);
+                }
+                for (RiverDTO river : response.getRiverList()) {
+                    map.put(river.getRiverID(), river);
+                }
+
+
+                response.getRiverList().clear();
+                for (Integer i : map.keySet()) {
+                    response.getRiverList().add(map.get(i));
+                }
+
+                new CacheTask().execute();
+            }
+
+            @Override
+            public void onDataCached(ResponseDTO response) {
+
+            }
+
+            @Override
+            public void onError() {
+                new CacheTask().execute();
+            }
+        });
+
+
     }
 
     public static void getCachedRiverData(Context context, int type, CacheUtilListener cacheUtilListener) {

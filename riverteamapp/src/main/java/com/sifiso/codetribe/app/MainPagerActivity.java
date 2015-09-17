@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -51,14 +53,17 @@ import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
-import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.Date;
 import java.util.List;
 
 
-public class MainPagerActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, CreateEvaluationListener {
+public class MainPagerActivity extends AppCompatActivity implements
+        LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        CreateEvaluationListener {
     static final int NUM_ITEMS = 2;
     static final String LOG = MainPagerActivity.class.getSimpleName();
     Context ctx;
@@ -94,14 +99,86 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             stopLocationUpdates();
         }
         teamMember = SharedUtil.getTeamMember(ctx);
-        Util.setCustomActionBar(ctx, getSupportActionBar(), teamMember.getFirstName() + " " + teamMember.getLastName(), teamMember.getTeamName(), ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
+        Util.setCustomActionBar(ctx, getSupportActionBar(),
+                teamMember.getFirstName() + " " + teamMember.getLastName(),
+                teamMember.getTeamName(),
+                ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
+                    @Override
+                    public void onEvokeProfile() {
+                        Intent i = new Intent(MainPagerActivity.this, ProfileActivity.class);
+                        startActivity(i);
+                    }
+                });
+
+
+    }
+
+    private boolean checkSettings() {
+
+        if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
+            getCachedRiverData();
+            return false;
+        }
+        //
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean gpsEnabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean networkEnabled = service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Log.i(LOG, "GPS enabled: " + gpsEnabled + " networkEnabled: " + networkEnabled);
+
+        if (!isLocationEnabled()) {
+            Log.e(LOG, "extra check - isLocationEnabled: " + false);
+        }
+        if (!gpsEnabled && !networkEnabled && !isLocationEnabled()) {
+            showSettingDialog();
+        } else {
+            return true;
+        }
+        return true;
+    }
+
+    public void showSettingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainPagerActivity.this);
+
+        builder.setTitle("Location Settings");
+        builder.setMessage("The app needs Location Settings to be turned on so that it can start the river search." +
+                "\n\nDo you want to turn the it on?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onEvokeProfile() {
-                Intent i = new Intent(MainPagerActivity.this, ProfileActivity.class);
-                startActivity(i);
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent("com.google.android.gms.location.settings.GOOGLE_LOCATION_SETTINGS");
+                startActivity(intent);
             }
         });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 
+    public boolean isLocationEnabled() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+                return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if (locationProviders == null || locationProviders.equalsIgnoreCase("null") || locationProviders.isEmpty()) {
+                return false;
+            }
+
+        }
+
+        return false;
     }
 
     int index;
@@ -115,7 +192,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 Util.flashOnce(RL_add, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        startLocationUpdates();
+                        if (checkSettings()) {
+                            startLocationUpdates();
+                        }
                     }
                 });
 
@@ -127,8 +206,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 .addApi(LocationServices.API)
                 .build();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        txtRadius = (TextView)findViewById(R.id.SI_radius);
-        seekBar = (SeekBar)findViewById(R.id.SI_seekBar);
+        txtRadius = (TextView) findViewById(R.id.SI_radius);
+        seekBar = (SeekBar) findViewById(R.id.SI_seekBar);
+        progressBar.setVisibility(View.GONE);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -155,10 +235,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             data.putSerializable("response", response);
             data.putSerializable("evaluationSite", (java.io.Serializable) evaluationSiteList);
             data.putInt("index", index);
-           if(location != null){
-               data.putDouble("latitude", location.getLatitude());
-               data.putDouble("longitude", location.getLongitude());
-           }
+            if (location != null) {
+                data.putDouble("latitude", location.getLatitude());
+                data.putDouble("longitude", location.getLongitude());
+            }
             super.onSaveInstanceState(data);
         }
     }
@@ -176,9 +256,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     protected void onStart() {
         teamMember = SharedUtil.getTeamMember(ctx);
         Log.e(LOG, "################ onStart .... connect API and location clients ");
-        if (!mResolvingError) {  // more about this later
-            mGoogleApiClient.connect();
-        }
+        mGoogleApiClient.connect();
         TimerUtil.killFlashTimer();
 
         Intent intent = new Intent(MainPagerActivity.this, RequestSyncService.class);
@@ -190,6 +268,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         mMenu = menu;
+        checkSettings();
         return true;
     }
 
@@ -199,7 +278,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         Intent intent;
         switch (id) {
             case R.id.action_refresh:
-                startLocationUpdates();
+                if (checkSettings()) {
+                    startLocationUpdates();
+                }
                 return true;
             case R.id.log_out:
                 SharedUtil.clearTeam(ctx);
@@ -313,7 +394,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     @Override
     public void onPullRefresh() {
-        getCachedRiverData();
+        //getCachedRiverData();
         //getRiversAroundMe();
     }
 
@@ -342,11 +423,6 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         Log.i(LOG, "####### onLocationChanged " + location.getAccuracy());
         this.location = location;
-        if(location == null){
-            //Util.showToast(ctx, "Please check your GPS connectivity, switch it on if off");
-            showSettingDialog();
-            return;
-        }
 
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             stopLocationUpdates();
@@ -354,26 +430,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         }
 
     }
-    public void showSettingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainPagerActivity.this);
 
-        builder.setTitle("GPS settings");
-        builder.setMessage("Please check GPS enabled. Go to settings menu, to switch it on to search for location.");
-        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-    }
 
     protected void stopLocationUpdates() {
         Log.e(LOG, "###### stopLocationUpdates - " + new Date().toString());
@@ -400,6 +457,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
         locationRequest.setInterval(2000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setFastestInterval(1000);
+        startLocationUpdates();
     }
 
     @Override
@@ -479,10 +537,11 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+
                         response = respond;
                         if (response.getRiverList() != null || !response.getRiverList().isEmpty()) {
                             buildPages();
+                            Util.showToast(ctx, "The rivers listed were saved previously on your device");
                         }
 
                     }
@@ -520,9 +579,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     private void getRiversAroundMe() {
         if (isBusy) {
-            Log.e(LOG,"### getRiversAroundMe is BUSY!!!");
+            Log.e(LOG, "### getRiversAroundMe is BUSY!!!");
             return;
         }
+
         Log.d(LOG, "############### getRiversAroundMe");
         RequestDTO w = new RequestDTO();
         w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
