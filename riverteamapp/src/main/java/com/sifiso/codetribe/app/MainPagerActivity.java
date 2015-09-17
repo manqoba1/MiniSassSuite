@@ -1,7 +1,9 @@
 package com.sifiso.codetribe.app;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
@@ -9,6 +11,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -91,7 +94,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             stopLocationUpdates();
         }
         teamMember = SharedUtil.getTeamMember(ctx);
-        Util.setCustomActionBar(ctx, getSupportActionBar(), teamMember.getFirstName()+ " "+teamMember.getLastName(),teamMember.getTeamName(), ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
+        Util.setCustomActionBar(ctx, getSupportActionBar(), teamMember.getFirstName() + " " + teamMember.getLastName(), teamMember.getTeamName(), ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
             @Override
             public void onEvokeProfile() {
                 Intent i = new Intent(MainPagerActivity.this, ProfileActivity.class);
@@ -152,8 +155,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             data.putSerializable("response", response);
             data.putSerializable("evaluationSite", (java.io.Serializable) evaluationSiteList);
             data.putInt("index", index);
-            data.putDouble("latitude", location.getLatitude());
-            data.putDouble("longitude", location.getLongitude());
+           if(location != null){
+               data.putDouble("latitude", location.getLatitude());
+               data.putDouble("longitude", location.getLongitude());
+           }
             super.onSaveInstanceState(data);
         }
     }
@@ -212,9 +217,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 return true;
             case R.id.dicotomas:
                 intent = new Intent(Intent.ACTION_VIEW);
-                String root="http://docs.google.com/viewerng/viewer?embedded=true&url=http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf";
-                intent.setData(Uri.parse(root + "http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setData(Uri.parse("http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
                 startActivity(intent);
                 //Util.showToast(ctx,"Under Constructions");
                 break;
@@ -338,11 +341,37 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         Log.i(LOG, "####### onLocationChanged " + location.getAccuracy());
         this.location = location;
+        if(location == null){
+            //Util.showToast(ctx, "Please check your GPS connectivity, switch it on if off");
+            showSettingDialog();
+            return;
+        }
+
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             stopLocationUpdates();
             getRiversAroundMe();
         }
 
+    }
+    public void showSettingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainPagerActivity.this);
+
+        builder.setTitle("GPS settings");
+        builder.setMessage("Please check GPS enabled. Go to settings menu, to switch it on to search for location.");
+        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     protected void stopLocationUpdates() {

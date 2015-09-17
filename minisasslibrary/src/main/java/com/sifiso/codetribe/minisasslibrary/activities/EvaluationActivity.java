@@ -975,7 +975,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                             isInsectsPickerBack = true;
                             isBusy = false;
                             pd.dismiss();
-                            ToastUtil.toast(ctx, "Observation successfully saved");
+                            Util.showToast(ctx, "Observation successfully saved");
                             cleanForm();
                             //getRiversAroundMe();
                             //showImageDialog();
@@ -1006,7 +1006,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     @Override
                     public void run() {
                         pd.dismiss();
-                        ToastUtil.toast(ctx, "Observation successfully saved on device, will be uploaded when connectivity is available");
+                        Util.showToast(ctx, "Observation successfully saved on device, will be uploaded when connectivity is available");
                         cleanForm();
 //                        showImageDialog();
                     }

@@ -147,6 +147,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                 startActivity(intent);
             }
         });
+        teamMember = SharedUtil.getTeamMember(ctx);
         buildPages();
     }
 
@@ -176,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
                             isEdited = false;
                         }
                         SharedUtil.saveTeamMember(ctx, tm);
-                        teamMember = tm;
+                        teamMember = r.getTeamMember();
                         buildPages();
                     }
                 });
@@ -528,7 +529,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                teamMember = SharedUtil.getTeamMember(ctx);
+
                 P_name.setText(teamMember.getFirstName() + " " + teamMember.getLastName());
                 P_phone.setText((teamMember.getCellphone().equals("") ? "cell not specified" : teamMember.getCellphone()));
                 P_email.setText(teamMember.getEmail());
