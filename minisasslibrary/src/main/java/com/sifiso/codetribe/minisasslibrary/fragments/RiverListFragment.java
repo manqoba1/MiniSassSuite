@@ -3,6 +3,8 @@ package com.sifiso.codetribe.minisasslibrary.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +32,7 @@ import com.sifiso.codetribe.minisasslibrary.services.CreateEvaluationListener;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -43,7 +46,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     private Context ctx;
     private Activity activity;
     private AutoCompleteTextView SLT_editSearch;
-    private TextView RL_add,SI_welcome;
+    private TextView RL_add, SI_welcome;
     private ImageView SLT_imgSearch2;
     private RelativeLayout SLT_hero;
     private ListView RL_riverList;
@@ -197,17 +200,18 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
                     return;
                 }
                 List<String> list = new ArrayList<>();
-                for (EvaluationSiteDTO x: siteList) {
-                    list.add(x.getSiteName());
+                for (EvaluationSiteDTO x : siteList) {
+
+                    list.add((x.getSiteName()== null ? "Site # " + x.getEvaluationSiteID() : x.getSiteName()));
                 }
                 Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle,
                         "Select Observation Site", new Util.UtilPopupListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        EvaluationSiteDTO site = siteList.get(index);
-                        mListener.onDirection(site.getLatitude(),site.getLongitude());
-                    }
-                });
+                            @Override
+                            public void onItemSelected(int index) {
+                                EvaluationSiteDTO site = siteList.get(index);
+                                mListener.onDirection(site.getLatitude(), site.getLongitude());
+                            }
+                        });
             }
 
             @Override
@@ -216,9 +220,9 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
             }
 
             @Override
-            public void onEvaluationRequest(List<EvaluationSiteDTO> siteList, int position,String riverName) {
+            public void onEvaluationRequest(List<EvaluationSiteDTO> siteList, int position, String riverName) {
 
-                mListener.onRefreshEvaluation(siteList, position,riverName);
+                mListener.onRefreshEvaluation(siteList, position, riverName);
             }
 
             @Override

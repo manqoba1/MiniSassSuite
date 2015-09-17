@@ -73,7 +73,8 @@ public class PopupSiteAdapter extends ArrayAdapter<EvaluationSiteDTO> {
         //final TownDTO p = mList.get(position);
         //String string = mStrings[position];
         final EvaluationSiteDTO river = mList.get(position);
-        item.txtString.setText(" Site #"+river.getEvaluationSiteID());
+
+        item.txtString.setText((river.getSiteName()== null ? "Site # " + river.getEvaluationSiteID() : river.getSiteName()));
         item.score_weight.setText(getDistance(river.getDistanceFromMe()));
         Statics.setRobotoFontLight(ctx, item.txtString);
         return (convertView);

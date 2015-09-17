@@ -127,8 +127,8 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 .addApi(LocationServices.API)
                 .build();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        txtRadius = (TextView)findViewById(R.id.SI_radius);
-        seekBar = (SeekBar)findViewById(R.id.SI_seekBar);
+        txtRadius = (TextView) findViewById(R.id.SI_radius);
+        seekBar = (SeekBar) findViewById(R.id.SI_seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -155,10 +155,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
             data.putSerializable("response", response);
             data.putSerializable("evaluationSite", (java.io.Serializable) evaluationSiteList);
             data.putInt("index", index);
-           if(location != null){
-               data.putDouble("latitude", location.getLatitude());
-               data.putDouble("longitude", location.getLongitude());
-           }
+            if (location != null) {
+                data.putDouble("latitude", location.getLatitude());
+                data.putDouble("longitude", location.getLongitude());
+            }
             super.onSaveInstanceState(data);
         }
     }
@@ -342,18 +342,18 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         Log.i(LOG, "####### onLocationChanged " + location.getAccuracy());
         this.location = location;
-        if(location == null){
+        if (location == null) {
             //Util.showToast(ctx, "Please check your GPS connectivity, switch it on if off");
             showSettingDialog();
             return;
         }
-
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             stopLocationUpdates();
             getRiversAroundMe();
         }
 
     }
+
     public void showSettingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPagerActivity.this);
 
@@ -449,6 +449,10 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if (riverListFragment != null) {
+                            riverListFragment.refreshListStop();
+                        }
                         if (r != null) {
                             response = r;
                             buildPages();
@@ -480,6 +484,9 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
+                        if (riverListFragment != null) {
+                            riverListFragment.refreshListStop();
+                        }
                         response = respond;
                         if (response.getRiverList() != null || !response.getRiverList().isEmpty()) {
                             buildPages();
@@ -520,7 +527,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
 
     private void getRiversAroundMe() {
         if (isBusy) {
-            Log.e(LOG,"### getRiversAroundMe is BUSY!!!");
+            Log.e(LOG, "### getRiversAroundMe is BUSY!!!");
             return;
         }
         Log.d(LOG, "############### getRiversAroundMe");

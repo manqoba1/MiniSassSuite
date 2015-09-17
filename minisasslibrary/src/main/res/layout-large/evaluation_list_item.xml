@@ -77,9 +77,8 @@
                 style="@style/Title1TextStyleRed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_alignLeft="@+id/ELI_condition_image"
-                android:layout_alignStart="@+id/ELI_condition_image"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:layout_below="@+id/ELI_condition_image"
                 android:padding="5dp"
                 android:text="00"
@@ -103,8 +102,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/ELI_score"
-                android:paddingRight="8dp"
                 android:gravity="right"
+                android:paddingRight="8dp"
                 android:text="Condition remarks"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
@@ -114,10 +113,10 @@
             android:id="@+id/ELI_envType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
             android:layout_above="@+id/AR_btnLayout"
+            android:layout_alignEnd="@+id/diver"
             android:layout_alignRight="@+id/diver"
-            android:layout_alignEnd="@+id/diver" />
+            android:text="New Text" />
 
         <View
             android:id="@+id/diver"
@@ -155,7 +154,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/ELI_wc"
                 android:padding="5dp"
-                android:text="Water Clarity" />
+                android:text="Water Clarity \t   (cm)" />
 
 
         </RelativeLayout>
@@ -186,7 +185,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/ELI_wt"
                 android:padding="5dp"
-                android:text="Water Temperature" />
+                android:text="Water Temperature \t   (\u2103)" />
 
         </RelativeLayout>
 
@@ -219,7 +218,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@id/ELI_oxygen"
                 android:padding="5dp"
-                android:text="Oxygen Level" />
+                android:text="Dissolved Oxygen \t   (mg/l)" />
 
 
         </RelativeLayout>
@@ -249,10 +248,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@id/ELI_pH"
                 android:padding="5dp"
-                android:text="pH" />
+                android:text="pH \t   (pH Units)" />
 
 
         </RelativeLayout>
@@ -260,19 +258,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:layout_below="@+id/AR_insLayout2"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true">
+            android:layout_below="@+id/AR_insLayout2"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/ELI_edit"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_weight="1"
-                android:visibility="gone"
-                android:src="@android:drawable/ic_menu_edit" />
+                android:src="@android:drawable/ic_menu_edit"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/ELI_directions"
