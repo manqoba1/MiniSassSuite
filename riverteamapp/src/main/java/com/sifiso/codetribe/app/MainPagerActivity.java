@@ -143,6 +143,7 @@ public class MainPagerActivity extends AppCompatActivity implements
         builder.setTitle("Location Settings");
         builder.setMessage("The app needs Location Settings to be turned on so that it can start the river search." +
                 "\n\nDo you want to turn the it on?");
+        
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -156,6 +157,7 @@ public class MainPagerActivity extends AppCompatActivity implements
                 dialog.dismiss();
             }
         });
+
         builder.show();
     }
 
