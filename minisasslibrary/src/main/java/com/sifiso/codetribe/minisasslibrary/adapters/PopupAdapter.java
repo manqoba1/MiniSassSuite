@@ -31,7 +31,7 @@ public class PopupAdapter extends ArrayAdapter<String> {
     static final String LOG = PopupListAdapter.class.getSimpleName();
 
     public PopupAdapter(Context context, int textViewResourceId,
-                            List<String> list, boolean showAlternateIcon) {
+                        List<String> list, boolean showAlternateIcon) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         mList = list;
@@ -46,7 +46,7 @@ public class PopupAdapter extends ArrayAdapter<String> {
 
 
     static class ViewHolderItem {
-        TextView txtString;
+        TextView txtString, score_weight;
         ImageView image;
     }
 
@@ -70,17 +70,20 @@ public class PopupAdapter extends ArrayAdapter<String> {
 
             item.image = (ImageView) convertView
                     .findViewById(R.id.image1);
-
+            item.score_weight = (TextView) convertView.findViewById(R.id.score_weight);
             convertView.setTag(item);
         } else {
             item = (ViewHolderItem) convertView.getTag();
         }
         if (showAlternateIcon) {
+            item.score_weight.setVisibility(View.VISIBLE);
             item.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.xblue_oval_smaller));
         } else {
+            item.score_weight.setVisibility(View.GONE);
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_input_add));
         }
         final String p = mList.get(position);
+
         item.txtString.setText(p);
         Statics.setRobotoFontLight(ctx, item.txtString);
         return (convertView);

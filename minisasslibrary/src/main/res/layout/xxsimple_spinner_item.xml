@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="0dp">
     <!--<RelativeLayout-->
-        <!--android:id="@+id/top"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<ImageView-->
-            <!--android:id="@+id/banner"-->
-            <!--android:src="@drawable/banner_gold"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-        <!--<TextView-->
-            <!--android:id="@+id/title"-->
-            <!--style="@style/TextStyleBlueSmall"-->
-            <!--android:layout_below="@id/banner"-->
-            <!--android:padding="@dimen/mon_padding"-->
-            <!--android:text="Title for Popup"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-        <!--</RelativeLayout>-->
+    <!--android:id="@+id/top"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<ImageView-->
+    <!--android:id="@+id/banner"-->
+    <!--android:src="@drawable/banner_gold"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/title"-->
+    <!--style="@style/TextStyleBlueSmall"-->
+    <!--android:layout_below="@id/banner"-->
+    <!--android:padding="@dimen/mon_padding"-->
+    <!--android:text="Title for Popup"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--</RelativeLayout>-->
 
     <LinearLayout
-        android:layout_below="@id/top"
-        android:padding="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:padding="@dimen/mon_padding"
         android:weightSum="3">
 
         <ImageView
             android:id="@+id/image1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_info"
-            android:visibility="gone"
             android:layout_weight="0.5"
-            />
+            android:src="@android:drawable/ic_dialog_info"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/text1"
@@ -46,28 +45,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_padding"
             android:layout_toRightOf="@id/image1"
+            android:layout_weight="2"
             android:ellipsize="end"
-            android:singleLine="true"
             android:gravity="left"
+            android:singleLine="true"
             android:text="Spinner item text here"
             android:textColor="@color/black"
-            android:textStyle="normal"
-            android:layout_weight="2"/>
+            android:textStyle="normal" />
 
         <TextView
+            android:id="@+id/score_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="0.0"
-            android:id="@+id/score_weight"
-            android:textColor="@color/black"
-            android:textStyle="normal"
-            android:gravity="right"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_weight="0.5"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.5"
+            android:gravity="right"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:textStyle="normal" />
 
     </LinearLayout>
 
