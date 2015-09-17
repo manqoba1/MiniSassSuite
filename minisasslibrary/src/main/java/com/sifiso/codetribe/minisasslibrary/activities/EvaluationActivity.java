@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -190,6 +191,12 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         WT_sp_category = (TextView) findViewById(R.id.WT_sp_category);
         EDT_comment = (EditText) findViewById(R.id.EDT_comment);
         AE_pin_point = (ImageView) findViewById(R.id.AE_pin_point);
+        AE_pin_point.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocationUpdates();
+            }
+        });
         SL_show_insect = (Button) findViewById(R.id.SL_show_insect);
         AE_create = (Button) findViewById(R.id.AE_create);
         AE_down_up = (TextView) findViewById(R.id.AE_down_up);
@@ -273,7 +280,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     @Override
                     public void onTasksSynced(int goodResponses, int badResponses) {
                         if (goodResponses > 0) {
-                           // getRiversAroundMe();
+                            // getRiversAroundMe();
                         }
                     }
 
@@ -640,10 +647,20 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                             return;
                         }
 
-                        if (evaluationSite == null && accuracy == null) {
-                            ToastUtil.toast(ctx, "Observation site not defined");
-                            GPS_layout4.setVisibility(View.VISIBLE);
-                            startLocationUpdates();
+                        if (evaluationSite == null || (accuracy == null || accuracy==0)) {
+                            ToastUtil.toast(ctx, "Observation site not defined, Once the site is define, the red WORLD icon will change to blue. Make sure you LOCATION setting is enabled");
+
+                            AE_pin_point.setVisibility(View.VISIBLE);
+                            AE_pin_point.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
+                            Util.flashOnce(AE_pin_point, 200, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
+
+                                }
+                            });
+                            /*GPS_layout4.setVisibility(View.VISIBLE);
+                            AE_pin_point.setVisibility(View.VISIBLE);
+                            startLocationUpdates();*/
                             return;
                         }
                         if (selectedInsects == null) {
@@ -1414,7 +1431,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         setGPSLocation(location);
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             setGPSLocation(location);
-            // stopLocationUpdates();
+            AE_pin_point.setColorFilter(getResources().getColor(R.color.blue), PorterDuff.Mode.MULTIPLY);
             if (!isInsectsPickerBack) {
 
                 //fieldPicker();
@@ -1556,13 +1573,17 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         locationRequest.setInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setFastestInterval(2000);
-
-        if (location.getAccuracy() > ACCURACY_LIMIT) {
-            startLocationUpdates();
-        } else {
-            WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
-            if (wr.isMobileConnected() || wr.isWifiConnected()) {
-                getRiversAroundMe();
+        if (location != null) {
+            if (location.getAccuracy() > ACCURACY_LIMIT) {
+                startLocationUpdates();
+            } else {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                accuracy = location.getAccuracy();
+                WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
+                if (wr.isMobileConnected() || wr.isWifiConnected()) {
+                    getRiversAroundMe();
+                }
             }
         }
     }
@@ -1666,7 +1687,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     WT_sp_river.setVisibility(View.VISIBLE);
                 }
             });
-            getCachedRiverData();
+            getRiversAroundMe();
         }
     }
 

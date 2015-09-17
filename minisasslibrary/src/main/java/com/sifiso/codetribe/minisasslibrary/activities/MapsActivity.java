@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -286,22 +287,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         Util.showPopupBasicWithHeroImage(MapsActivity.this, MapsActivity.this, list,
                 topLayout, mCtx.getString(R.string.select_action), new Util.UtilPopupListener() {
-            @Override
-            public void onItemSelected(int index) {
-                switch (index) {
-                    case 0:
-                        startDirectionsMap(lat, lng);
-                        break;
-                    case 1:
-                        //Util.showToast(ctx, ctx.getString(R.string.under_cons));
-                        break;
-                    case 2:
+                    @Override
+                    public void onItemSelected(int index) {
+                        switch (index) {
+                            case 0:
+                                startDirectionsMap(lat, lng);
+                                break;
+                            case 1:
+                                //Util.showToast(ctx, ctx.getString(R.string.under_cons));
+                                break;
+                            case 2:
 
-                        break;
+                                break;
 
-                }
-            }
-        });
+                        }
+                    }
+                });
 
 
     }
@@ -409,12 +410,26 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         locationRequest.setInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setFastestInterval(2000);
+        if (location != null) {
+            if (location.getAccuracy() > ACCURACY_LIMIT) {
+                startLocationUpdates();
+            } else {
+                //  getRiversAroundMe();
+            }
+            Log.w(LOG, "## requesting location ....lastLocation: "
+                    + location.getLatitude() + " "
+                    + location.getLongitude() + " acc: "
+                    + location.getAccuracy());
+        }/*else{
+            Util.showToast(mCtx,"Please check your LOCATION setting is enable or your phone is connected to network");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            },3000);
+        }*/
 
-        if (location.getAccuracy() > ACCURACY_LIMIT) {
-            startLocationUpdates();
-        } else {
-            //  getRiversAroundMe();
-        }
     }
 
     boolean mRequestingLocationUpdates;

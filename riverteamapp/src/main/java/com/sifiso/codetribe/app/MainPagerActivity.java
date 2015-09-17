@@ -314,6 +314,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
     @Override
     public void onPullRefresh() {
         getCachedRiverData();
+        //getRiversAroundMe();
     }
 
     @Override
@@ -392,6 +393,7 @@ public class MainPagerActivity extends AppCompatActivity implements LocationList
                     + location.getLatitude() + " "
                     + location.getLongitude() + " acc: "
                     + location.getAccuracy());
+
         }
 
         locationRequest = LocationRequest.create();
