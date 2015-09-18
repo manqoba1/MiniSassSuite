@@ -20,7 +20,7 @@ public class RequestCacheUtil {
                                   final CacheUtil.CacheRequestListener listener) {
         final RequestCacheEntry e = new RequestCacheEntry();
         e.setRequest(request);
-        e.setDateRequested(new Date());
+        e.setDateRequested(new Date().getTime());
         initialize(ctx, new CacheUtil.CacheRequestListener() {
             @Override
             public void onDataCached() {

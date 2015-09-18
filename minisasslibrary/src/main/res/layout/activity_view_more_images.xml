@@ -4,10 +4,46 @@
     android:layout_height="match_parent"
     android:padding="@dimen/mon_padding">
 
+    <RelativeLayout
+        android:id="@+id/top"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/mon_padding">
+
+        <TextView
+            android:id="@+id/AVM_groupName"
+            style="@style/Title3TextStyleBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GroupName" />
+
+        <TextView
+            android:id="@+id/AVM_label"
+            style="@style/TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AVM_groupName"
+            android:text="The following all belong in this group " />
+
+
+
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/SD_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:layout_below="@id/top" />
+
+    <TextView
+        android:id="@+id/AVM_count"
+        android:text="00"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_alignParentRight="true"
+        style="@style/BlackCountBoxSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

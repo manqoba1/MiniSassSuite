@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
-import com.sifiso.codetribe.minisasslibrary.util.Statics;
-import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,25 +69,14 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
         int rID = mContext.getResources().getIdentifier(insect.getUri(), "drawable", mContext.getPackageName());
         Log.d("TAG", new Gson().toJson(insect));
         h.INSC_image.setImageResource(rID);
-        h.INSC_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG", new Gson().toJson(insect));
-                Util.flashOnce(h.INSC_more, 100, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        listener.onViewMoreImages(insect, position);
-                    }
-                });
-            }
-        });
 
-        if(insect.getInsectimagelistList().size() < 2){
-            h.INSC_more.setVisibility(View.GONE);
-        }else{
+        if (insect.getInsectimagelistList().size() > 1) {
             h.INSC_more.setVisibility(View.VISIBLE);
+            h.INSC_more.setText("...more (" + insect.getInsectimagelistList().size() + ")");
+        } else {
+            h.INSC_more.setVisibility(View.GONE);
         }
-        h.INSC_more.setText(insect.getInsectimagelistList().size()+"");
+
         h.INSC_box.setText(insect.getInsect().getGroupName());
         h.INSC_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,7 +90,19 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
                 }
             }
         });
-
+        h.INSC_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insect.setSelected(true);
+                listener.onViewMore(insect,position);
+            }
+        });
+        h.INSC_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                h.INSC_box.setChecked(true);
+            }
+        });
         if (insect.isSelected()) {
             h.INSC_box.setChecked(true);
         } else {
@@ -118,9 +117,8 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
 
 
     public interface InsectPopupAdapterListener {
-        public void onInsectSelected(InsectImageDTO insect, int index);
-
-        public void onViewMoreImages(InsectImageDTO insect, int index);
+        void onInsectSelected(InsectImageDTO insect, int index);
+        void onViewMore(InsectImageDTO insect, int index);
     }
 
     public class Holder extends RecyclerView.ViewHolder {

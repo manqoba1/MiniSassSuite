@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -50,11 +51,13 @@ import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
 import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.ErrorUtil;
+import com.sifiso.codetribe.minisasslibrary.util.PDFUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -140,10 +143,10 @@ public class MainPagerActivity extends AppCompatActivity implements
     public void showSettingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPagerActivity.this);
 
-        builder.setTitle("Location Settings");
-        builder.setMessage("The app needs Location Settings to be turned on so that it can start the river search." +
-                "\n\nDo you want to turn the it on?");
-        
+        builder.setTitle("Location Setting");
+        builder.setMessage("The app needs Location setting to be turned on so that it can start the river search." +
+                "\n\nDo you want to turn it on?");
+
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -299,10 +302,51 @@ public class MainPagerActivity extends AppCompatActivity implements
                 startActivity(intent);
                 return true;
             case R.id.dicotomas:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf"));
-                startActivity(intent);
-                //Util.showToast(ctx,"Under Constructions");
+                try {
+                    String fileName = "dicotomas.pdf";
+                    File dir = Environment.getExternalStorageDirectory();
+                    if (!dir.exists()) {
+                        dir = Environment.getDataDirectory();
+                    }
+                    File file = new File(dir, fileName);
+                    if (file.exists()) {
+                        Log.i(LOG,"## pdf from disk: " + file.getAbsolutePath() + " length: " + file.length());
+                        Intent w = new Intent(Intent.ACTION_VIEW);
+                        w.setDataAndType(Uri.fromFile(file), "application/pdf");
+                        w.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(w);
+                        return true;
+                    }
+                    setRefreshActionButtonState(true);
+                    PDFUtil.downloadPDF(ctx,
+                            "http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf", fileName,
+                            new PDFUtil.PDFListener() {
+                        @Override
+                        public void onDownloaded(final File pdfFile) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setRefreshActionButtonState(false);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            setRefreshActionButtonState(false);
+                            Util.showErrorToast(ctx,"Sorry. Unable to download file");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 break;
             case R.id.how_to:
                 intent = new Intent(Intent.ACTION_VIEW);
@@ -328,6 +372,7 @@ public class MainPagerActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onPause() {
@@ -402,6 +447,7 @@ public class MainPagerActivity extends AppCompatActivity implements
 
     @Override
     public void onNewEvaluation() {
+
         Intent intent = new Intent(MainPagerActivity.this, EvaluationActivity.class);
         startActivity(intent);
     }
@@ -459,7 +505,6 @@ public class MainPagerActivity extends AppCompatActivity implements
         locationRequest.setInterval(2000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setFastestInterval(1000);
-        startLocationUpdates();
     }
 
     @Override

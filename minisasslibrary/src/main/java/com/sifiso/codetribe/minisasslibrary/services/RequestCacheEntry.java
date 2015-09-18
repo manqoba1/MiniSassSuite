@@ -5,29 +5,28 @@ package com.sifiso.codetribe.minisasslibrary.services;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by aubreyM on 14/12/12.
  */
 public class RequestCacheEntry implements Serializable, Comparable<RequestCacheEntry> {
-    private Date dateRequested, dateUploaded;
+    private Long dateRequested, dateUploaded;
     private RequestDTO request;
     private int attemptCount;
 
-    public Date getDateRequested() {
+    public Long getDateRequested() {
         return dateRequested;
     }
 
-    public void setDateRequested(Date dateRequested) {
+    public void setDateRequested(Long dateRequested) {
         this.dateRequested = dateRequested;
     }
 
-    public Date getDateUploaded() {
+    public Long getDateUploaded() {
         return dateUploaded;
     }
 
-    public void setDateUploaded(Date dateUploaded) {
+    public void setDateUploaded(Long dateUploaded) {
         this.dateUploaded = dateUploaded;
     }
 

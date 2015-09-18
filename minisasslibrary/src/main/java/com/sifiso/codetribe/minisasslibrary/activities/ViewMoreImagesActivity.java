@@ -13,6 +13,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.adapters.ViewMoreImageAdapter;
@@ -30,6 +31,7 @@ public class ViewMoreImagesActivity extends AppCompatActivity {
     double total = 0.0;
     private ViewMoreImageAdapter adapter;
     private RecyclerView SD_list;
+    TextView txtCount, txtGroupName;
 
     private List<InsectImageDTO> mSites;
     Intent intent;
@@ -40,12 +42,20 @@ public class ViewMoreImagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_more_images);
         ctx = getApplicationContext();
+
+        txtCount = (TextView)findViewById(R.id.AVM_count);
+        txtGroupName = (TextView)findViewById(R.id.AVM_groupName);
+
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Log.i(LOG, "onCreate more insect images");
         insect = (InsectImageDTO) getIntent().getSerializableExtra("insect");
         mSites = (List<InsectImageDTO>) getIntent().getSerializableExtra("insetImageList");
+
+        txtGroupName.setText(insect.getInsect().getGroupName());
+        txtCount.setText("" + insect.getInsectimagelistList().size());
+
         Log.i(LOG, "onCreate select insect " + insect.getInsectimagelistList().size() + " : " + insect.getInsect().getGroupName());
 
         Util.setCustomActionBar(ctx,getSupportActionBar(),insect.getInsect().getGroupName(),
@@ -77,12 +87,12 @@ public class ViewMoreImagesActivity extends AppCompatActivity {
                 imageSelected = true;
                 insectImageList = imageListDTO;
                 position = index;
-                onBackPressed();
+                //onBackPressed();
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(ctx,1);
-        SD_list.setLayoutManager(linearLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(ctx,2,LinearLayoutManager.VERTICAL,false);
+        SD_list.setLayoutManager(gridLayoutManager);
         SD_list.addItemDecoration(new SpacesItemDecoration(4));
         SD_list.setAdapter(adapter);
 
@@ -90,14 +100,14 @@ public class ViewMoreImagesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (imageSelected) {
-            Intent w = new Intent();
-            w.putExtra("insectImageListDTO", insectImageList);
-            w.putExtra("position",position);
-            setResult(RESULT_OK, w);
-        } else {
-            setResult(RESULT_CANCELED);
-        }
+//        if (imageSelected) {
+//            Intent w = new Intent();
+//            w.putExtra("insectImageListDTO", insectImageList);
+//            w.putExtra("position",position);
+//            setResult(RESULT_OK, w);
+//        } else {
+//            setResult(RESULT_CANCELED);
+//        }
         finish();
     }
     @Override

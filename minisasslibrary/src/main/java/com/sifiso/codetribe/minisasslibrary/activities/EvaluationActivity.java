@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -423,15 +422,13 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 break;
             case INSECT_DATA:
                 Log.w(LOG, "### insects ui has returned with data?");
-                if (resultCode == INSECT_DATA) {
+                if (resultCode == RESULT_OK) {
                     isInsectsPickerBack = true;
                     isBusy = true;
                     if ((List<InsectImageDTO>) data.getSerializableExtra("selectedInsects") != null) {
 
                         insectImageList = (List<InsectImageDTO>) data.getSerializableExtra("overallInsect");
                         scoreUpdater((List<InsectImageDTO>) data.getSerializableExtra("selectedInsects"));
-                        List<InsectImageDTO> list = (List<InsectImageDTO>) data.getSerializableExtra("selectedInsects");
-                        //Log.w(LOG, "### insect ui has returned with data?" + list.size());
 
                         result3.setVisibility(View.VISIBLE);
                         teamMember = SharedUtil.getTeamMember(ctx);
@@ -1317,90 +1314,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             }
         });
 
-//
-//
-//        if (location == null) {
-//            Toast.makeText(ctx, "Invalid Location ...", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (isBusy) {
-//            Toast.makeText(ctx, "Rivers Loaded ...", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//
-//        RequestDTO w = new RequestDTO();
-//        w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
-//        w.setLatitude(location.getLatitude());
-//        w.setLongitude(location.getLongitude());
-//        w.setRadius(1);
-//        isBusy = true;
-//        //Util.showToast(ctx, "Loading new data");
-//        if (!isFromAddingEvaluation) {
-//            setRefreshActionButtonState(true);
-//        }
-//
-//        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
-//            @Override
-//            public void onResponseReceived(ResponseDTO r) {
-//                isBusy = false;
-////                progressBar.setVisibility(View.GONE);
-//                setRefreshActionButtonState(false);
-//                if (r.getStatusCode() > 0) {
-//                    Toast.makeText(ctx, r.getMessage(), Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                response = new ResponseDTO();
-//                response = r;
-//                Log.d(LOG, new Gson().toJson(r));
-//                buildUI();
-//                CacheUtil.cacheData(ctx, r, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
-//                    @Override
-//                    public void onFileDataDeserialized(ResponseDTO response) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onDataCached(ResponseDTO response) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onVolleyError(VolleyError error) {
-//                isBusy = false;
-//                setRefreshActionButtonState(false);
-//                //Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
-//                Util.collapse(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
-//                    @Override
-//                    public void onAnimationEnded() {
-//                        WT_sp_riverConnected.setVisibility(View.GONE);
-//                    }
-//                });
-//                Util.expand(WT_sp_river, 200, new Util.UtilAnimationListener() {
-//                    @Override
-//                    public void onAnimationEnded() {
-//                        WT_sp_river.setVisibility(View.VISIBLE);
-//                    }
-//                });
-//                getCachedRiverData();
-//            }
-//
-//            @Override
-//            public void onError(String message) {
-//                isBusy = false;
-//                setRefreshActionButtonState(false);
-//            }
-//        });
-//
-
     }
 
 
@@ -1576,14 +1489,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         if (location != null) {
             if (location.getAccuracy() > ACCURACY_LIMIT) {
                 startLocationUpdates();
-            } else {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                accuracy = location.getAccuracy();
-                WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
-                if (wr.isMobileConnected() || wr.isWifiConnected()) {
-                    getRiversAroundMe();
-                }
             }
         }
     }

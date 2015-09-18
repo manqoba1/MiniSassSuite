@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestList;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
@@ -48,6 +49,7 @@ public class RequestSyncService extends IntentService {
 
             stream = getApplicationContext().openFileInput("requestCache.json");
             String json = getStringFromInputStream(stream);
+            Log.e(LOG, "json from cache: " + json);
             RequestCache cache = gson.fromJson(json, RequestCache.class);
             if (cache != null) {
                 requestCache = cache;
@@ -59,6 +61,10 @@ public class RequestSyncService extends IntentService {
                 Log.e(LOG, "requestCache is null");
                 requestSyncListener.onTasksSynced(0, 0);
             }
+        } catch (JsonSyntaxException e1) {
+            Log.i(LOG, "JsonSyntaxException, there is no request cache currently");
+            //onHandleIntent(null);
+            requestSyncListener.onTasksSynced(0, 0);
         } catch (FileNotFoundException e) {
             Log.i(LOG, "fileNotFoundException, there is no request cache currently");
             //onHandleIntent(null);
@@ -113,7 +119,7 @@ public class RequestSyncService extends IntentService {
                             " negative responses: " + response.getBadCount());
 
                     for (RequestCacheEntry rce : requestCache.getRequestCacheEntryList()) {
-                        rce.setDateUploaded(new Date());
+                        rce.setDateUploaded(new Date().getTime());
                     }
                     cleanUpCache();
                     requestSyncListener.onTasksSynced(response.getGoodCount(), response.getBadCount());

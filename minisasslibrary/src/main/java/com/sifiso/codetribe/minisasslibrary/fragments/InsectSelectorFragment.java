@@ -74,9 +74,10 @@ public class InsectSelectorFragment extends Fragment implements PageFragment {
             }
 
             @Override
-            public void onViewMoreImages(InsectImageDTO insect, int index) {
+            public void onViewMore(InsectImageDTO insect, int index) {
 
             }
+
         });
         SD_list.setAdapter(adapter);
     }

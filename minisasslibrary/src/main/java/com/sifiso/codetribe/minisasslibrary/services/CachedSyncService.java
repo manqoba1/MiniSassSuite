@@ -112,7 +112,7 @@ public class CachedSyncService extends IntentService {
                     Log.i(LOG, "** cached requests sent up! good responses: " + response.getGoodCount() +
                             " bad responses: " + response.getBadCount());
                     for (RequestCacheEntry e : requestCache.getRequestCacheEntryList()) {
-                        e.setDateUploaded(new Date());
+                        e.setDateUploaded(new Date().getTime());
                     }
                     cleanupCache();
                     requestSyncListener.onTasksSynced(response.getGoodCount(), response.getBadCount());

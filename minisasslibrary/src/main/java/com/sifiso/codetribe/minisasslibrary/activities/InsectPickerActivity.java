@@ -1,13 +1,15 @@
 package com.sifiso.codetribe.minisasslibrary.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +17,6 @@ import android.view.MenuItem;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.adapters.InsectSelectionAdapter;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.InsectImageListDTO;
 import com.sifiso.codetribe.minisasslibrary.util.DividerItemDecoration;
 import com.sifiso.codetribe.minisasslibrary.util.SpacesItemDecoration;
 
@@ -58,11 +59,11 @@ public class InsectPickerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onViewMoreImages(InsectImageDTO insect, int index) {
+            public void onViewMore(InsectImageDTO insect, int index) {
                 intent = new Intent(InsectPickerActivity.this, ViewMoreImagesActivity.class);
                 intent.putExtra("insetImageList", (java.io.Serializable) mRawImages);
                 intent.putExtra("insect", insect);
-                startActivityForResult(intent, RETURN_PICKER);
+                startActivity(intent);
             }
         });
         LinearLayoutManager llm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL, false);
@@ -75,31 +76,17 @@ public class InsectPickerActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
         switch (reqCode) {
-            case RETURN_PICKER:
-                if (resCode == RESULT_OK) {
-                    selectedFromViewMore = (InsectImageListDTO)data.getSerializableExtra("insectImageListDTO");
-                    viewMoreIndex = data.getIntExtra("position",0);
-                    //TODO - WHAT HAPPENS TO THIS SELECTION??
-                    mSelectedImages.add(selectedFromViewMore.getInsectimage());
-                    onBackPressed();
-                }
-                break;
         }
     }
-    InsectImageListDTO selectedFromViewMore;
-    int viewMoreIndex;
 
     private void collectCheckedInsects(InsectImageDTO mDtos) {
         if (mSelectedImages == null) {
-            mSelectedImages = new ArrayList<InsectImageDTO>(mRawImages.size());
+            mSelectedImages = new ArrayList<>();
         }
 
-
         if (mDtos.selected == true) {
-            //if (listCal.contains(mDtos))
             mSelectedImages.add(mDtos);
             total = total + mDtos.getSensitivityScore();
-
         } else {
             mDtos.selected = true;
             mSelectedImages.remove(mDtos);
@@ -107,11 +94,30 @@ public class InsectPickerActivity extends AppCompatActivity {
             mDtos.selected = false;
         }
         Log.e(LOG, mSelectedImages.size() + " count");
-        intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
-        intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
-        intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
-        setResult(INSECT_DATA, intent);
-        //listener.onSelectDone(listCal);
+
+
+    }
+
+    private void showMoreDialog(final InsectImageDTO mDtos) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(mDtos.getInsect().getGroupName())
+                .setMessage("Do you want to view the other images in this group?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        intent = new Intent(InsectPickerActivity.this, ViewMoreImagesActivity.class);
+                        intent.putExtra("insetImageList", (java.io.Serializable) mRawImages);
+                        intent.putExtra("insect", mDtos);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
     }
 
     Intent intent;
@@ -125,19 +131,23 @@ public class InsectPickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
-        intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
-        intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
-        setResult(INSECT_DATA, intent);
-        super.onBackPressed();
+        if (mSelectedImages != null && !mSelectedImages.isEmpty()) {
+            intent = new Intent();
+            intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
+            intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
+            setResult(RESULT_OK, intent);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
     }
 
     private void setFields() {
         SD_list = (RecyclerView) findViewById(R.id.SD_list);
-        SD_list.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        SD_list.setLayoutManager(new GridLayoutManager(ctx, 2));
         //SD_list.setLayoutManager(new LinearLayoutManager(ctx,LinearLayoutManager.HORIZONTAL,false));
         SD_list.setItemAnimator(new DefaultItemAnimator());
-        SD_list.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.HORIZONTAL));
+        SD_list.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.VERTICAL));
     }
 
     @Override
@@ -168,7 +178,5 @@ public class InsectPickerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    static final int RETURN_PICKER = 300;
 
 }
