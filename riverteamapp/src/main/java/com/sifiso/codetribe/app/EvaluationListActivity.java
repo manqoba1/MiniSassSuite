@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.MapsActivity;
@@ -30,8 +28,6 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
 
     GPSTracker tracker;
     Context ctx;
-    TextView RL_add;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,48 +36,38 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
         ctx = getApplicationContext();
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //ResponseDTO response = (ResponseDTO) getIntent().getSerializableExtra("response");
         List<EvaluationSiteDTO> evaluationSiteList = (List<EvaluationSiteDTO>) getIntent().getSerializableExtra("evaluationSite");
+        Log.e("EvaluationListFragment", "evaluationSiteList: " + evaluationSiteList.size());
         evaluationListFragment = (EvaluationListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         evaluationListFragment.setEvaluationSiteList(evaluationSiteList);
         tracker = new GPSTracker(ctx);
-        getSupportActionBar().setTitle(evaluationSiteList.get(0).getRiverName());
+        getSupportActionBar().setTitle("");
+
+        Util.setCustomActionBar(ctx,getSupportActionBar(),
+                evaluationSiteList.get(0).getRiverName(), "Observations",
+                ContextCompat.getDrawable(ctx, com.sifiso.codetribe.minisasslibrary.R.drawable.ic_launcher),null);
         setFields();
       //  handleIntent(getIntent());
     }
 
     private void setFields() {
-        RL_add = (TextView) findViewById(R.id.RL_add);
-        RL_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(RL_add, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent intent = new Intent(EvaluationListActivity.this, EvaluationActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-            }
-        });
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//
+//            }
+//        });
     }
 
     Menu mMenu;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_evaluation_list, menu);
         mMenu = menu;
-        /*SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));*/
         return true;
     }
 
@@ -131,7 +117,7 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
 
 
     @Override
-    public void onRefreshEvaluation(List<EvaluationSiteDTO> siteList, int index, String riverName) {
+    public void onListEvaluationSites(List<EvaluationSiteDTO> siteList, int index) {
 
     }
 
@@ -162,9 +148,10 @@ public class EvaluationListActivity extends AppCompatActivity implements CreateE
     }
 
     @Override
-    public void onPullRefresh() {
+    public void onSitesMapRequested(RiverDTO river) {
 
     }
+
 
     @Override
     public void onNewEvaluation() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sifiso.codetribe.minisasslibrary" >
+    package="com.sifiso.codetribe.minisasslibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -44,12 +44,21 @@
         android:required="true" />
 
     <application
-        android:name=".MiniSassApp"
         android:allowBackup="true"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://163927763828851:EKmodmbmg3kPmHo9F_vM6cP3MUw@the-notice-board" />
+
+        <service
+            android:name=".services.RequestTaskService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".activities.SplashActivity"
@@ -82,15 +91,7 @@
         <activity
             android:name=".activities.InsectPickerActivity"
             android:label="@string/title_activity_insect_picker" />
-        <activity
-            android:name=".activities.EvaluationActivity"
-            android:label="@string/title_activity_evaluation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
 
-        <service
-            android:name=".services.CachedSyncService"
-            android:exported="false" />
         <service
             android:name=".services.RequestSyncService"
             android:exported="false" />
@@ -115,16 +116,38 @@
         <activity
             android:name=".activities.TeamMemberActivity"
             android:label="@string/title_activity_team_member"
-            android:parentActivityName=".activities.ProfileActivity" >
-        </activity>
+            android:parentActivityName=".activities.ProfileActivity" />
         <activity
             android:name=".activities.AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
+            android:label="@string/title_activity_about" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".activities.EvaluationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities.Evaluation2Activity"
+            android:label="@string/title_activity_evaluation2"
+            android:screenOrientation="portrait" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        -->
+
+
+        <activity
+            android:name=".activities.EvaluationSiteMapActivity"
+            android:label="@string/title_activity_evaluation_site_map"></activity>
     </application>
 
 </manifest>

@@ -18,12 +18,12 @@
 
         <TextView
             android:id="@+id/SI_welcome"
-            style="@style/Title1TextStyleWhite"
+            style="@style/Title2TextStyleGrey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Observations"
             android:background="@color/transparent_black"
-            android:textSize="28sp"
+            android:textSize="24sp"
             android:layout_marginLeft="@dimen/mon_margin"
             android:layout_alignParentBottom="true"
             android:padding="@dimen/mon_padding" />
@@ -37,14 +37,14 @@
             <TextView
                 android:id="@+id/SI_radius"
                 style="@style/Title3TextStyleBlue"
-                android:text="20"
+                android:text="10"
                 android:textColor="@color/white"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <SeekBar
                 android:id="@+id/SI_seekBar"
-                android:progress="20"
+                android:progress="10"
                 android:max="100"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/mon_wide"

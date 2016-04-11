@@ -792,7 +792,7 @@ public class PictureActivity extends AppCompatActivity implements LocationListen
                 googleApiClient );
         if (location != null) {
             Log.w(LOG,"## Good location spot");
-            topLayout.setVisibility(View.GONE);
+            siteEditor.setVisibility(View.GONE);
             //gpsStatus.setVisibility(View.GONE);
             imgCamera.setVisibility(View.VISIBLE);
             btnStart.setVisibility(View.GONE);

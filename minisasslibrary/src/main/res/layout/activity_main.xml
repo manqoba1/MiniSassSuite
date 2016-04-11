@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.sifiso.codetribe.app.MainPagerActivity">
+    android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/fragment"
@@ -23,16 +21,15 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/RL_add"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="144dp"
-        android:elevation="20dp"
-        android:shadowRadius="10"
-        android:src="@android:drawable/ic_menu_search" />
+        android:layout_marginRight="@dimen/mon_padding"
+        android:layout_marginTop="124dp"
+        android:elevation="@dimen/mon_padding"
+        android:src="@drawable/ic_action_search" />
 
 </RelativeLayout>
 

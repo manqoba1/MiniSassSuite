@@ -70,7 +70,6 @@
             android:layout_gravity="center_horizontal"
 
             android:layout_weight="1"
-            android:background="@color/common_signin_btn_default_background"
             android:text="Google" />
 
         <Button

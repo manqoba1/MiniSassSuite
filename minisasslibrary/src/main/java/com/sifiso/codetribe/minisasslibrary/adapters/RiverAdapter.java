@@ -51,7 +51,7 @@ public class RiverAdapter extends BaseAdapter {
     }
 
     class Holder {
-        ImageView AR_image_folder, AR_imgMap, AR_refresh, AR_imgDirections, AR_imgPicker,logo_icon;
+        ImageView AR_image_folder, AR_imgMap, AR_refresh, AR_imgDirections, AR_imgSitesMap,logo_icon;
         TextView AR_totalEvaluation, AR_txtRiverName, AR_totalStreams, AR_percOverallEva, AR_totalTrLabel,
                 AR_eva_date, AR_Eva_score, AR_conditionName;
         View scoreView, actionsView;
@@ -65,7 +65,7 @@ public class RiverAdapter extends BaseAdapter {
             h = new Holder();
             LayoutInflater inflater = (LayoutInflater) mCtx
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.river_list_items, parent,
+            v = inflater.inflate(R.layout.river_list_item, parent,
                     false);
             h.scoreView = v.findViewById(R.id.score_lay);
             h.actionsView = v.findViewById(R.id.AR_actionLayout);
@@ -75,7 +75,7 @@ public class RiverAdapter extends BaseAdapter {
             h.AR_imgMap = (ImageView) v.findViewById(R.id.AR_imgMap);
             // h.AR_refresh = (ImageView) v.findViewById(R.id.AR_refresh);
             h.AR_imgDirections = (ImageView) v.findViewById(R.id.AR_imgDirections);
-            h.AR_imgPicker = (ImageView) v.findViewById(R.id.AR_imgPicker);
+            h.AR_imgSitesMap = (ImageView) v.findViewById(R.id.AR_imgSitesMap);
             h.AR_totalEvaluation = (TextView) v.findViewById(R.id.AR_totalEvaluation);
             h.AR_txtRiverName = (TextView) v.findViewById(R.id.AR_txtRiverName);
             h.AR_totalStreams = (TextView) v.findViewById(R.id.AR_totalStreams);
@@ -191,6 +191,18 @@ public class RiverAdapter extends BaseAdapter {
             }
 
         });
+        h.AR_imgSitesMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(h.AR_imgSitesMap, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        mListener.onSitesMapRequested(river);
+                    }
+                });
+
+            }
+        });
         h.AR_imgMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,7 +229,7 @@ public class RiverAdapter extends BaseAdapter {
     }
 
     public interface RiverAdapterListener {
-        public void onMapSiteRequest(List<EvaluationSiteDTO> siteList);
+        public void onSitesMapRequested(RiverDTO river);
 
         public void onEvaluationRequest(List<EvaluationSiteDTO> siteList, int position, String riverName);
 

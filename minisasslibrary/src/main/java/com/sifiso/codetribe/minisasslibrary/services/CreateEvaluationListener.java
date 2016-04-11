@@ -9,7 +9,7 @@ import java.util.List;
  * Created by sifiso on 4/16/2015.
  */
 public interface CreateEvaluationListener {
-    public void onRefreshEvaluation(List<EvaluationSiteDTO> siteList, int index, String riverName);
+    public void onListEvaluationSites(List<EvaluationSiteDTO> siteList, int index);
 
     public void onRefreshMap(RiverDTO river, int result);
 
@@ -17,7 +17,7 @@ public interface CreateEvaluationListener {
 
     public void onDirection(Double latitude, Double longitude);
 
-    public void onPullRefresh();
+    public void onSitesMapRequested(RiverDTO river);
 
     public void onNewEvaluation();
 

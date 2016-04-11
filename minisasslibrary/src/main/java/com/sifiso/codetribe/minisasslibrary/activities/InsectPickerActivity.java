@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import com.sifiso.codetribe.minisasslibrary.adapters.InsectSelectionAdapter;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
 import com.sifiso.codetribe.minisasslibrary.util.DividerItemDecoration;
 import com.sifiso.codetribe.minisasslibrary.util.SpacesItemDecoration;
+import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,24 +40,26 @@ public class InsectPickerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insect_picker);
         ctx = getApplicationContext();
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Log.i(LOG, "onCreate select insect");
-        //mRawImages = new ArrayList<>();
+
+        getSupportActionBar().setTitle("");
+
         mRawImages = (List<InsectImageDTO>) getIntent().getSerializableExtra("insetImageList");
-        Log.i(LOG, "onCreate select insect " + mRawImages.size());
         setFields();
         setList();
+
+        Util.setCustomActionBar(ctx,getSupportActionBar(),
+                "Macro-inveterbrates", "Make selection(s)",
+                ContextCompat.getDrawable(ctx,R.drawable.ic_launcher),null);
     }
 
     private void setList() {
 
-        adapter = new InsectSelectionAdapter(ctx, mRawImages, R.layout.insect_select_item, new InsectSelectionAdapter.InsectPopupAdapterListener() {
+        adapter = new InsectSelectionAdapter(ctx,
+                mRawImages, R.layout.insect_select_item,
+                new InsectSelectionAdapter.InsectPopupAdapterListener() {
             @Override
             public void onInsectSelected(InsectImageDTO insect, int index) {
-
                 collectCheckedInsects(insect);
-
             }
 
             @Override
@@ -152,8 +156,7 @@ public class InsectPickerActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_insect_picker, menu);
+        //getMenuInflater().inflate(R.menu.menu_insect_picker, menu);
         return true;
     }
 

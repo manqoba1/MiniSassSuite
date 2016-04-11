@@ -53,7 +53,7 @@ public class DataUtil {
         req.setTeam(team);
         req.setRequestType(RequestDTO.REGISTER_TEAM);
         progressBar.setVisibility(View.VISIBLE);
-        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new WebSocketUtil.WebSocketListener() {
+        NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new NetUtil.NetListener() {
             @Override
             public void onMessage(final ResponseDTO r) {
                 runOnUiThread(new Runnable() {
@@ -121,7 +121,7 @@ public class DataUtil {
         req.setRequestType(RequestDTO.SIGN_IN_MEMBER);
 
         try {
-            WebSocketUtil.sendRequest(ctx, sufix, req, new WebSocketUtil.WebSocketListener() {
+            NetUtil.sendRequest(ctx, sufix, req, new NetUtil.NetListener() {
                 @Override
                 public void onMessage(final ResponseDTO response) {
 
@@ -177,7 +177,7 @@ public class DataUtil {
 
         try {
             progressBar.setVisibility(View.VISIBLE);
-            WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new WebSocketUtil.WebSocketListener() {
+            NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new NetUtil.NetListener() {
                 @Override
                 public void onMessage(final ResponseDTO r) {
                     runOnUiThread(new Runnable() {
@@ -243,7 +243,7 @@ public class DataUtil {
         RequestDTO req = new RequestDTO();
         req.setEvaluation(dto);
         try {
-            WebSocketUtil.sendRequest(ctx, sufix, req, new WebSocketUtil.WebSocketListener() {
+            NetUtil.sendRequest(ctx, sufix, req, new NetUtil.NetListener() {
                 @Override
                 public void onMessage(final ResponseDTO response) {
 

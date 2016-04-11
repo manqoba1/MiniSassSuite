@@ -155,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
         req.setRequestType(RequestDTO.LIST_REGISTER_DATA);
         try {
             setRefreshActionButtonState(true);
-            /*WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new WebSocketUtil.WebSocketListener() {
+            /*NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new NetUtil.NetListener() {
                 @Override
                 public void onMessage(final ResponseDTO r) {
                     Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());

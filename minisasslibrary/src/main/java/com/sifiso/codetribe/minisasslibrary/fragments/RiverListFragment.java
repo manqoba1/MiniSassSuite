@@ -2,9 +2,6 @@ package com.sifiso.codetribe.minisasslibrary.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,9 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sifiso.codetribe.minisasslibrary.R;
-import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
 import com.sifiso.codetribe.minisasslibrary.adapters.RiverAdapter;
-import com.sifiso.codetribe.minisasslibrary.dialogs.EvaluationListDialog;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
@@ -32,7 +27,6 @@ import com.sifiso.codetribe.minisasslibrary.services.CreateEvaluationListener;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -44,7 +38,6 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     String searchText;
     CreateEvaluationListener mListener;
     private Context ctx;
-    private Activity activity;
     private AutoCompleteTextView SLT_editSearch;
     private TextView RL_add, SI_welcome;
     private ImageView SLT_imgSearch2;
@@ -53,7 +46,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     TextView txtCount;
     View handle;
 
-    public SwipeRefreshLayout refreshLayout;
+    //public SwipeRefreshLayout refreshLayout;
     private int index2;
 
     public static RiverListFragment newInstance(ResponseDTO resp, int indexList) {
@@ -86,7 +79,6 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.river_list, container, false);
         ctx = getActivity().getApplicationContext();
-        activity = getActivity();
         setField();
         return v;
     }
@@ -114,8 +106,8 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         txtCount.setText("0");
         SI_welcome.setText("Observations");
         SLT_imgSearch2 = (ImageView) v.findViewById(R.id.SLT_imgSearch2);
-        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnRefreshListener(this);
+        //refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
+        //refreshLayout.setOnRefreshListener(this);
 
         SLT_imgSearch2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,21 +165,16 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         imm.hideSoftInputFromWindow(SLT_editSearch.getWindowToken(), 0);
     }
 
-    public void startEvaluation() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(ctx, EvaluationActivity.class);
-                intent.putExtra("response", response);
-                startActivity(intent);
-            }
-        });
 
-    }
 
-    EvaluationListDialog evaluationListDialog;
     static String LOG = RiverListFragment.class.getSimpleName();
 
+    public void setResponse(ResponseDTO response) {
+        this.response = response;
+        if (txtCount != null) {
+            setListView();
+        }
+    }
 
     private void setListView() {
 
@@ -202,7 +189,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
                 List<String> list = new ArrayList<>();
                 for (EvaluationSiteDTO x : siteList) {
 
-                    list.add((x.getSiteName()== null ? "Site # " + x.getEvaluationSiteID() : x.getSiteName()));
+                    list.add((x.getSiteName() == null ? "Site # " + x.getEvaluationSiteID() : x.getSiteName()));
                 }
                 Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle,
                         "Select Observation Site", new Util.UtilPopupListener() {
@@ -215,14 +202,14 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
             }
 
             @Override
-            public void onMapSiteRequest(List<EvaluationSiteDTO> siteList) {
+            public void onSitesMapRequested(RiverDTO river) {
 
+                mListener.onSitesMapRequested(river);
             }
 
             @Override
             public void onEvaluationRequest(List<EvaluationSiteDTO> siteList, int position, String riverName) {
-
-                mListener.onRefreshEvaluation(siteList, position, riverName);
+                mListener.onListEvaluationSites(siteList, position);
             }
 
             @Override
@@ -235,17 +222,13 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
                 mListener.onRefreshMap(river, result);
             }
         });
+
         LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inf.inflate(R.layout.hero_layout, null);
-        // RL_riverList.addHeaderView(v);
-
-        RL_riverList.setDividerHeight(4);
+        RL_riverList.setDividerHeight(2);
         RL_riverList.setAdapter(riverAdapter);
         RL_riverList.setVerticalScrollbarPosition(index2);
-
-        Log.d(LOG, "Mentor " + index2);
         RL_riverList.setSelection(index2);
-
         RL_riverList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -256,14 +239,11 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         });
     }
 
+    static final int CREATE_EVALUATION = 108;
     @Override
     public void animateCounts() {
 
     }
-
-
-    static final int EVALUATION_VIEW = 12;
-    static final int RIVER_VIEW = 13;
 
     @Override
     public void onAttach(Activity activity) {
@@ -284,19 +264,19 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
 
     @Override
     public void onRefresh() {
-        refreshLayout.setRefreshing(true);
-        mListener.onPullRefresh();
+//        refreshLayout.setRefreshing(true);
+//        mListener.onPullRefresh();
 
     }
 
     public void refreshListStop() {
         //do processing to get new data and set your listview's adapter, maybe  reinitialise the loaders you may be using or so
         //when your data has finished loading, cset the refresh state of the view to false
-        refreshLayout.setRefreshing(false);
+        //refreshLayout.setRefreshing(false);
     }
 
     public void refreshListStart() {
-        refreshLayout.setRefreshing(true);
-        mListener.onPullRefresh();
+        //refreshLayout.setRefreshing(true);
+        //mListener.onPullRefresh();
     }
 }

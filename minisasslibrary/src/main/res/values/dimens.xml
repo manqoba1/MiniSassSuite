@@ -88,4 +88,5 @@
     <dimen name="pp_image_height">200dp</dimen>
     <dimen name="touch_raise">16dp</dimen>
     <dimen name="header_image_size">250dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

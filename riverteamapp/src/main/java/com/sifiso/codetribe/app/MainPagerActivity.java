@@ -1,12 +1,16 @@
 package com.sifiso.codetribe.app;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -16,7 +20,10 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -34,8 +41,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.activities.AboutActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity;
+import com.sifiso.codetribe.minisasslibrary.activities.EvaluationSiteMapActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.MapsActivity;
 import com.sifiso.codetribe.minisasslibrary.activities.ProfileActivity;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
@@ -57,7 +66,10 @@ import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -93,6 +105,11 @@ public class MainPagerActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         setFields();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
         if (savedInstanceState != null) {
             Log.w(LOG, "savedInstanceState is not null - getting location");
@@ -104,7 +121,7 @@ public class MainPagerActivity extends AppCompatActivity implements
         teamMember = SharedUtil.getTeamMember(ctx);
         Util.setCustomActionBar(ctx, getSupportActionBar(),
                 teamMember.getFirstName() + " " + teamMember.getLastName(),
-                teamMember.getTeamName(),
+                teamMember.getTeam().getTeamName(),
                 ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), new Util.ActinBarListener() {
                     @Override
                     public void onEvokeProfile() {
@@ -113,7 +130,10 @@ public class MainPagerActivity extends AppCompatActivity implements
                     }
                 });
 
+        getCachedRiverData();
 
+        IntentFilter m = new IntentFilter(RequestSyncService.BROADCAST_REQUESTS_UPLOADED);
+        LocalBroadcastManager.getInstance(ctx).registerReceiver(new BroadcastRequestsReceiver(), m);
     }
 
     private boolean checkSettings() {
@@ -189,7 +209,7 @@ public class MainPagerActivity extends AppCompatActivity implements
     int index;
 
     private void setFields() {
-        RL_add = (FloatingActionButton) findViewById(R.id.RL_add);
+        RL_add = (FloatingActionButton) findViewById(R.id.fab);
 
         RL_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +218,7 @@ public class MainPagerActivity extends AppCompatActivity implements
                     @Override
                     public void onAnimationEnded() {
                         if (checkSettings()) {
+                            refreshRivers = true;
                             startLocationUpdates();
                         }
                     }
@@ -205,14 +226,13 @@ public class MainPagerActivity extends AppCompatActivity implements
 
             }
         });
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         txtRadius = (TextView) findViewById(R.id.SI_radius);
         seekBar = (SeekBar) findViewById(R.id.SI_seekBar);
+
+        seekBar.setMax(100);
+        seekBar.setProgress(30);
         progressBar.setVisibility(View.GONE);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -284,6 +304,7 @@ public class MainPagerActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.action_refresh:
                 if (checkSettings()) {
+                    refreshRivers = true;
                     startLocationUpdates();
                 }
                 return true;
@@ -310,7 +331,7 @@ public class MainPagerActivity extends AppCompatActivity implements
                     }
                     File file = new File(dir, fileName);
                     if (file.exists()) {
-                        Log.i(LOG,"## pdf from disk: " + file.getAbsolutePath() + " length: " + file.length());
+                        Log.i(LOG, "## pdf from disk: " + file.getAbsolutePath() + " length: " + file.length());
                         Intent w = new Intent(Intent.ACTION_VIEW);
                         w.setDataAndType(Uri.fromFile(file), "application/pdf");
                         w.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -321,27 +342,27 @@ public class MainPagerActivity extends AppCompatActivity implements
                     PDFUtil.downloadPDF(ctx,
                             "http://www.minisass.org/media/filer_public/2013/06/28/1111_minisass_dichotomous_key_nov_2011.pdf", fileName,
                             new PDFUtil.PDFListener() {
-                        @Override
-                        public void onDownloaded(final File pdfFile) {
-                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void run() {
+                                public void onDownloaded(final File pdfFile) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            setRefreshActionButtonState(false);
+                                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                                            intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                            startActivity(intent);
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onError() {
                                     setRefreshActionButtonState(false);
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                    startActivity(intent);
+                                    Util.showErrorToast(ctx, "Sorry. Unable to download file");
                                 }
                             });
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            setRefreshActionButtonState(false);
-                            Util.showErrorToast(ctx,"Sorry. Unable to download file");
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -391,16 +412,15 @@ public class MainPagerActivity extends AppCompatActivity implements
     private List<EvaluationSiteDTO> evaluationSiteList;
 
     @Override
-    public void onRefreshEvaluation(List<EvaluationSiteDTO> siteList, int index, String riverName) {
+    public void onListEvaluationSites(List<EvaluationSiteDTO> siteList, int index) {
         if (siteList.size() == 0) {
-            Util.showToast(ctx, "Unfortunately there are no evaluations made yet on " + riverName + " river");
+            Util.showToast(ctx, "Unfortunately there are no evaluations made yet on the river");
             return;
         }
         this.index = index;
         evaluationSiteList = siteList;
-        Intent intent = new Intent(MainPagerActivity.this, EvaluationListActivity.class);
+        Intent intent = new Intent(this, EvaluationListActivity.class);
         intent.putExtra("evaluationSite", (java.io.Serializable) siteList);
-        intent.putExtra("response", response);
         startActivity(intent);
 
     }
@@ -420,12 +440,28 @@ public class MainPagerActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onCreateEvaluation(RiverDTO river) {
-        Intent createEva = new Intent(MainPagerActivity.this, EvaluationActivity.class);
-        createEva.putExtra("riverCreate", river);
-        createEva.putExtra("response", response);
-        createEva.putExtra("statusCode", CREATE_EVALUATION);
-        startActivity(createEva);
+    public void onCreateEvaluation(final RiverDTO river) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+                String j = gson.toJson(river);
+                try {
+                    File dir = Environment.getExternalStorageDirectory();
+                    File file = new File(dir, System.currentTimeMillis() + ".data");
+                    FileUtils.writeStringToFile(file, j);
+                    Intent m = new Intent(getApplicationContext(), EvaluationActivity.class);
+                    m.putExtra("riverCreate", file.getAbsolutePath());
+                    m.putExtra("statusCode", EvaluationActivity.CREATE_EVALUATION);
+                    startActivity(m);
+                } catch (IOException e) {
+                    Log.e(LOG, "Failed to write river file", e);
+                }
+
+            }
+        });
+
 
     }
 
@@ -440,11 +476,22 @@ public class MainPagerActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onPullRefresh() {
-        //getCachedRiverData();
-        //getRiversAroundMe();
+    public void onSitesMapRequested(RiverDTO river) {
+        Gson g = new Gson();
+        String json = g.toJson(river);
+        File dir = Environment.getExternalStorageDirectory();
+        File file = new File(dir, "river_"+river.getRiverID()+".json");
+        try {
+            FileUtils.writeStringToFile(file,json);
+            Intent m = new Intent(ctx, EvaluationSiteMapActivity.class);
+            m.putExtra("path",file.getAbsolutePath());
+            startActivityForResult(m,EVAL_SITES_MAP);
+        } catch (IOException e) {
+            Util.showErrorToast(ctx,"Unable to get data for map");
+        }
     }
 
+   static final int EVAL_SITES_MAP = 182;
     @Override
     public void onNewEvaluation() {
 
@@ -455,26 +502,38 @@ public class MainPagerActivity extends AppCompatActivity implements
     static final int CREATE_EVALUATION = 108;
 
     boolean mRequestingLocationUpdates;
+    Snackbar snackbar;
 
     protected void startLocationUpdates() {
         Log.w(LOG, "## startLocationUpdates ....");
+        snackbar = Snackbar.make(RL_add, "Starting to locate GPS coordinates ...", Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
         if (mGoogleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                 return;
+            }
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, locationRequest, this);
         }
     }
 
-    static final int ACCURACY_LIMIT = 50;
+    static final int ACCURACY_LIMIT = 150;
+    boolean refreshRivers;
 
     @Override
     public void onLocationChanged(Location location) {
         Log.i(LOG, "####### onLocationChanged " + location.getAccuracy());
-        this.location = location;
 
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
+            this.location = location;
             stopLocationUpdates();
-            getRiversAroundMe();
+            if (refreshRivers) {
+                refreshRivers = false;
+                getRiversAroundMe();
+            } else {
+                snackbar.dismiss();
+            }
         }
 
     }
@@ -488,23 +547,65 @@ public class MainPagerActivity extends AppCompatActivity implements
         }
     }
 
-
+    static final int REQUEST_LOCATION = 6, REQUEST_WRITE_EXTERNAL = 7;
     @Override
     public void onConnected(Bundle bundle) {
-        location = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (location != null) {
-            Log.w(LOG, "## onConnected location ....lastLocation: "
-                    + location.getLatitude() + " "
-                    + location.getLongitude() + " acc: "
-                    + location.getAccuracy());
-
+        Log.e(LOG, "########### onConnected .... check LOCATION permission");
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION);
+            } else {
+                location = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
+                setLocationRequest();
+            }
+        } else {
+            setLocationRequest();
         }
+        Log.e(LOG, "########### onConnected .... check LOCATION permission");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_EXTERNAL);
+            }
+        }
+    }
 
+    private void setLocationRequest() {
+        Log.w(LOG, "## requesting location updates ....");
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(2000);
+        locationRequest.setInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setFastestInterval(1000);
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e(LOG, "Permission has been granted for LOCATION");
+                setLocationRequest();
+            } else {
+                finish();
+            }
+        }
+        if (requestCode == REQUEST_WRITE_EXTERNAL) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e(LOG, "Permission has been granted for WRITE_EXTERNAL_STORAGE");
+            }
+        }
     }
 
     @Override
@@ -580,15 +681,21 @@ public class MainPagerActivity extends AppCompatActivity implements
         final WebCheckResult w = WebCheck.checkNetworkAvailability(ctx);
         CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
             @Override
-            public void onFileDataDeserialized(final ResponseDTO respond) {
+            public void onFileDataDeserialized(final ResponseDTO r) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        response = respond;
+                        if (r == null || r.getRiverList().isEmpty()) {
+                            refreshRivers = true;
+                            startLocationUpdates();
+                            return;
+                        }
+                        response = r;
                         if (response.getRiverList() != null || !response.getRiverList().isEmpty()) {
                             buildPages();
-                            Util.showToast(ctx, "The rivers listed were saved previously on your device");
+                        } else {
+                            refreshRivers = true;
+                            startLocationUpdates();
                         }
 
                     }
@@ -631,11 +738,14 @@ public class MainPagerActivity extends AppCompatActivity implements
         }
 
         Log.d(LOG, "############### getRiversAroundMe");
+        snackbar = Snackbar.make(RL_add,"Refreshing river data around you ....",Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
         RequestDTO w = new RequestDTO();
         w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
         w.setLatitude(location.getLatitude());
         w.setLongitude(location.getLongitude());
         w.setRadius(seekBar.getProgress());
+
         isBusy = true;
         if (riverListFragment != null) {
             riverListFragment.refreshListStart();
@@ -647,6 +757,8 @@ public class MainPagerActivity extends AppCompatActivity implements
             public void onResponseReceived(ResponseDTO r) {
                 isBusy = false;
                 setRefreshActionButtonState(false);
+                snackbar.dismiss();
+                Snackbar.make(RL_add,"Found "+r.getRiverList().size() +" rivers around you ....",Snackbar.LENGTH_LONG).show();
                 if (!ErrorUtil.checkServerError(ctx, r)) {
                     return;
                 }
@@ -662,6 +774,7 @@ public class MainPagerActivity extends AppCompatActivity implements
                         response = r;
                         buildPages();
                         if (riverListFragment != null) {
+                            riverListFragment.setResponse(r);
                             riverListFragment.refreshListStop();
                         }
                     }
@@ -689,6 +802,7 @@ public class MainPagerActivity extends AppCompatActivity implements
                     @Override
                     public void run() {
                         isBusy = false;
+                        snackbar.dismiss();
                         setRefreshActionButtonState(false);
                         if (riverListFragment != null) {
                             riverListFragment.refreshListStop();
@@ -812,15 +926,17 @@ public class MainPagerActivity extends AppCompatActivity implements
 //        }
     }
 
+    boolean hasBeenPressed;
     @Override
     public void onBackPressed() {
-        if (riverListFragment != null) {
-            if (riverListFragment.refreshLayout.isRefreshing()) {
-                riverListFragment.refreshListStop();
-            } else {
-                super.onBackPressed();
-            }
+        if (hasBeenPressed) {
+            finish();
+
+        } else {
+            hasBeenPressed = true;
+            Snackbar.make(progressBar,"Please press Back again to exit", Snackbar.LENGTH_LONG).show();
         }
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -832,24 +948,18 @@ public class MainPagerActivity extends AppCompatActivity implements
             RequestSyncService.LocalBinder binder = (RequestSyncService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
-            WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
-            if (wcr.isWifiConnected() || wcr.isMobileConnected()) {
-                mService.startSyncCachedRequests(new RequestSyncService.RequestSyncListener() {
-                    @Override
-                    public void onTasksSynced(int goodResponses, int badResponses) {
-                        Log.w(LOG, "@@ cached requests done, good: " + goodResponses + " bad: " + badResponses);
-                        getRefreshCachedData();
+            mService.startSyncCachedRequests(new RequestSyncService.RequestSyncListener() {
+                @Override
+                public void onTasksSynced(int goodResponses, int badResponses) {
+                    Log.w(LOG,"------ onTasksSynced goodResponses: " + goodResponses + " bad: " + badResponses);
+                }
 
-                    }
+                @Override
+                public void onError(String message) {
 
-                    @Override
-                    public void onError(String message) {
+                }
+            });
 
-                    }
-                });
-
-
-            }
         }
 
         @Override
@@ -888,6 +998,14 @@ public class MainPagerActivity extends AppCompatActivity implements
                     refreshItem.setActionView(null);
                 }
             }
+        }
+    }
+    private class BroadcastRequestsReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(LOG,"BroadcastRequestsReceiver onReceive: Requests have been uploaded");
+            getRiversAroundMe();
         }
     }
 }

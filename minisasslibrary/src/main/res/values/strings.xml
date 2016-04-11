@@ -135,7 +135,7 @@
     <string name="login_with_google">Google+</string>
     <string name="login_with_twitter">Twitter</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_gpsscanner">GPS scanner</string>
     <string name="title_activity_insect_picker">Choose macro-invertebrates</string>
@@ -181,4 +181,6 @@ The developers were trained at the CodeTribe Academy, a coding skills developmen
 \n\n
 Meet the Team:
 </string>
+    <string name="title_activity_evaluation2">Evaluation2Activity</string>
+    <string name="title_activity_evaluation_site_map">Observation Site Map</string>
 </resources>

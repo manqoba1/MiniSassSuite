@@ -14,6 +14,9 @@ public class RequestCache implements Serializable {
 
 
     public  List<RequestCacheEntry> getRequestCacheEntryList() {
+        if (requestCacheEntryList == null) {
+            requestCacheEntryList = new ArrayList<>();
+        }
         return requestCacheEntryList;
     }
 

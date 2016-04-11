@@ -1,43 +1,38 @@
 package com.sifiso.codetribe.minisasslibrary.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -54,16 +49,12 @@ import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.InsectImageDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.RiverPartDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.RiverPointDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.StreamDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.TeamMemberDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
-import com.sifiso.codetribe.minisasslibrary.fragments.PageFragment;
 import com.sifiso.codetribe.minisasslibrary.services.RequestCache;
 import com.sifiso.codetribe.minisasslibrary.services.RequestSyncService;
-import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheck;
 import com.sifiso.codetribe.minisasslibrary.toolbox.WebCheckResult;
 import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
@@ -73,74 +64,97 @@ import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
-import java.text.DecimalFormat;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class EvaluationActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class EvaluationActivity extends AppCompatActivity implements
+        LocationListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     static final String LOG = EvaluationActivity.class.getSimpleName();
-    private TextView WC_minus, WC_add, WT_minus, WT_add,
-            WP_minus, WP_add, WO_minus, WO_add, WE_minus, WE_add;
+
     private ProgressBar progressBar;
     private EditText WC_score, WP_score, WT_score, WO_score, WE_score;
     private TextView TV_total_score, TV_average_score, TV_avg_score, TV_score_status;
     private ImageView IMG_score_icon, AE_pin_point, ivCancel;
-    private TextView WT_sp_riverConnected, WT_sp_category, EDT_comment, AE_down_up;
-    private Button WT_gps_picker, SL_show_insect, AE_create, AE_find_near_sites;
+    private TextView WT_sp_riverConnected, EDT_comment, AE_down_up;
+    private Button btnShowInsects, btnSave, btnNearbySites;
     private AutoCompleteTextView WT_sp_river, WT_sp_stream;
-
+    FloatingActionButton fab;
     //layouts
     RelativeLayout result2, result3;
     LinearLayout llSiteLayout;
     EvaluationDTO evaluationDTO;
-    Integer teamMemberID, conditionID = null;
-    double wc = 0.0, wt = 0.0, we = 0.0, wp = 0.0, wo = 0.0;
+    Integer conditionID = null;
     private Activity activity;
-    List<String> categoryStr;
-    private ViewStub viewStub;
-    private Integer categoryID;
-    private Integer riverID;
     private TeamMemberDTO teamMember;
-    String catType = "Select category";
+    public static final int MAP_REQUESTED = 9007;
+    public static final int STATUS_CODE = 220;
+    public static final int INSECT_DATA = 103;
+    public static final int CREATE_EVALUATION = 108;
 
-    static final int ACCURACY_THRESHOLD = 10;
-    static final int MAP_REQUESTED = 9007;
-    static final int STATUS_CODE = 220;
-    static final int INSECT_DATA = 103;
-    public static final int CAPTURE_IMAGE = 1001;
-    static final int CREATE_EVALUATION = 108;
-
-    static final int GPS_DATA = 102;
+    public static final int GPS_DATA = 102;
 
     GoogleApiClient mGoogleApiClient;
     LocationRequest locationRequest;
     Location location;
     boolean mResolvingError;
-    static final long ONE_MINUTE = 1000 * 60;
-    static final long FIVE_MINUTES = 1000 * 60 * 5;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
-    // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
 
-    ViewPager mPager;
     Menu mMenu;
-    List<PageFragment> pageFragmentList;
     ResponseDTO response;
     boolean mBound, mShowMore;
     RequestSyncService mService;
 
     private Context ctx;
     RelativeLayout GPS_layout4;
-    private TextView txtAccuracy, txtLat, txtLng, txtSiteName;
+    private TextView txtLat, txtLng, txtSiteName;
 
     private void setField() {
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        radioRocky = (RadioButton) findViewById(R.id.radioRocky);
+        radioSandy = (RadioButton) findViewById(R.id.radioSandy);
+
+        radioRocky.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    indexCat = 0;
+                    try {
+                        category = response.getCategoryList().get(indexCat);
+                        evaluationSite.setCategoryID(category.getCategoryId());
+
+                        Log.e(LOG, "category selected: " + (category.getCategoryName()));
+                    } catch (Exception e) {
+                        Log.e(LOG, "Failed", e);
+                    }
+                }
+            }
+        });
+        radioSandy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    indexCat = 1;
+                    try {
+                        category = response.getCategoryList().get(indexCat);
+                        evaluationSite.setCategoryID(category.getCategoryId());
+                        Log.e(LOG, "category selected: " + (category.getCategoryName()));
+                    } catch (Exception e) {
+                        Log.e(LOG, "Failed 2", e);
+                    }
+                }
+            }
+        });
         llSiteLayout = (LinearLayout) findViewById(R.id.llSiteLayout);
         llSiteLayout.setVisibility(View.GONE);
         txtSiteName = (TextView) findViewById(R.id.txtSiteName);
@@ -153,14 +167,12 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     public void onAnimationEnded() {
                         llSiteLayout.setVisibility(View.GONE);
                         WT_sp_river.setEnabled(true);
-                        WT_sp_category.setEnabled(true);
                     }
                 });
             }
         });
 
         GPS_layout4 = (RelativeLayout) findViewById(R.id.GPS_layout4);
-        txtAccuracy = (TextView) findViewById(R.id.GPS_accuracy);
         txtLat = (TextView) findViewById(R.id.GPS_latitude);
         txtLng = (TextView) findViewById(R.id.GPS_longitude);
         Statics.setRobotoFontBold(ctx, txtLat);
@@ -187,7 +199,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         WT_sp_river = (AutoCompleteTextView) findViewById(R.id.WT_sp_river);
         WT_sp_stream = (AutoCompleteTextView) findViewById(R.id.WT_sp_stream);
         WT_sp_riverConnected = (TextView) findViewById(R.id.WT_sp_riverConnected);
-        WT_sp_category = (TextView) findViewById(R.id.WT_sp_category);
         EDT_comment = (EditText) findViewById(R.id.EDT_comment);
         AE_pin_point = (ImageView) findViewById(R.id.AE_pin_point);
         AE_pin_point.setOnClickListener(new View.OnClickListener() {
@@ -196,9 +207,27 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 startLocationUpdates();
             }
         });
-        SL_show_insect = (Button) findViewById(R.id.SL_show_insect);
-        AE_create = (Button) findViewById(R.id.AE_create);
+        btnShowInsects = (Button) findViewById(R.id.SL_show_insect);
+        btnSave = (Button) findViewById(R.id.AE_create);
         AE_down_up = (TextView) findViewById(R.id.AE_down_up);
+        btnShowInsects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(LOG,"%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick -------->");
+                if (category == null) {
+                    Log.w(LOG,"%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick - category is null");
+                    Snackbar.make(btnSave,"Select Rocky or Sandy river types first, " +
+                            "before choosing macroinvertebrates",Snackbar.LENGTH_LONG).show();
+                    return;
+                } else {
+                    Log.d(LOG, "InsectPickerActivity about to start, insectImageList: " + response.getInsectimageDTOList().size());
+                    Intent intent = new Intent(EvaluationActivity.this, InsectPickerActivity.class);
+                    intent.putExtra("insetImageList", (java.io.Serializable) response.getInsectimageDTOList());
+                    startActivityForResult(intent, INSECT_DATA);
+                    return;
+                }
+            }
+        });
         AE_down_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,7 +237,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                         if (mShowMore) {
                             mShowMore = false;
                             result2.setVisibility(View.VISIBLE);
-                            // AE_down_up.setCompoundDrawables(ctx.getResources().getDrawable(android.R.drawable.arrow_down_float), null, null, null);
                             AE_down_up.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
                         } else {
                             mShowMore = true;
@@ -220,31 +248,33 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
             }
         });
-        AE_find_near_sites = (Button) findViewById(R.id.AE_find_near_sites);
-        AE_find_near_sites.setOnClickListener(new View.OnClickListener() {
+        btnNearbySites = (Button) findViewById(R.id.AE_find_near_sites);
+        btnNearbySites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(AE_find_near_sites, 100, new Util.UtilAnimationListener() {
+                Util.flashOnce(btnNearbySites, 100, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        if (riverID == null) {
-                            Toast.makeText(ctx, "Please choose the river first", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
                         getEvaluationsByRiver();
                     }
                 });
 
             }
         });
-        viewStub = (ViewStub) findViewById(R.id.viewStub);
-        codeStatus = getIntent().getIntExtra("statusCode", 0);
-        if (codeStatus == CREATE_EVALUATION) {
-            //fieldPicker();
-            river = (RiverDTO) getIntent().getSerializableExtra("riverCreate");
-            response = (ResponseDTO) getIntent().getSerializableExtra("response");
-            WT_sp_river.setText(river.getRiverName());
+        //codeStatus = getIntent().getIntExtra("statusCode", 0);
+        setMoreButtons();
+
+    }
+
+    private void getCachedData() {
+        File file = new File(getIntent().getStringExtra("riverCreate"));
+        try {
+            String json = FileUtils.readFileToString(file);
+            Gson gson = new Gson();
+            river = gson.fromJson(json, RiverDTO.class);
             WT_sp_riverConnected.setText(river.getRiverName());
+            WT_sp_riverConnected.setVisibility(View.VISIBLE);
+
             setStreamSpinner(river.getStreamList());
             Util.expand(WT_sp_stream, 2000, new Util.UtilAnimationListener() {
                 @Override
@@ -252,18 +282,31 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                     WT_sp_stream.setVisibility(View.VISIBLE);
                 }
             });
-            riverID = river.getRiverID();
-            Log.e(LOG, CREATE_EVALUATION + " River ID : " + riverID);
-
-            //buildUI();
+            Log.e(LOG, CREATE_EVALUATION + "****************************Evaluation River: " + river.getRiverName());
+            file.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //buildUI();
+
+        CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
+            @Override
+            public void onFileDataDeserialized(ResponseDTO r) {
+                response = r;
+            }
+
+            @Override
+            public void onDataCached(ResponseDTO response) {
+
+            }
+
+            @Override
+            public void onError() {
+                Log.e(LOG, "Failed to get cached data");
+            }
+        });
+
     }
 
-    /*  if (getIntent().getSerializableExtra("riverCreate") != null) {
-                river = (RiverDTO) getIntent().getSerializableExtra("riverCreate");
-                setRiverField(river);
-            }*/
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -278,9 +321,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 mService.startSyncCachedRequests(new RequestSyncService.RequestSyncListener() {
                     @Override
                     public void onTasksSynced(int goodResponses, int badResponses) {
-                        if (goodResponses > 0) {
-                            // getRiversAroundMe();
-                        }
+
                     }
 
                     @Override
@@ -310,32 +351,24 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  setTheme(R.style.EvalListTheme);
+        Log.e(LOG, "*********** onCreate **********************");
         setContentView(R.layout.activity_evaluation);
         ctx = getApplicationContext();
         activity = this;
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("New Observation");
-        getSupportActionBar().setSubtitle(sdf.format(new Date()));
+
         teamMember = SharedUtil.getTeamMember(ctx);
 
         setField();
-        if (savedInstanceState != null) {
-            response = (ResponseDTO) savedInstanceState.getSerializable("response");
-            buildUI();
-        }
-        // (RiverDTO) data.getSerializableExtra("riverCreate");
-
+        getCachedData();
+        getSupportActionBar().setTitle("");
+        Util.setCustomActionBar(ctx,getSupportActionBar(),
+                "New Observation", "Collect and record data",
+                ContextCompat.getDrawable(ctx,R.drawable.ic_launcher),null);
 
     }
 
 
-    private int currentView;
-
-
-    int codeStatus;
-    RiverDTO river;
+    private RiverDTO river;
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -353,23 +386,17 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_evaluation, menu);
-        mMenu = menu;
-        WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
-        fieldPicker();
+//        getMenuInflater().inflate(R.menu.menu_evaluation, menu);
+//        mMenu = menu;
+//        cleanForm();
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -378,8 +405,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
             stopLocationUpdates();
         }
         if (id == R.id.action_refresh) {
-            WebCheckResult wr = WebCheck.checkNetworkAvailability(ctx);
-            fieldPicker();
 
         }
 
@@ -407,7 +432,8 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 if (resultCode == CREATE_EVALUATION) {
                     RiverDTO riv = (RiverDTO) data.getSerializableExtra("riverCreate");
                     response = (ResponseDTO) data.getSerializableExtra("response");
-                    setRiverField(riv);
+                    river = riv;
+                    WT_sp_river.setText(riv.getRiverName());
                 }
                 break;
             case GPS_DATA:
@@ -424,7 +450,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 Log.w(LOG, "### insects ui has returned with data?");
                 if (resultCode == RESULT_OK) {
                     isInsectsPickerBack = true;
-                    isBusy = true;
                     if ((List<InsectImageDTO>) data.getSerializableExtra("selectedInsects") != null) {
 
                         insectImageList = (List<InsectImageDTO>) data.getSerializableExtra("overallInsect");
@@ -438,23 +463,18 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         }
     }
 
-    public void setRiverField(RiverDTO r) {
-        // ToastUtil.toast(ctx, "yes");
-        riverID = r.getRiverID();
-        WT_sp_river.setText(r.getRiverName());
+    CategoryDTO category;
 
-    }
+    public void setFieldsFromSelectedSite() {
+         category = evaluationSite.getCategory();
+        if (category.getCategoryName().contains("Rocky")) {
+            radioRocky.setChecked(true);
+        }
+        if (category.getCategoryName().contains("Sandy")) {
+            radioSandy.setChecked(true);
+        }
 
-    public void setFieldsFromVisitedSites(EvaluationSiteDTO r) {
-        evaluationSite = r;
-        riverID = r.getRiverID();
-        WT_sp_river.setText(r.getRiver().getRiverName());
-        WT_sp_river.setEnabled(false);
-        categoryID = r.getCategoryID();
-        WT_sp_category.setText(r.getCategory().getCategoryName());
-        WT_sp_category.setEnabled(false);
-        catType = r.getCategory().getCategoryName();
-        txtSiteName.setText("Site #" + r.getEvaluationSiteID());
+        txtSiteName.setText("Site #" + evaluationSite.getEvaluationSiteID());
         Util.expandOrCollapse(llSiteLayout, 100, true, new Util.UtilAnimationListener() {
             @Override
             public void onAnimationEnded() {
@@ -463,150 +483,16 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         });
     }
 
-    static final DecimalFormat df = new DecimalFormat("###,###,###,###,##0.0");
+    RadioButton radioRocky, radioSandy;
+    List<String> streamTitles;
 
-    private String getDistance(float mf) {
-        if (mf < 1000) {
-            return df.format(mf) + " metres";
-        }
-        Double m = Double.parseDouble("" + mf);
-        Double n = m / 1000;
-
-        return df.format(n) + " kilometres";
-
-    }
-
-    private void calculateDistances() {
-        if (location != null) {
-            List<RiverPointDTO> riverPoints = new ArrayList<>();
-            Location spot = new Location(LocationManager.GPS_PROVIDER);
-
-            for (RiverDTO w : response.getRiverList()) {
-                for (RiverPartDTO x : w.getRiverpartList()) {
-                    for (RiverPointDTO y : x.getRiverpointList()) {
-                        spot.setLatitude(y.getLatitude());
-                        spot.setLongitude(y.getLongitude());
-                        y.setDistanceFromMe(location.distanceTo(spot));
-                    }
-                    Collections.sort(x.getRiverpointList());
-                    x.setNearestLatitude(x.getRiverpointList().get(0).getLatitude());
-                    x.setNearestLongitude(x.getRiverpointList().get(0).getLongitude());
-                    x.setDistanceFromMe(x.getRiverpointList().get(0).getDistanceFromMe());
-                }
-                Collections.sort(w.getRiverpartList());
-                w.setNearestLatitude(w.getRiverpartList().get(0).getNearestLatitude());
-                w.setNearestLongitude(w.getRiverpartList().get(0).getNearestLongitude());
-                w.setDistanceFromMe(w.getRiverpartList().get(0).getDistanceFromMe());
-
-
-            }
-            Collections.sort(response.getRiverList());
-        }
-    }
-
-    private void setSpinner() {
-
-        //calculateDistances();
-        evaluationSite = new EvaluationSiteDTO();
-        Log.d(LOG, "category size " + response.getCategoryList().size());
-        WT_sp_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(WT_sp_category, 100, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        hideKeyboard();
-                        Util.showPopupCategoryBasicWithHeroImage(ctx, EvaluationActivity.this, response.getCategoryList(), WT_sp_category, "", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int index) {
-                                indexCat = index;
-                                WT_sp_category.setText(response.getCategoryList().get(indexCat).getCategoryName());
-                                categoryID = response.getCategoryList().get(indexCat).getCategoryId();
-                                catType = (response.getCategoryList().get(indexCat).getCategoryName());
-                                evaluationSite.setCategoryID(categoryID);
-                                Log.e(LOG, categoryID + "");
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
-        Log.d(LOG, "river size " + response.getRiverList().size());
-        WT_sp_riverConnected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(WT_sp_riverConnected, 100, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Util.showPopupRiverWithHeroImage(ctx, EvaluationActivity.this, response.getRiverList(), WT_sp_river, "", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int position) {
-                                // WT_sp_river.setTextColor(getResources().getColor(R.color.gray));
-                                indexRiv = position;
-                                WT_sp_riverConnected.setText(response.getRiverList().get(position).getRiverName());
-                                riverID = response.getRiverList().get(position).getRiverID();
-
-                                evaluationSite.setRiverID(riverID);
-
-                                setStreamSpinner(response.getRiverList().get(position).getStreamList());
-                                Util.expand(WT_sp_stream, 200, new Util.UtilAnimationListener() {
-                                    @Override
-                                    public void onAnimationEnded() {
-                                        WT_sp_stream.setVisibility(View.VISIBLE);
-                                    }
-                                });
-
-                            }
-                        });
-                    }
-                });
-
-
-            }
-        });
-        setAutoTextData();
-
-
-    }
-
-    List<String> riverTiles, streamTiles;
-
-    private void setAutoTextData() {
-        riverTiles = new ArrayList<>();
-        for (RiverDTO r : response.getRiverList()) {
-            riverTiles.add(r.getRiverName().trim());
-        }
-        ArrayAdapter<String> riverSpinner = new ArrayAdapter<String>(ctx, R.layout.xsimple_spinner_dropdown_item, riverTiles);
-        WT_sp_river.setAdapter(riverSpinner);
-        WT_sp_river.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                hideKeyboard();
-                indexRiv = searchRiver(parent.getItemAtPosition(position).toString());
-                WT_sp_river.setText(response.getRiverList().get(indexRiv).getRiverName().trim());
-                riverID = response.getRiverList().get(indexRiv).getRiverID();
-                evaluationSite.setRiverID(riverID);
-                Log.e(LOG, riverID + " " + parent.getItemAtPosition(position).toString());
-                setStreamSpinner(response.getRiverList().get(indexRiv).getStreamList());
-                Util.expand(WT_sp_stream, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        WT_sp_stream.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        });
-
-
-    }
 
     private void setStreamSpinner(List<StreamDTO> streamList) {
-        streamTiles = new ArrayList<>();
+        streamTitles = new ArrayList<>();
         for (StreamDTO s : streamList) {
-            streamTiles.add(s.getStreamName());
+            streamTitles.add(s.getStreamName());
         }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(ctx, R.layout.xsimple_spinner_dropdown_item, streamTiles);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(ctx, R.layout.xsimple_spinner_dropdown_item, streamTitles);
         WT_sp_stream.setAdapter(arrayAdapter);
         WT_sp_stream.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -616,36 +502,23 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         });
     }
 
-    void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) ctx
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(WT_sp_river.getWindowToken(), 0);
-        //imm.hideSoftInputFromWindow(WT_sp_river.getWindowToken(), 0);
-    }
+    private Integer indexCat;
 
-    private String riverToBeCreated;
-    private Integer indexCat, indexRiv;
-
-    private void startGPSDialog() {
-
-
-        AE_create.setOnClickListener(new View.OnClickListener() {
+    private void setMoreButtons() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(AE_create, 100, new Util.UtilAnimationListener() {
+                Util.flashOnce(btnSave, 100, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        if (riverID == null) {
-                            ToastUtil.toast(ctx, "Please select river");
-                            return;
-                        }
-                        if (categoryID == null) {
+
+                        if (category == null) {
                             ToastUtil.toast(ctx, "Please select category");
                             return;
                         }
 
-                        if (evaluationSite == null || (accuracy == null || accuracy==0)) {
-                            ToastUtil.toast(ctx, "Observation site not defined, Once the site is define, the red WORLD icon will change to blue. Make sure you LOCATION setting is enabled");
+                        if (evaluationSite == null || (accuracy == null || accuracy == 0)) {
+                            ToastUtil.toast(ctx, "Observation site not defined, Once the site is defined, the red WORLD icon will change to blue. Make sure you LOCATION setting is enabled");
 
                             AE_pin_point.setVisibility(View.VISIBLE);
                             AE_pin_point.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
@@ -655,9 +528,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
                                 }
                             });
-                            /*GPS_layout4.setVisibility(View.VISIBLE);
-                            AE_pin_point.setVisibility(View.VISIBLE);
-                            startLocationUpdates();*/
+
                             return;
                         }
                         if (selectedInsects == null) {
@@ -670,7 +541,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                             return;
                         }
 
-                        AE_create.setEnabled(false);
+                        btnSave.setEnabled(false);
                         localSaveRequests();
 
                     }
@@ -681,35 +552,14 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
     }
 
-    private void setLocationTextviews(Location loc) {
-        txtLat.setText("" + loc.getLatitude());
-        txtLng.setText("" + loc.getLongitude());
-        txtAccuracy.setText("" + loc.getAccuracy());
-    }
-
-    private void startSelectionDialog() {
-
-        insectImageList = new ArrayList<InsectImageDTO>();
+    private void setImageList() {
+        insectImageList = new ArrayList<>();
         for (InsectDTO i : response.getInsectList()) {
-
             for (InsectImageDTO ii : i.getInsectimageDTOList()) {
                 insectImageList.add(ii);
             }
         }
-        SL_show_insect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (categoryID == null) {
-                    ToastUtil.toast(ctx, "Select category, before choosing macroinvertebrates");
-                } else {
 
-                    Log.d(LOG, "Insect Select " + insectImageList.size());
-                    Intent intent = new Intent(EvaluationActivity.this, InsectPickerActivity.class);
-                    intent.putExtra("insetImageList", (java.io.Serializable) response.getInsectimageDTOList());
-                    startActivityForResult(intent, INSECT_DATA);
-                }
-            }
-        });
     }
 
     public void scoreUpdater(List<InsectImageDTO> insectImages) {
@@ -723,7 +573,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         TV_avg_score.setText(calculateAverage(insectImages) + "");
         TV_average_score.setText(((insectImages != null) ? insectImages.size() : 0.0) + "");
         selectedInsects = insectImages;
-        statusScore(insectImages, catType);
+        statusScore(insectImages, category.getCategoryName());
         TV_total_score.setText(calculateScore(insectImages) + "");
         Log.e(LOG, calculateScore(insectImages) + "Yes");
     }
@@ -739,14 +589,9 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 TV_avg_score.setText("0.0");
                 IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.gray_crap));
                 WT_sp_river.setText(null);
-                //WT_sp_river.setHint("What is the current river are you at?");
-                WT_sp_category.setText(null);
-                // WT_sp_category.setHint("What environment are you at? Rocky or Sandy?");
                 EDT_comment.setText(null);
                 WT_sp_stream.setText(null);
                 WT_sp_stream.setVisibility(View.GONE);
-                WT_sp_riverConnected.setText(null);
-                //WT_sp_riverConnected.setHint("What is the current river are you at?");
                 AE_pin_point.setVisibility(View.GONE);
                 result3.setVisibility(View.GONE);
 
@@ -762,10 +607,11 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
                 WC_score.setText("");
                 WP_score.setText("");
                 WT_score.setText("");
-                categoryID = null;
-                riverID = null;
+                category = null;
                 conditionID = null;
-                AE_create.setEnabled(true);
+                radioRocky.setChecked(false);
+                radioSandy.setChecked(false);
+                btnSave.setEnabled(true);
             }
         });
 
@@ -923,106 +769,34 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
     }
 
     public void buildUI() {
-        setSpinner();
-        Log.d(LOG, "******* getting cached data");
-        startSelectionDialog();
-        //addMinus();
-        startGPSDialog();
-    }
-
-    private void setProgressDialog() {
-        pd = new ProgressDialog(EvaluationActivity.this);
-        pd.setMessage("Saving Observation...");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    private void sendRequest(final RequestDTO request) {
-        //setProgressDialog();
-        /*BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, request, ctx, new BaseVolley.BohaVolleyListener() {
-            @Override
-            public void onResponseReceived(ResponseDTO response) {
-                if (response.getStatusCode() > 0) {
-                    return;
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // cleanForm();
-                            //setRefreshActionButtonState(false);
-                            isInsectsPickerBack = true;
-                            isBusy = false;
-                            pd.dismiss();
-                            ToastUtil.toast(ctx, "Observation successfully saved");
-                            cleanForm();
-                            getRiversAroundMe();
-                            //showImageDialog();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onVolleyError(VolleyError error) {
-
-                //addRequestToCache(request);
-            }
-
-            @Override
-            public void onError(String message) {
-                addRequestToCache(request);
-
-            }
-        });*/
-        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, request, new WebSocketUtil.WebSocketListener() {
-            @Override
-            public void onMessage(ResponseDTO response) {
-                if (response.getStatusCode() > 0) {
-                    //addRequestToCache(request);
-                    return;
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // cleanForm();
-                            //setRefreshActionButtonState(false);
-                            isInsectsPickerBack = true;
-                            isBusy = false;
-                            pd.dismiss();
-                            Util.showToast(ctx, "Observation successfully saved");
-                            cleanForm();
-                            //getRiversAroundMe();
-                            //showImageDialog();
-                            finish();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onClose() {
-
-            }
-
-            @Override
-            public void onError(String message) {
-                addRequestToCache(request);
-            }
-        });
+        evaluationSite = new EvaluationSiteDTO();
+        setImageList();
     }
 
     private void addRequestToCache(RequestDTO request) {
-        //setRefreshActionButtonState(true);
         RequestCacheUtil.addRequest(ctx, request, new CacheUtil.CacheRequestListener() {
             @Override
             public void onDataCached() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        pd.dismiss();
-                        Util.showToast(ctx, "Observation successfully saved on device, will be uploaded when connectivity is available");
+                        Log.w(LOG, "+++++++++++++ request cached, starting bound service");
+                        if (mBound) {
+                            mService.startSyncCachedRequests(new RequestSyncService.RequestSyncListener() {
+                                @Override
+                                public void onTasksSynced(int goodResponses, int badResponses) {
+                                    Log.w(LOG, "--- onTasksSynced goodResponses: " + goodResponses + " bad: " + badResponses);
+                                }
+
+                                @Override
+                                public void onError(String message) {
+                                    Log.e(LOG, message);
+                                }
+                            });
+                        }
                         cleanForm();
-//                        showImageDialog();
+                        Snackbar.make(WT_sp_riverConnected, "Observation has been sent to the server", Snackbar.LENGTH_LONG).show();
+                        finish();
                     }
                 });
 
@@ -1036,104 +810,70 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
             @Override
             public void onError() {
-                pd.dismiss();
-                //setRefreshActionButtonState(false);
             }
         });
     }
 
-    public void setEvaluationSiteData(EvaluationSiteDTO site) {
+    private void setEvaluationSiteData(EvaluationSiteDTO site) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 AE_pin_point.setVisibility(View.VISIBLE);
             }
         });
-        evaluationSite = new EvaluationSiteDTO();
         evaluationSite = site;
-        /*evaluationSite.setCategoryID(categoryID);
-        evaluationSite.setRiverID(riverID);*/
 
     }
 
-    GregorianCalendar c;
-
     private void localSaveRequests() {
         RequestDTO w = new RequestDTO(RequestDTO.ADD_EVALUATION);
-        c = new GregorianCalendar();
-        evaluationDTO = new EvaluationDTO();
+
         if (!WT_sp_stream.getText().toString().equals("") && (!WT_sp_stream.getText().toString().equals(null))) {
             StreamDTO stream = new StreamDTO();
             stream.setStreamName(WT_sp_stream.getText().toString());
-            stream.setRiverID(riverID);
+            stream.setRiverID(river.getRiverID());
             evaluationSite.setStream(stream);
         } else {
             evaluationSite.setStream(null);
         }
-        Log.d(LOG, "" + selectedInsects.size());
-
-
-        evaluationDTO.setConditionsID(conditionID);
-        evaluationDTO.setTeamMemberID(teamMember.getTeamMemberID());
+        Log.d(LOG, "selected insects: " + selectedInsects.size());
+//
         evaluationSite.setDateRegistered(new Date().getTime());
-        evaluationSite.setCategoryID(categoryID);
-        evaluationSite.setRiverID(riverID);
+        evaluationSite.setCategoryID(category.getCategoryId());
+        evaluationSite.setRiverID(river.getRiverID());
         evaluationSite.setLatitude(latitude);
         evaluationSite.setLongitude(longitude);
         evaluationSite.setAccuracy(accuracy);
+//
+        evaluationDTO = new EvaluationDTO();
+        evaluationDTO.setConditionsID(conditionID);
+        evaluationDTO.setTeamMemberID(teamMember.getTeamMemberID());
         evaluationDTO.setEvaluationSite(evaluationSite);
-
-
         evaluationDTO.setRemarks(EDT_comment.getText().toString());
         evaluationDTO.setpH(Double.parseDouble((WP_score.getText().toString().isEmpty()) ? 0.0 + "" : WP_score.getText().toString()));
-
         evaluationDTO.setOxygen(Double.parseDouble((WO_score.getText().toString().isEmpty()) ? 0.0 + "" : WO_score.getText().toString()));
-
         evaluationDTO.setWaterClarity(Double.parseDouble((WC_score.getText().toString().isEmpty()) ? 0.0 + "" : WC_score.getText().toString()));
-
         evaluationDTO.setWaterTemperature(Double.parseDouble((WT_score.getText().toString().isEmpty()) ? 0.0 + "" : WT_score.getText().toString()));
-
         evaluationDTO.setElectricityConductivity(Double.parseDouble((WE_score.getText().toString().isEmpty()) ? 0.0 + "" : WE_score.getText().toString()));
-
         evaluationDTO.setEvaluationDate(new Date().getTime());
         evaluationDTO.setScore(Double.parseDouble(TV_avg_score.getText().toString()));
-        Log.i(LOG, new Date(evaluationDTO.getEvaluationDate()).toString());
+
         evaluationDTO.setEvaluationimageList(takenImages);
 
         w.setInsectImages(selectedInsects);
         w.setEvaluation(evaluationDTO);
-
-        //ToastUtil.errorToast(ctx, c.getTime().getTime() + " : " + c.getTime());
-        //Log.i(LOG, (new Gson()).toJson(w));
-        System.out.println((new Gson()).toJson(w));
-        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx);
-
-        setProgressDialog();
-        if (wcr.isWifiConnected()) {
-            sendRequest(w);
-            //addRequestToCache(w);
-        } else if (wcr.isMobileConnected()) {
-            sendRequest(w);
-        } else {
-            addRequestToCache(w);
-        }
+        addRequestToCache(w);
 
     }
 
-    List<EvaluationImageDTO> takenImages;
+    private List<EvaluationImageDTO> takenImages;
 
-    public void setTakenImage(List<EvaluationImageDTO> takenImages) {
-        if (takenImages == null) {
-            takenImages = new ArrayList<>();
-        }
-        this.takenImages = takenImages;
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.e(LOG, "################ onStart .... connect API and location clients ");
-        if (!mResolvingError) {  // more about this later
+        if (!mResolvingError) {
             mGoogleApiClient.connect();
         }
 
@@ -1146,14 +886,11 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
     @Override
     protected void onDestroy() {
-        overridePendingTransition(com.sifiso.codetribe.minisasslibrary.R.anim.slide_in_left, com.sifiso.codetribe.minisasslibrary.R.anim.slide_out_right);
-        //  TimerUtil.killFlashTimer();
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         super.onPause();
     }
 
@@ -1161,7 +898,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
     public void onStop() {
         Log.d(LOG,
                 "#################### onStop");
-
 
         if (mBound) {
             unbindService(mConnection);
@@ -1178,123 +914,9 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
     }
 
 
-    EvaluationSiteDTO evaluationSite;
+    private List<InsectImageDTO> insectImageList;
 
-
-    List<InsectImageDTO> insectImageList;
-
-
-    private void showImageDialog() {
-
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                EvaluationActivity.this);
-
-        // set title
-        alertDialogBuilder.setTitle("Observation Created");
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Create another observation?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Intent intent = new Intent(ctx, PictureActivity.class);
-                        // intent.putExtra("takenImages", )
-                        // startActivityForResult(intent, CAPTURE_IMAGE);
-                        cleanForm();
-
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        finish();
-                        dialog.cancel();
-                    }
-                });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-
-    }
-
-    ProgressDialog pd;
-
-    private void showEvaluationDialog() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        EvaluationActivity.this);
-
-                // set title
-                alertDialogBuilder.setTitle("Upload Results");
-
-                // set dialog message
-                alertDialogBuilder
-                        .setMessage("Create a new Observation!!")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // Intent intent = new Intent(ctx, PictureActivity.class);
-                                // intent.putExtra("takenImages", )
-                                // startActivityForResult(intent, CAPTURE_IMAGE);
-                                cleanForm();
-                                dialog.cancel();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
-                                // the dialog box and do nothing
-                                finish();
-                                dialog.cancel();
-                            }
-                        });
-                alertDialogBuilder
-                        .setMessage("Contribute to Existing Site!!")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // Intent intent = new Intent(ctx, PictureActivity.class);
-                                // intent.putExtra("takenImages", )
-                                // startActivityForResult(intent, CAPTURE_IMAGE);
-                                cleanForm();
-                                dialog.cancel();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // if this button is clicked, just close
-                                        // the dialog box and do nothing
-                                        finish();
-                                        dialog.cancel();
-                                    }
-                                }
-
-                        );
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-            }
-        });
-
-
-    }
-
-
-    boolean isBusy, isFromAddingEvaluation;
-
-    private void getRiversAroundMe() {
+    private void getRiversAroundMex() {
 
         CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
             @Override
@@ -1318,10 +940,11 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
 
     protected void stopLocationUpdates() {
-        Log.e(LOG, "###### stopLocationUpdates - " + new Date().toString());
+        Log.d(LOG, "###### stopLocationUpdates - " + new Date().toString());
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient, this);
+            Log.d(LOG, "###### removeLocationUpdates fired OK");
         }
     }
 
@@ -1336,137 +959,65 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         }
     }
 
+
     boolean isInsectsPickerBack;
 
     @Override
     public void onLocationChanged(Location location) {
-        this.location = location;
-        setGPSLocation(location);
+        Log.e(LOG, "####### onLocationChanged, accuracy: " + location.getAccuracy());
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
-            setGPSLocation(location);
-            AE_pin_point.setColorFilter(getResources().getColor(R.color.blue), PorterDuff.Mode.MULTIPLY);
-            if (!isInsectsPickerBack) {
-
-                //fieldPicker();
-            }
-        }
-        Log.e(LOG, "####### onLocationChanged");
-    }
-
-    Float accuracy = null;
-    Double latitude, longitude;
-
-    private void setGPSLocation(Location loc) {
-
-        this.location = loc;
-
-       /* evaluationSite.setLatitude(location.getLatitude());
-        evaluationSite.setLongitude(location.getLongitude());
-        evaluationSite.setAccuracy(location.getAccuracy());*/
-        setLocationTextviews(loc);
-        accuracy = location.getAccuracy();
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        Log.w(LOG, "### Passing " + loc.getAccuracy());
-        if (loc.getAccuracy() <= ACCURACY_THRESHOLD) {
-
-            location = loc;
-            setLocationTextviews(loc);
-            Log.w(LOG, "### Passing location2");
-           /* evaluationSite.setLatitude(location.getLatitude());
-            evaluationSite.setLongitude(location.getLongitude());
-            evaluationSite.setAccuracy(location.getAccuracy());*/
+            this.location = location;
             accuracy = location.getAccuracy();
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             stopLocationUpdates();
-            setEvaluationSiteData(evaluationSite);
-
-            //finish();
-            Log.e(LOG, "+++ best accuracy found: " + location.getAccuracy());
         }
+
     }
 
-
-    //getting evaluations by distance
-    boolean isBusy2;
-
+    Float accuracy;
+    Double latitude, longitude;
 
     private void getEvaluationsByRiver() {
-        if (isBusy2) {
-            Toast.makeText(ctx, "Observations Loaded ...", Toast.LENGTH_SHORT).show();
+        if (!river.getEvaluationsiteList().isEmpty()) {
+            ResponseDTO w = new ResponseDTO();
+            w.setEvaluationSiteList(river.getEvaluationsiteList());
+            setPopupList();
             return;
         }
-
-        RequestDTO w = new RequestDTO();
-        w.setRequestType(RequestDTO.LIST_EVALUATION_BY_RIVER_ID);
-        w.setRiverID(riverID);
-        isBusy2 = true;
-
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
-            @Override
-            public void onResponseReceived(ResponseDTO r) {
-                isBusy2 = false;
-//                progressBar.setVisibility(View.GONE);
-                if (r.getStatusCode() > 0) {
-                    Toast.makeText(ctx, r.getMessage(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!r.getEvaluationSiteList().isEmpty()) {
-                    setPopupList(r);
-                } else {
-                    ToastUtil.toast(ctx, "Unfortunately there are no observations made yet on " + WT_sp_river.getText().toString().trim() + " river");
-                }
-
-            }
-
-            @Override
-            public void onVolleyError(VolleyError error) {
-                isBusy2 = false;
-                //Toast.makeText(ctx, "Problem: " + error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onError(String message) {
-                isBusy2 = false;
-            }
-        });
     }
 
-    private void setPopupList(ResponseDTO r) {
-        resp = r;
-        calculateDistancesForSite();
-        Util.showPopupEvaluationSite(ctx, activity, resp.getEvaluationSiteList(), AE_find_near_sites, "Near Observations Site", new Util.PopupSiteListener() {
+    private void setPopupList() {
+        calculateDistancesForSites();
+        Util.showPopupEvaluationSite(ctx, activity, river.getEvaluationsiteList(), btnNearbySites, "Near Observations Site", new Util.PopupSiteListener() {
             @Override
             public void onEvaluationClicked(EvaluationSiteDTO evaluation) {
-                // showEvaluationDialog();
-                Log.i(LOG, new Gson().toJson(evaluation));
-                setFieldsFromVisitedSites(evaluation);
+                Log.i(LOG, "++++++++++++++++EvaluationSite selected: \n" + new Gson().toJson(evaluation));
+                evaluationSite = evaluation;
+                setFieldsFromSelectedSite();
             }
         });
     }
 
-    ResponseDTO resp;
+    EvaluationSiteDTO evaluationSite = new EvaluationSiteDTO();
 
-    private void calculateDistancesForSite() {
+    private void calculateDistancesForSites() {
         try {
             if (location != null) {
-                List<EvaluationSiteDTO> criverPoints = new ArrayList<>();
                 Location spot = new Location(LocationManager.GPS_PROVIDER);
-
-                for (EvaluationSiteDTO w : resp.getEvaluationSiteList()) {
+                for (EvaluationSiteDTO w : river.getEvaluationsiteList()) {
                     spot.setLatitude(w.getLatitude());
                     spot.setLongitude(w.getLongitude());
                     w.setDistanceFromMe(location.distanceTo(spot));
                 }
-                Collections.sort(resp.getEvaluationSiteList());
+                Collections.sort(river.getEvaluationsiteList());
             }
         } catch (Exception e) {
 
         }
     }
 
-    static final int ACCURACY_LIMIT = 20;
+    static final int ACCURACY_LIMIT = 50;
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -1520,7 +1071,6 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         }
     }
 
-    /* Creates a dialog for an error message */
     private void showErrorDialog(int errorCode) {
         // Create a fragment for the error dialog
         ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
@@ -1533,143 +1083,7 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
 
     WebCheckResult w;
 
-    private void fieldPicker() {
-        w = WebCheck.checkNetworkAvailability(ctx);
 
-        if (w.isWifiConnected()) {
-            // Util.showToast(ctx, "System detected network connectivity and is going to load only the nearest rivers");
-            Log.d(LOG, "Wifi setup");
-            response = new ResponseDTO();
-            Util.collapse(WT_sp_river, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_river.setVisibility(View.GONE);
-                }
-            });
-            Util.expand(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_riverConnected.setVisibility(View.VISIBLE);
-                }
-            });
-
-            //f (!isBusy) {
-            getRiversAroundMe();
-            // }
-
-        } else if (w.isMobileConnected()) {
-            // Util.showToast(ctx, "System detected network connectivity and is going to load only the nearest rivers");
-            Log.d(LOG, "Mobile setup");
-            response = new ResponseDTO();
-            Util.collapse(WT_sp_river, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_river.setVisibility(View.GONE);
-                }
-            });
-            Util.expand(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_riverConnected.setVisibility(View.VISIBLE);
-                }
-            });
-
-            //f (!isBusy) {
-            getRiversAroundMe();
-            // }
-
-        } else {
-            response = new ResponseDTO();
-            Util.collapse(WT_sp_riverConnected, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_riverConnected.setVisibility(View.GONE);
-                }
-            });
-            Util.expand(WT_sp_river, 200, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_river.setVisibility(View.VISIBLE);
-                }
-            });
-            getRiversAroundMe();
-        }
-    }
-
-    private void getCachedRiverData() {
-
-        CacheUtil.getCachedData(ctx, CacheUtil.CACHE_RIVER_DATA, new CacheUtil.CacheUtilListener() {
-            @Override
-            public void onFileDataDeserialized(final ResponseDTO respond) {
-
-                response = new ResponseDTO();
-                response = respond;
-                buildUI();
-            }
-
-            @Override
-            public void onDataCached(ResponseDTO r) {
-
-            }
-
-            @Override
-            public void onError() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
-
-            }
-        });
-
-
-    }
-
-    public void showSettingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(EvaluationActivity.this);
-
-        builder.setTitle("GPS settings");
-        builder.setMessage("GPS is not enabled. Do you want to go to settings menu, to search for location?");
-        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-    }
-
-    boolean isFound;
-
-    private Integer searchRiver(String text) {
-
-        int index = 0;
-
-        for (int i = 0; i < response.getRiverList().size(); i++) {
-            RiverDTO searchRiver = response.getRiverList().get(i);
-            if (searchRiver.getRiverName().contains(text)) {
-                isFound = true;
-                break;
-            }
-            index++;
-        }
-        if (isFound) {
-            //STF_list.setSelection(index);
-            Log.e(LOG, text + " Found River " + response.getRiverList().get(index).getRiverName() + " " + response.getRiverList().get(index).getRiverID());
-        } else {
-            // Util.showToast(ctx, ctx.getString(R.string.river_not_found) + " " + SLT_editSearch.getText().toString());
-        }
-        hideKeyboard();
-        return index;
-    }
 
     public void setRefreshActionButtonState(final boolean refreshing) {
         if (mMenu != null) {
@@ -1684,10 +1098,5 @@ public class EvaluationActivity extends AppCompatActivity implements LocationLis
         }
     }
 
-    private void createDraft() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putInt(Constants.SP_RIVER_ID, riverID);
-        //ed.putString(Constants.SP_RIVER_NAME,setSpinner();)
-    }
+
 }

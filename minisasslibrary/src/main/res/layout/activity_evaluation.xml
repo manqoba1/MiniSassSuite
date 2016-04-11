@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/mon_margin"
-
+    android:padding="@dimen/mon_padding"
     tools:context="com.sifiso.codetribe.minisasslibrary.activities.EvaluationActivity">
 
     <ProgressBar
@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:visibility="gone" />
-
 
 
     <ScrollView
@@ -32,7 +31,9 @@
                 android:id="@+id/result1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="4dp">
+                android:layout_margin="@dimen/mon_padding"
+                app:cardCornerRadius="@dimen/mon_divider"
+                app:cardElevation="@dimen/mon_divider">
 
                 <include
                     android:id="@+id/l1"
@@ -50,8 +51,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result1"
+                android:layout_margin="@dimen/mon_padding"
                 android:layout_marginTop="@dimen/mon_wide"
-                android:elevation="4dp">
+                app:cardCornerRadius="@dimen/mon_divider"
+                app:cardElevation="@dimen/mon_divider">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -102,8 +105,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result2"
+                android:layout_margin="@dimen/mon_padding"
                 android:layout_marginTop="@dimen/mon_margin"
-                android:elevation="4dp">
+                app:cardCornerRadius="@dimen/mon_divider"
+                app:cardElevation="@dimen/mon_divider">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,29 +148,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/result3"
+                android:layout_margin="@dimen/mon_padding"
                 android:layout_marginTop="@dimen/mon_margin"
-                android:elevation="4dp">
+                app:cardCornerRadius="@dimen/mon_divider"
+                app:cardElevation="@dimen/mon_padding">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp">
+                    android:background="@color/beige_pale"
+                    android:orientation="vertical"
+                    android:padding="@dimen/mon_margin">
 
-                    <include
-                        android:id="@+id/l4"
-                        layout="@layout/comments"
+                    <EditText
+                        android:id="@+id/EDT_comment"
+                        style="@style/TextStyleGray"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:hint="Comment/ Notes"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/gray" />
+
+                    <Button
+                        android:id="@+id/AE_create"
+                        style="@style/ButtonRed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/EDT_comment"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/mon_wide"
+                        android:drawableLeft="@android:drawable/ic_menu_send"
+                        android:drawablePadding="@dimen/mon_divider"
+                        android:paddingRight="@dimen/mon_margin"
+                        android:text="Submit Observation"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
+
             </android.support.v7.widget.CardView>
 
         </RelativeLayout>
     </ScrollView>
 
-    <ViewStub
-        android:id="@+id/viewStub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
 </RelativeLayout>

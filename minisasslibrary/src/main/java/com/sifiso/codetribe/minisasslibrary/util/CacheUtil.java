@@ -83,52 +83,20 @@ public class CacheUtil implements Serializable {
     }
 
     public static void cacheData(Context context, ResponseDTO r, int type, CacheUtilListener cacheUtilListener) {
+        for (RiverDTO riv: r.getRiverList()) {
+            riv.setRiverName(riv.getRiverName().trim());
+        }
         dataType = type;
         response = r;
         response.setLastCacheDate(new Date());
         utilListener = cacheUtilListener;
         ctx = context;
         new CacheTask().execute();
-//
-//        //add rivers to cache - keep history of rivers searched
-//        getCachedData(context, dataType, new CacheUtilListener() {
-//            @Override
-//            public void onFileDataDeserialized(ResponseDTO r) {
-//                final HashMap<Integer, RiverDTO> map = new HashMap<Integer, RiverDTO>();
-//                if (r.getRiverList() == null) {
-//                    r.setRiverList(new ArrayList<RiverDTO>());
-//                }
-//                for (RiverDTO river : r.getRiverList()) {
-//                    map.put(river.getRiverID(), river);
-//                }
-//                for (RiverDTO river : response.getRiverList()) {
-//                    map.put(river.getRiverID(), river);
-//                }
-//
-//
-//                response.getRiverList().clear();
-//                for (Integer i : map.keySet()) {
-//                    response.getRiverList().add(map.get(i));
-//                }
-//
-//                new CacheTask().execute();
-//            }
-//
-//            @Override
-//            public void onDataCached(ResponseDTO response) {
-//
-//            }
-//
-//            @Override
-//            public void onError() {
-//                new CacheTask().execute();
-//            }
-//        });
-
 
     }
 
     public static void getCachedRiverData(Context context, int type, CacheUtilListener cacheUtilListener) {
+
         dataType = type;
         utilListener = cacheUtilListener;
         ctx = context;
@@ -136,6 +104,9 @@ public class CacheUtil implements Serializable {
     }
 
     public static void cacheRiverData(Context context, ResponseDTO r, int type, CacheUtilListener cacheUtilListener) {
+        for (RiverDTO riv: r.getRiverList()) {
+            riv.setRiverName(riv.getRiverName().trim());
+        }
         dataType = type;
         response = r;
         response.setLastCacheDate(new Date());
@@ -309,7 +280,7 @@ public class CacheUtil implements Serializable {
                     case CACHE_DATA:
                         stream = ctx.openFileInput(JSON_DATA);
                         resp = getData(stream);
-                        Log.i(LOG, "++ company data cache retrieved");
+                        Log.i(LOG, "+++++++++++++++++ data cache retrieved");
                         break;
                     case CACHE_SEARCH_DATA:
                         stream = ctx.openFileInput(JSON_SEARCH);

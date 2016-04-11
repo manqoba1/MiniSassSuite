@@ -25,7 +25,7 @@ import com.sifiso.codetribe.minisasslibrary.util.GCMUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.TimerUtil;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
+import com.sifiso.codetribe.minisasslibrary.util.NetUtil;
 
 import java.util.Timer;
 
@@ -199,7 +199,7 @@ public class Welcome extends AppCompatActivity {
     private void updateGCMDevice(GcmDeviceDTO gcm) {
         RequestDTO w = new RequestDTO(RequestDTO.ADD_GCM_DEVICE);
         w.setGcmDevice(gcm);
-        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, w, new WebSocketUtil.WebSocketListener() {
+        NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, w, new NetUtil.NetListener() {
             @Override
             public void onMessage(ResponseDTO response) {
 

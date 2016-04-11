@@ -22,6 +22,7 @@ import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 
@@ -225,7 +226,9 @@ public class BaseVolley {
             @Override
             public void onResponse(ResponseDTO r) {
                 response = r;
-                Log.e(LOG, "Yup! ...response object received, status code: " + r.getStatusCode());
+                Gson gson = new Gson();
+                int length = gson.toJson(response).length();
+                Log.e(LOG, "+++++++ Yup! ...response object received, status code: " + r.getStatusCode() + " size: " + getSize(length));
 
                 if (r.getStatusCode() > 0) {
                     try {
@@ -239,6 +242,12 @@ public class BaseVolley {
             }
         };
     }
+
+    private static String getSize(int length) {
+        Double d = Double.parseDouble("" + length) / Double.parseDouble("" + 1024);
+        return df.format(d.doubleValue()) + "K" ;
+    }
+    static final DecimalFormat df = new DecimalFormat("###,###,###,###,##0.0");
 
     private static Response.ErrorListener onErrorListener() {
         return new Response.ErrorListener() {

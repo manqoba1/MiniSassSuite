@@ -20,19 +20,12 @@
         android:visibility="gone" />
 
 
-    <TextView
-        android:id="@+id/RL_add"
-        style="@style/GreenCircleLarge"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:src="@drawable/ic_action_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
-        android:elevation="10dp"
-        android:text="+"
-        android:shadowRadius="10"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginRight="44dp"
-        android:layout_marginEnd="44dp"
-        android:layout_below="@+id/progressBar"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

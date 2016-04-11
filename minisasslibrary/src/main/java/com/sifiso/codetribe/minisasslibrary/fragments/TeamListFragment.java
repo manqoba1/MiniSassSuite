@@ -26,10 +26,10 @@ import com.sifiso.codetribe.minisasslibrary.interfaces.TeamListener;
 import com.sifiso.codetribe.minisasslibrary.listeners.BusyListener;
 import com.sifiso.codetribe.minisasslibrary.listeners.PageInterface;
 import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
+import com.sifiso.codetribe.minisasslibrary.util.NetUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +113,7 @@ public class TeamListFragment extends Fragment implements PageInterface, PageFra
         if (!BaseVolley.checkNetworkOnDevice(ctx)) return;
 
         busyListener.setBusy();
-        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, r, new WebSocketUtil.WebSocketListener() {
+        NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, r, new NetUtil.NetListener() {
             @Override
             public void onMessage(final ResponseDTO r) {
                 getActivity().runOnUiThread(new Runnable() {

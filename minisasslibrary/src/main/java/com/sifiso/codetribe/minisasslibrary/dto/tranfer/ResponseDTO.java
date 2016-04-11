@@ -97,6 +97,9 @@ public class ResponseDTO implements Serializable {
     }
 
     public List<InsectImageDTO> getInsectimageDTOList() {
+        if (insectimageDTOList == null) {
+            insectimageDTOList = new ArrayList<>();
+        }
         return insectimageDTOList;
     }
 

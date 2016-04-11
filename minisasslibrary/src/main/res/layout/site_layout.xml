@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/xborder">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/AE_pin_point"
@@ -32,17 +31,16 @@
             android:hint="Confirm river name"
             android:maxLines="1"
             android:padding="10dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/WT_sp_riverConnected"
-            style="@style/TextStyleGray"
+            style="@style/Title2TextStyleBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/xborder"
-            android:hint="Confirm river name"
+            android:text="**River name"
             android:maxLines="1"
-            android:padding="10dp"
+            android:padding="@dimen/mon_padding"
             android:visibility="visible" />
 
         <AutoCompleteTextView
@@ -51,28 +49,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/WT_sp_river"
-            android:background="@drawable/xborder"
             android:hint="Alternative river or stream name"
             android:padding="10dp"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/WT_sp_category"
-            style="@style/TextStyleGray"
+        <RadioGroup
+            android:layout_below="@+id/WT_sp_stream"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_padding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/GPS_layout4"
-            android:background="@drawable/xborder"
-            android:focusable="false"
-            android:hint="Is the river rocky or sandy?"
-            android:padding="10dp" />
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radioRocky"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Is the river rocky?"
+                android:padding="10dp" />
+            <RadioButton
+                android:id="@+id/radioSandy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Is the river sandy?"
+                android:padding="10dp" />
+        </RadioGroup>
+
 
         <Button
             android:id="@+id/AE_find_near_sites"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/WT_sp_category"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/mon_margin"
             android:background="@color/blue"
             android:elevation="25dp"
             android:text="Add observation to existing site"

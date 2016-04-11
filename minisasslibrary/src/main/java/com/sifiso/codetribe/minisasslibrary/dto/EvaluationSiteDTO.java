@@ -6,6 +6,7 @@
 package com.sifiso.codetribe.minisasslibrary.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class EvaluationSiteDTO implements Serializable, Comparable<EvaluationSit
     private RiverDTO river;
     private CategoryDTO category;
     private StreamDTO stream;
-
+    private Boolean confirmed;
     private String siteName;
     private Integer gID;
     private String description;
@@ -41,6 +42,14 @@ public class EvaluationSiteDTO implements Serializable, Comparable<EvaluationSit
             return 1;
         }
         return 0;
+    }
+
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     public String getSiteName() {
@@ -175,6 +184,8 @@ public class EvaluationSiteDTO implements Serializable, Comparable<EvaluationSit
     }
 
     public List<EvaluationDTO> getEvaluationList() {
+        if (evaluationList == null)
+            evaluationList = new ArrayList<>();
         return evaluationList;
     }
 

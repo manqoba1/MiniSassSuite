@@ -24,9 +24,9 @@ import com.sifiso.codetribe.minisasslibrary.dto.TeamMemberDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import com.sifiso.codetribe.minisasslibrary.util.ImportUtil;
+import com.sifiso.codetribe.minisasslibrary.util.NetUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
-import com.sifiso.codetribe.minisasslibrary.util.WebSocketUtil;
 import com.sifiso.codetribe.minisasslibrary.util.bean.ImportException;
 
 import java.io.BufferedReader;
@@ -173,7 +173,7 @@ public class FileImportActivityFragment extends Fragment {
         w.setTeamMember(teamMemberDTO);
 
         listener.setBusy(true);
-        WebSocketUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, w, new WebSocketUtil.WebSocketListener() {
+        NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, w, new NetUtil.NetListener() {
             @Override
             public void onMessage(final ResponseDTO response) {
                 getActivity().runOnUiThread(new Runnable() {

@@ -1,8 +1,7 @@
 package com.sifiso.codetribe.minisasslibrary.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationInsectDTO;
@@ -103,18 +101,19 @@ public class EvaluationAdapter extends BaseAdapter {
         h.ELI_wc.setText((evaluation.getWaterClarity() == null ? 0 : evaluation.getWaterClarity()) + "");
         h.ELI_wt.setText((evaluation.getWaterTemperature() == null ? 0 : evaluation.getWaterTemperature()) + "");
         h.ELI_pH.setText((evaluation.getpH() == null ? 0 : evaluation.getpH()) + "");
-        Log.i("LOG", new Gson().toJson(evaluation));
+//        Log.i("LOG", new Gson().toJson(evaluation));
         if (evaluation.getConditions() != null) {
             h.ELI_envType.setText(evaluation.getConditions().getCategoryName());
+            if (evaluation.getConditions().getCategoryID() == 8) {
+                h.ELI_envType.setTextColor(ContextCompat.getColor(mCtx,R.color.yellow_dark));
+            } else {
+                h.ELI_envType.setTextColor(ContextCompat.getColor(mCtx,R.color.Peru));
+            }
         } else {
             h.ELI_envType.setVisibility(View.GONE);
         }
 
-        if (evaluation.getConditions().getCategoryID() == 8) {
-            h.ELI_envType.setTextColor(mCtx.getResources().getColor(R.color.yellow_dark));
-        } else {
-            h.ELI_envType.setTextColor(mCtx.getResources().getColor(R.color.Peru));
-        }
+
 
         if (evaluation.getRemarks() == null) {
             h.ELI_remarks.setVisibility(View.GONE);

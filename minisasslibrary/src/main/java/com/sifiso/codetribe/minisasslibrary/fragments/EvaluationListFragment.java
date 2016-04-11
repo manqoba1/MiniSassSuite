@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +52,7 @@ import java.util.List;
 public class EvaluationListFragment extends Fragment implements PageFragment {
 
     private CreateEvaluationListener mListener;
-    private LinearLayout FEL_search;
+    private RelativeLayout FEL_search;
     private ListView FEL_list;
     private TextView RL_add;
     private ImageView SLT_imgSearch2;
@@ -83,7 +82,7 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
     private void build() {
 
         FEL_list = (ListView) v.findViewById(R.id.FEL_list);
-        FEL_search = (LinearLayout) v.findViewById(R.id.FEL_search);
+        FEL_search = (RelativeLayout) v.findViewById(R.id.FEL_search);
         SLT_editSearch = (EditText) v.findViewById(R.id.SLT_editSearch);
         SLT_editSearch.setVisibility(View.GONE);
         SLT_hero = (RelativeLayout) v.findViewById(R.id.SLT_hero);
@@ -126,12 +125,14 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
     private Context ctx;
     private List<EvaluationDTO> evaluationList;
     Activity activity;
+    TextView txtCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_evaluation_list, container, false);
+        txtCount = (TextView)v.findViewById(R.id.SI_count);
         Bundle b = getArguments();
         ctx = getActivity().getApplicationContext();
         activity = getActivity();
@@ -147,9 +148,8 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
     private void setList() {
         LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inf.inflate(R.layout.hero_layout, null);
-        // FEL_list.addHeaderView(v);
-        // FEL_list.addFooterView(v);
         Collections.sort(evaluationList);
+        txtCount.setText("" + evaluationList.size());
         adapter = new EvaluationAdapter(ctx, evaluationList, new EvaluationAdapter.EvaluationAdapterListener() {
             @Override
             public void onEvaluationContribute(EvaluationDTO evaluation) {
@@ -196,6 +196,7 @@ public class EvaluationListFragment extends Fragment implements PageFragment {
 
 
         FEL_list.setAdapter(adapter);
+        Snackbar.make(txtCount,"There are " + evaluationList.size() + " observations on file for this river",Snackbar.LENGTH_LONG).show();
     }
 
     static String LOG = EvaluationListFragment.class.getSimpleName();
