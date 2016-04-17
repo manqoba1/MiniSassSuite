@@ -61,7 +61,7 @@ public class SignActivity extends AppCompatActivity {
     AutoCompleteTextView esEmail;
     TextView SI_app, SI_welcome;
     RelativeLayout SI_banner;
-    WebCheckResult wr;
+    private  WebCheckResult wr;
     Menu mMenu;
 
     @Override
@@ -71,8 +71,10 @@ public class SignActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign);
 
         ctx = getApplicationContext();
+        checkVirgin();
         wr = WebCheck.checkNetworkAvailability(ctx);
         setFields();
+
 
         getEmail();
         Util.setCustomActionBar(ctx, getSupportActionBar(),
@@ -151,20 +153,6 @@ public class SignActivity extends AppCompatActivity {
         esEmail = (AutoCompleteTextView) findViewById(R.id.SI_txtEmail);
         esPin = (EditText) findViewById(R.id.SI_pin);
         sign_progress = (ProgressBar) findViewById(R.id.progressBar);
-
-       /* Palette.from(bitmap).maximumColorCount(numberOfColors).generate(new Palette.PaletteAsyncListener() {
-            @Overridebitmap
-            public void onGenerated(Palette palette) {
-                // Get the "vibrant" color swatch based on the bitmap
-                Palette.Swatch vibrant = palette.getVibrantSwatch();
-                if (vibrant != null) {
-                    // Set the background color of a layout based on the vibrant color
-                    containerView.setBackgroundColor(vibrant.getRgb());
-                    // Update the title TextView with the proper text color
-                    titleView.setTextColor(vibrant.getTitleTextColor());
-                }
-            }
-        });*/
         bsSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,21 +164,16 @@ public class SignActivity extends AppCompatActivity {
 
                     }
                 });
-
-              /*  Intent intentEva = new Intent(SignActivity.this, EvaluationView.class);
-                startActivity(intentEva);
-                finish();*/
             }
         });
 
-        checkVirgin();
+
         if (SharedUtil.getEmail(ctx) != null) {
             esEmail.setText(SharedUtil.getEmail(ctx));
         }
     }
 
     private void checkVirgin() {
-        //SharedUtil.clearTeam(ctx);
         TeamMemberDTO dto = SharedUtil.getTeamMember(ctx);
         if (dto != null) {
             Log.i(LOG, "++++++++ Not a virgin anymore ...checking GCM registration....");
@@ -199,7 +182,7 @@ public class SignActivity extends AppCompatActivity {
                 registerGCMDevice();
             }
 
-            Intent intent = new Intent(ctx, MainPagerActivity.class);
+            Intent intent = new Intent(ctx, LandingMapActivity.class);
             startActivity(intent);
             finish();
             return;
@@ -317,7 +300,7 @@ public class SignActivity extends AppCompatActivity {
                                             resp.getTeamMember().setTeam(r.getTeam());
                                             SharedUtil.saveTeamMember(ctx, resp.getTeamMember());
                                             SharedUtil.storeEmail(ctx, esEmail.getText().toString());
-                                            Intent intent = new Intent(SignActivity.this, MainPagerActivity.class);
+                                            Intent intent = new Intent(SignActivity.this, CreateSiteActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -334,7 +317,7 @@ public class SignActivity extends AppCompatActivity {
                         }
                         SharedUtil.saveTeamMember(ctx, resp.getTeamMember());
                         SharedUtil.storeEmail(ctx, esEmail.getText().toString());
-                        Intent intent = new Intent(SignActivity.this, MainPagerActivity.class);
+                        Intent intent = new Intent(SignActivity.this, CreateSiteActivity.class);
                         startActivity(intent);
                         finish();
 

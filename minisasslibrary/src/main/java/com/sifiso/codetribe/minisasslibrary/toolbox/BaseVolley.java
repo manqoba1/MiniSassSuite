@@ -117,8 +117,6 @@ public class BaseVolley {
         if (requestQueue == null) {
             Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
-        } else {
-            Log.e(LOG, "********** getRemoteData requestQueue is NOT NULL - Kool");
         }
         String json = null, jj = null;
 
@@ -199,8 +197,6 @@ public class BaseVolley {
         if (requestQueue == null) {
             Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
-        } else {
-            Log.e(LOG, "********** getRemoteData requestQueue is NOT NULL - Kool");
         }
         String json = null, jj = null;
 

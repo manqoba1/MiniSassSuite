@@ -1,11 +1,13 @@
 package com.sifiso.codetribe.minisasslibrary.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationManager;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -61,7 +64,6 @@ import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Constants;
 import com.sifiso.codetribe.minisasslibrary.util.RequestCacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
-import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
@@ -83,8 +85,8 @@ public class EvaluationActivity extends AppCompatActivity implements
 
     private ProgressBar progressBar;
     private EditText WC_score, WP_score, WT_score, WO_score, WE_score;
-    private TextView TV_total_score, TV_average_score, TV_avg_score, TV_score_status;
-    private ImageView IMG_score_icon, AE_pin_point, ivCancel;
+    private TextView txtTotal, txtNumber, txtAverage, txtScoreStatus;
+    private ImageView scoreIcon, AE_pin_point, ivCancel;
     private TextView WT_sp_riverConnected, EDT_comment, AE_down_up;
     private Button btnShowInsects, btnSave, btnNearbySites;
     private AutoCompleteTextView WT_sp_river, WT_sp_stream;
@@ -172,11 +174,7 @@ public class EvaluationActivity extends AppCompatActivity implements
             }
         });
 
-        GPS_layout4 = (RelativeLayout) findViewById(R.id.GPS_layout4);
-        txtLat = (TextView) findViewById(R.id.GPS_latitude);
-        txtLng = (TextView) findViewById(R.id.GPS_longitude);
-        Statics.setRobotoFontBold(ctx, txtLat);
-        Statics.setRobotoFontBold(ctx, txtLng);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -191,11 +189,11 @@ public class EvaluationActivity extends AppCompatActivity implements
         result3 = (RelativeLayout) findViewById(R.id.result3);
         result3.setVisibility(View.GONE);
         result2 = (RelativeLayout) findViewById(R.id.result2);
-        TV_total_score = (TextView) findViewById(R.id.TV_total_score);
-        TV_average_score = (TextView) findViewById(R.id.TV_average_score);
-        TV_avg_score = (TextView) findViewById(R.id.TV_avg_score);
-        TV_score_status = (TextView) findViewById(R.id.TV_score_status);
-        IMG_score_icon = (ImageView) findViewById(R.id.IMG_score_icon);
+        txtTotal = (TextView) findViewById(R.id.TV_total_score);
+        txtNumber = (TextView) findViewById(R.id.TV_average_score);
+        txtAverage = (TextView) findViewById(R.id.TV_avg_score);
+        txtScoreStatus = (TextView) findViewById(R.id.txtScoreStatus);
+        scoreIcon = (ImageView) findViewById(R.id.scoreIcon);
         WT_sp_river = (AutoCompleteTextView) findViewById(R.id.WT_sp_river);
         WT_sp_stream = (AutoCompleteTextView) findViewById(R.id.WT_sp_stream);
         WT_sp_riverConnected = (TextView) findViewById(R.id.WT_sp_riverConnected);
@@ -207,17 +205,17 @@ public class EvaluationActivity extends AppCompatActivity implements
                 startLocationUpdates();
             }
         });
-        btnShowInsects = (Button) findViewById(R.id.SL_show_insect);
+        btnShowInsects = (Button) findViewById(R.id.btnShowInsect);
         btnSave = (Button) findViewById(R.id.AE_create);
         AE_down_up = (TextView) findViewById(R.id.AE_down_up);
         btnShowInsects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(LOG,"%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick -------->");
+                Log.e(LOG, "%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick -------->");
                 if (category == null) {
-                    Log.w(LOG,"%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick - category is null");
-                    Snackbar.make(btnSave,"Select Rocky or Sandy river types first, " +
-                            "before choosing macroinvertebrates",Snackbar.LENGTH_LONG).show();
+                    Log.w(LOG, "%%%%%%%%%%%%%%%%%%%%%%%%%%% btnShowInsects onClick - category is null");
+                    Snackbar.make(btnSave, "Select Rocky or Sandy river types first, " +
+                            "before choosing macroinvertebrates", Snackbar.LENGTH_LONG).show();
                     return;
                 } else {
                     Log.d(LOG, "InsectPickerActivity about to start, insectImageList: " + response.getInsectimageDTOList().size());
@@ -267,31 +265,47 @@ public class EvaluationActivity extends AppCompatActivity implements
     }
 
     private void getCachedData() {
-        File file = new File(getIntent().getStringExtra("riverCreate"));
-        try {
-            String json = FileUtils.readFileToString(file);
-            Gson gson = new Gson();
-            river = gson.fromJson(json, RiverDTO.class);
-            WT_sp_riverConnected.setText(river.getRiverName());
-            WT_sp_riverConnected.setVisibility(View.VISIBLE);
+        String path = getIntent().getStringExtra("riverCreate");
+        if (path != null) {
+            File file = new File(path);
+            try {
+                String json = FileUtils.readFileToString(file);
+                Gson gson = new Gson();
+                river = gson.fromJson(json, RiverDTO.class);
+                WT_sp_riverConnected.setText(river.getRiverName());
+                WT_sp_riverConnected.setVisibility(View.VISIBLE);
 
-            setStreamSpinner(river.getStreamList());
-            Util.expand(WT_sp_stream, 2000, new Util.UtilAnimationListener() {
-                @Override
-                public void onAnimationEnded() {
-                    WT_sp_stream.setVisibility(View.VISIBLE);
-                }
-            });
-            Log.e(LOG, CREATE_EVALUATION + "****************************Evaluation River: " + river.getRiverName());
-            file.delete();
-        } catch (IOException e) {
-            e.printStackTrace();
+                setStreamSpinner(river.getStreamList());
+                Util.expand(WT_sp_stream, 2000, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        WT_sp_stream.setVisibility(View.VISIBLE);
+                    }
+                });
+                Log.e(LOG, CREATE_EVALUATION + "****************************Evaluation River: " + river.getRiverName());
+                file.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
             @Override
             public void onFileDataDeserialized(ResponseDTO r) {
                 response = r;
+                river = response.getRiverList().get(0);
+                WT_sp_riverConnected.setText(river.getRiverName());
+                WT_sp_riverConnected.setVisibility(View.VISIBLE);
+
+                if (!river.getStreamList().isEmpty()) {
+                    setStreamSpinner(river.getStreamList());
+                    Util.expand(WT_sp_stream, 2000, new Util.UtilAnimationListener() {
+                        @Override
+                        public void onAnimationEnded() {
+                            WT_sp_stream.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -361,9 +375,9 @@ public class EvaluationActivity extends AppCompatActivity implements
         setField();
         getCachedData();
         getSupportActionBar().setTitle("");
-        Util.setCustomActionBar(ctx,getSupportActionBar(),
+        Util.setCustomActionBar(ctx, getSupportActionBar(),
                 "New Observation", "Collect and record data",
-                ContextCompat.getDrawable(ctx,R.drawable.ic_launcher),null);
+                ContextCompat.getDrawable(ctx, R.drawable.ic_launcher), null);
 
     }
 
@@ -466,7 +480,7 @@ public class EvaluationActivity extends AppCompatActivity implements
     CategoryDTO category;
 
     public void setFieldsFromSelectedSite() {
-         category = evaluationSite.getCategory();
+        category = evaluationSite.getCategory();
         if (category.getCategoryName().contains("Rocky")) {
             radioRocky.setChecked(true);
         }
@@ -570,11 +584,11 @@ public class EvaluationActivity extends AppCompatActivity implements
         } else {
             result3.setVisibility(View.VISIBLE);
         }
-        TV_avg_score.setText(calculateAverage(insectImages) + "");
-        TV_average_score.setText(((insectImages != null) ? insectImages.size() : 0.0) + "");
+        txtAverage.setText(calculateAverage(insectImages) + "");
+        txtNumber.setText(((insectImages != null) ? insectImages.size() : 0.0) + "");
         selectedInsects = insectImages;
         statusScore(insectImages, category.getCategoryName());
-        TV_total_score.setText(calculateScore(insectImages) + "");
+        txtTotal.setText(calculateScore(insectImages) + "");
         Log.e(LOG, calculateScore(insectImages) + "Yes");
     }
 
@@ -584,10 +598,10 @@ public class EvaluationActivity extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TV_total_score.setText("0.0");
-                TV_average_score.setText("0.0");
-                TV_avg_score.setText("0.0");
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.gray_crap));
+                txtTotal.setText("0.0");
+                txtNumber.setText("0.0");
+                txtAverage.setText("0.0");
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.gray_crap));
                 WT_sp_river.setText(null);
                 EDT_comment.setText(null);
                 WT_sp_stream.setText(null);
@@ -598,10 +612,10 @@ public class EvaluationActivity extends AppCompatActivity implements
                 evaluationSite = new EvaluationSiteDTO();
                 evaluationDTO = new EvaluationDTO();
 
-                TV_score_status.setText("not specified");
-                TV_score_status.setTextColor(getResources().getColor(R.color.gray));
-                IMG_score_icon.setColorFilter(getResources().getColor(R.color.gray), PorterDuff.Mode.MULTIPLY);
-                TV_total_score.setTextColor(getResources().getColor(R.color.gray));
+                txtScoreStatus.setText("not specified");
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.gray));
+                scoreIcon.setColorFilter(getResources().getColor(R.color.gray), PorterDuff.Mode.MULTIPLY);
+                txtTotal.setTextColor(getResources().getColor(R.color.gray));
                 WE_score.setText("");
                 WO_score.setText("");
                 WC_score.setText("");
@@ -661,79 +675,79 @@ public class EvaluationActivity extends AppCompatActivity implements
             if (average > 6.9) {
                 status = "Unmodified(NATURAL condition)";
                 statusCondition = Constants.UNMODIFIED_NATURAL_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.blue_900));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.blue_900));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
-                //IMG_score_icon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.blue_900));
+                txtAverage.setTextColor(getResources().getColor(R.color.blue_900));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
+                //scoreIcon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
             } else if (average > 5.8 && average < 6.9) {
                 status = "Largely natural/few modifications(GOOD condition)";
                 statusCondition = Constants.LARGELY_NATURAL_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.green_700));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.green_700));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.green_700));
+                txtAverage.setTextColor(getResources().getColor(R.color.green_700));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
             } else if (average > 4.9 && average < 5.8) {
                 status = "Moderately modified(FAIR condition)";
                 statusCondition = Constants.MODERATELY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.orange_400));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.orange_400));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.orange_400));
+                txtAverage.setTextColor(getResources().getColor(R.color.orange_400));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
             } else if (average > 4.3 && average < 4.9) {
                 status = "Largely modified(POOR condition)";
                 statusCondition = Constants.LARGELY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.red_900));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.red_900));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.red_900));
+                txtAverage.setTextColor(getResources().getColor(R.color.red_900));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
             } else if (average < 4.3) {
                 status = "Seriously/critically modified";
                 statusCondition = Constants.CRITICALLY_MODIFIED_SAND;
-                TV_score_status.setTextColor(getResources().getColor(R.color.purple_800));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.purple_800));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
-                //IMG_score_icon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.purple_800));
+                txtAverage.setTextColor(getResources().getColor(R.color.purple_800));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
+                //scoreIcon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
             }
         } else if (categoryName.equalsIgnoreCase("Rocky Type")) {
             categoryID = 9;
             if (average > 7.9) {
                 status = "Unmodified(NATURAL condition)";
                 statusCondition = Constants.UNMODIFIED_NATURAL_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.blue_900));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.blue_900));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
-                //IMG_score_icon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.blue_900));
+                txtAverage.setTextColor(getResources().getColor(R.color.blue_900));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.blue_crap));
+                //scoreIcon.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
             } else if (average > 6.8 && average < 7.9) {
                 status = "Largely natural/few modifications(GOOD condition)";
                 statusCondition = Constants.LARGELY_NATURAL_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.green_700));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.green_700));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.green_700));
+                txtAverage.setTextColor(getResources().getColor(R.color.green_700));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.green_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
             } else if (average > 6.1 && average < 6.8) {
                 status = "Moderately modified(FAIR condition)";
                 statusCondition = Constants.MODERATELY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.orange_400));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.orange_400));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.orange_400));
+                txtAverage.setTextColor(getResources().getColor(R.color.orange_400));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.orange_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.yellow_dark), PorterDuff.Mode.MULTIPLY);
             } else if (average > 5.1 && average < 6.1) {
                 status = "Largely modified(POOR condition)";
                 statusCondition = Constants.LARGELY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.red_900));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.red_900));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
-                // IMG_score_icon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.red_900));
+                txtAverage.setTextColor(getResources().getColor(R.color.red_900));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.red_crap));
+                // scoreIcon.setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.MULTIPLY);
             } else if (average < 5.1) {
                 status = "Seriously/critically modified";
                 statusCondition = Constants.CRITICALLY_MODIFIED_ROCK;
-                TV_score_status.setTextColor(getResources().getColor(R.color.purple_800));
-                TV_avg_score.setTextColor(getResources().getColor(R.color.purple_800));
-                IMG_score_icon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
-                //IMG_score_icon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
+                txtScoreStatus.setTextColor(getResources().getColor(R.color.purple_800));
+                txtAverage.setTextColor(getResources().getColor(R.color.purple_800));
+                scoreIcon.setImageDrawable(getResources().getDrawable(R.drawable.purple_crap));
+                //scoreIcon.setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.MULTIPLY);
             }
         }
-        TV_score_status.setText(status);
+        txtScoreStatus.setText(status);
 
         Log.e(LOG, "Check conditionID : " + conditionID + " " + statusCondition + " " + categoryID);
         conditionID = statusCondition;//conditionIDFunc(response.getCategoryList(), statusCondition, categoryID);
@@ -848,7 +862,7 @@ public class EvaluationActivity extends AppCompatActivity implements
         evaluationDTO = new EvaluationDTO();
         evaluationDTO.setConditionsID(conditionID);
         evaluationDTO.setTeamMemberID(teamMember.getTeamMemberID());
-        evaluationDTO.setEvaluationSite(evaluationSite);
+        evaluationDTO.setEvaluationSiteID(evaluationSite.getEvaluationSiteID());
         evaluationDTO.setRemarks(EDT_comment.getText().toString());
         evaluationDTO.setpH(Double.parseDouble((WP_score.getText().toString().isEmpty()) ? 0.0 + "" : WP_score.getText().toString()));
         evaluationDTO.setOxygen(Double.parseDouble((WO_score.getText().toString().isEmpty()) ? 0.0 + "" : WO_score.getText().toString()));
@@ -856,7 +870,7 @@ public class EvaluationActivity extends AppCompatActivity implements
         evaluationDTO.setWaterTemperature(Double.parseDouble((WT_score.getText().toString().isEmpty()) ? 0.0 + "" : WT_score.getText().toString()));
         evaluationDTO.setElectricityConductivity(Double.parseDouble((WE_score.getText().toString().isEmpty()) ? 0.0 + "" : WE_score.getText().toString()));
         evaluationDTO.setEvaluationDate(new Date().getTime());
-        evaluationDTO.setScore(Double.parseDouble(TV_avg_score.getText().toString()));
+        evaluationDTO.setScore(Double.parseDouble(txtAverage.getText().toString()));
 
         evaluationDTO.setEvaluationimageList(takenImages);
 
@@ -954,6 +968,9 @@ public class EvaluationActivity extends AppCompatActivity implements
         Log.w(LOG, "###### startLocationUpdates: " + new Date().toString());
         if (mGoogleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, locationRequest, this);
         }
@@ -999,7 +1016,7 @@ public class EvaluationActivity extends AppCompatActivity implements
         });
     }
 
-    EvaluationSiteDTO evaluationSite = new EvaluationSiteDTO();
+    EvaluationSiteDTO evaluationSite;
 
     private void calculateDistancesForSites() {
         try {
@@ -1022,6 +1039,16 @@ public class EvaluationActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG, "+++  onConnected() -  requestLocationUpdates ...");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         location = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (location != null) {
@@ -1082,7 +1109,6 @@ public class EvaluationActivity extends AppCompatActivity implements
     }
 
     WebCheckResult w;
-
 
 
     public void setRefreshActionButtonState(final boolean refreshing) {

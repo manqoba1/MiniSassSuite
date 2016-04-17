@@ -68,8 +68,8 @@ public class GPSscanner extends AppCompatActivity implements LocationListener {
 
         }
         ctx = getApplicationContext();
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
        /* mLocationClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

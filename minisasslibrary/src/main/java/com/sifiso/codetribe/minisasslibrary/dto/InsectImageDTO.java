@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class InsectImageDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
     public boolean selected = false;
     private Integer insectImageID;
     private String uri, groupName;
-    private long dateRegistered;
+    private Long dateRegistered;
     private Integer insectID;
     private InsectDTO insect;
     private int sensitivityScore;
@@ -92,11 +92,11 @@ public class InsectImageDTO implements Serializable {
         this.uri = uri;
     }
 
-    public long getDateRegistered() {
+    public Long getDateRegistered() {
         return dateRegistered;
     }
 
-    public void setDateRegistered(long dateRegistered) {
+    public void setDateRegistered(Long dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
 

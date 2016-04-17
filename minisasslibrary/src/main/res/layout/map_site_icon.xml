@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/badge"
+        style="@style/BlackCircleSmall"
+        android:text="89"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/mon_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/here"
+        android:layout_below="@id/badge"
+        style="@style/TextStyleSmall"
+        android:textSize="11sp"
+        android:layout_marginTop="@dimen/mon_divider"
+        android:text="You are here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

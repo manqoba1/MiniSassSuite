@@ -70,7 +70,7 @@
                 style="@style/TextStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/IMG_score_icon"
+                android:layout_alignBottom="@+id/scoreIcon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="10dp"
                 android:text="0.0"
@@ -78,7 +78,7 @@
                 android:textColor="@color/red" />
 
             <ImageView
-                android:id="@+id/IMG_score_icon"
+                android:id="@+id/scoreIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/red_crap"
@@ -89,7 +89,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/TV_score_status"
+            android:id="@+id/txtScoreStatus"
             style="@style/TextStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -184,10 +184,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
                     }
                     index++;
-                    Log.d(LOG, "" + index + " " + eva.getEvaluationSite());
-                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(eva.getEvaluationSite().getLatitude(),
-                            eva.getEvaluationSite().getLongitude())).icon(desc)
-                            .title(eva.getEvaluationSite().getRiverName())
+                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(es.getLatitude(),
+                            es.getLongitude())).icon(desc)
+                            .title(es.getRiverName())
                             .snippet(eva.getRemarks());
                     //markerOptions.
                     final Marker m = googleMap.addMarker(markerOptions);
@@ -412,6 +411,16 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG, "+++  onConnected() -  requestLocationUpdates ...");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         location = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (location != null) {

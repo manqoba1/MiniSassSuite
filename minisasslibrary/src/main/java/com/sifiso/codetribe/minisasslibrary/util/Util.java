@@ -126,7 +126,7 @@ public class Util {
         ImageView logo = (ImageView) actionView.findViewById(R.id.ACTION_BAR_logo);
         txt.setText(text);
         subTxt.setText(team);
-        if (team.equals("") || team.equals(null)) {
+        if (team == null || team.equals("") || team.equals(null)) {
             subTxt.setVisibility(View.GONE);
         } else {
             subTxt.setVisibility(View.VISIBLE);

@@ -70,6 +70,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -231,8 +232,8 @@ public class MainPagerActivity extends AppCompatActivity implements
         txtRadius = (TextView) findViewById(R.id.SI_radius);
         seekBar = (SeekBar) findViewById(R.id.SI_seekBar);
 
-        seekBar.setMax(100);
-        seekBar.setProgress(30);
+        seekBar.setMax(40);
+        seekBar.setProgress(10);
         progressBar.setVisibility(View.GONE);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -763,6 +764,12 @@ public class MainPagerActivity extends AppCompatActivity implements
                     return;
                 }
                 Log.e(LOG, "### getRiversAroundMe, found: " + r.getRiverList().size());
+                if (location != null) {
+                    for (RiverDTO river : r.getRiverList()) {
+                        river.calculateDistance(location.getLatitude(), location.getLongitude());
+                    }
+                    Collections.sort(r.getRiverList());
+                }
                 CacheUtil.cacheData(ctx, r, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
                     @Override
                     public void onFileDataDeserialized(final ResponseDTO resp) {

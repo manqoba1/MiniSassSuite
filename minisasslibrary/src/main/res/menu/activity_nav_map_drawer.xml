@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_site_edit"
+            android:title="Manage Sites"
+            android:icon="@android:drawable/ic_menu_edit"/>
+        <item
+            android:id="@+id/action_observe"
+            android:title="Perform Observation"
+            android:icon="@android:drawable/ic_menu_manage"/>
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/ic_action_add_person"
+            android:title="@string/user_profile"/>
+        <item
+            android:id="@+id/about_us"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/action_about" />
+        <item
+            android:id="@+id/how_to"
+            android:icon="@android:drawable/ic_menu_help"
+            android:title="@string/action_how_to" />
+        <item
+            android:id="@+id/dicotomas"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/action_dicotomas_key" />
+        <item
+            android:id="@+id/log_out"
+            android:icon="@android:drawable/ic_menu_close_clear_cancel"
+            android:title="@string/action_log_out" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/minisass_org"
+                android:icon="@drawable/ic_launcher"
+                android:title="@string/action_minisass" />
+            <item
+                android:id="@+id/youtube"
+                android:icon="@drawable/ic_action_video"
+                android:title="@string/action_youtube" />
+            <item
+                android:id="@+id/facebook"
+                android:icon="@drawable/ic_action_globe"
+                android:title="@string/action_facebook" />
+        </menu>
+    </item>
+
+</menu>

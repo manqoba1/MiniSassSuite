@@ -6,8 +6,12 @@
 package com.sifiso.codetribe.minisasslibrary.dto;
 
 
+import android.location.Location;
+import android.location.LocationManager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +27,7 @@ public class RiverDTO implements Serializable, Comparable<RiverDTO> {
     private Double nearestLatitude, nearestLongitude;
     private float distanceFromMe;
     private List<EvaluationSiteDTO> evaluationsiteList = new ArrayList<>();
-    private List<RiverPartDTO> riverpartList =new ArrayList<>();
+    private List<RiverPartDTO> riverpartList = new ArrayList<>();
     private List<StreamDTO> streamList = new ArrayList<>();
 
     public RiverDTO() {
@@ -135,5 +139,29 @@ public class RiverDTO implements Serializable, Comparable<RiverDTO> {
             return 1;
         }
         return 0;
+    }
+
+    public float calculateDistance(double latitude, double longitude) {
+        List<RiverPointDTO> points = new ArrayList<>();
+        for (RiverPartDTO rp : riverpartList) {
+            for (RiverPointDTO point : rp.getRiverpointList()) {
+                Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+                loc1.setLatitude(point.getLatitude());
+                loc1.setLongitude(point.getLongitude());
+
+                Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+                loc2.setLatitude(latitude);
+                loc2.setLongitude(longitude);
+
+                point.setDistanceFromMe(loc1.distanceTo(loc2));
+                points.add(point);
+            }
+        }
+
+        Collections.sort(points);
+        if (!points.isEmpty())
+            distanceFromMe = points.get(0).getDistanceFromMe();
+
+        return distanceFromMe;
     }
 }

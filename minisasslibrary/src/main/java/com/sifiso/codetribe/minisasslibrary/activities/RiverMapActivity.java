@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -366,7 +365,7 @@ public class RiverMapActivity extends AppCompatActivity
         for (RiverDTO d : response.getRiverList()) {
             list.add(d.getRiverName().trim() + " - " + getDistance(d.getDistanceFromMe()) + " away");
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(ctx, R.layout.spinner_text, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ctx, R.layout.spinner_text_black, list);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

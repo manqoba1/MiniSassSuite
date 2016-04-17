@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -37,11 +38,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.google.maps.android.MarkerManager;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.ui.IconGenerator;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverPartDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverPointDTO;
+import com.sifiso.codetribe.minisasslibrary.util.MapItem;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import org.apache.commons.io.FileUtils;
@@ -50,11 +55,13 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EvaluationSiteMapActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+public class EvaluationSiteMapActivity extends AppCompatActivity
+        implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -96,7 +103,7 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
             @Override
             public void onMapReady(GoogleMap gm) {
                 googleMap = gm;
-                Log.e(LOG,"GoogleMap onMapReady");
+                Log.e(LOG, "GoogleMap onMapReady");
                 setGoogleMap();
                 if (river != null) {
                     setRiverPoints();
@@ -106,12 +113,13 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
 
 
     }
+
     private void setFields() {
         siteEditor = findViewById(R.id.mainLayout);
         siteEditor.setVisibility(View.GONE);
-        txtCount = (TextView)findViewById(R.id.evaluations);
-        txtLat = (TextView)findViewById(R.id.latitude);
-        txtLng = (TextView)findViewById(R.id.longitude);
+        txtCount = (TextView) findViewById(R.id.evaluations);
+        txtLat = (TextView) findViewById(R.id.latitude);
+        txtLng = (TextView) findViewById(R.id.longitude);
         btnSave = (Button) findViewById(R.id.btnSave);
         iconDelete = (ImageView) findViewById(R.id.delete);
         iconDelete.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +138,7 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Util.collapse(siteEditor,500,null);
+                                Util.collapse(siteEditor, 500, null);
                             }
                         })
                         .show();
@@ -142,7 +150,7 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
         new FileTask().execute(path);
     }
 
-    private class FileTask extends AsyncTask<String,Void,Integer> {
+    private class FileTask extends AsyncTask<String, Void, Integer> {
 
         @Override
         protected Integer doInBackground(String... params) {
@@ -152,7 +160,7 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
                 String json = FileUtils.readFileToString(file);
                 Gson g = new Gson();
                 river = g.fromJson(json, RiverDTO.class);
-                Log.d(LOG,"River retrieved from file, has RiverParts: " + river.getRiverpartList().size());
+                Log.d(LOG, "River retrieved from file, has RiverParts: " + river.getRiverpartList().size());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -160,41 +168,76 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
             }
             return 0;
         }
+
         @Override
         protected void onPostExecute(Integer result) {
-            Log.w(LOG,"Done getting river data from file: " + river.getRiverName());
+            Log.w(LOG, "Done getting river data from file: " + river.getRiverName());
             if (result == 0) {
                 getSupportActionBar().setTitle("");
                 Util.setCustomActionBar(getApplicationContext(),
                         getSupportActionBar(),
-                        river.getRiverName(),"River Map Details",
-                        ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_launcher),null);
+                        river.getRiverName(), "River Map Details",
+                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher), null);
                 if (googleMap != null) {
                     setRiverPoints();
                 }
             }
         }
     }
+
     EvaluationSiteDTO selectedSite;
     private List<RiverPointDTO> riverPoints = new ArrayList<>();
+    private List<RiverPointDTO> selectedRiverPoints = new ArrayList<>();
     private List<Marker> riverMarkers = new ArrayList<>();
     private ImageView iconDelete;
+
+    private ClusterManager<MapItem> clusterManager;
+
     private void setRiverPoints() {
         googleMap.clear();
-        BitmapDescriptor desc = BitmapDescriptorFactory.fromResource(R.drawable.dot_red_tiny);
+        markers.clear();
+        riverMarkers.clear();
+        selectedRiverPoints.clear();
+        addDeviceLocationMarker();
+
+        MarkerManager mm = new MarkerManager(googleMap);
+        clusterManager = new ClusterManager<>(getApplicationContext(), googleMap, mm);
+
+        googleMap.setOnCameraChangeListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+
+
+        BitmapDescriptor nearestIcon = BitmapDescriptorFactory.fromResource(R.drawable.dot_green);
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.dot_red);
         if (!river.getRiverpartList().isEmpty()) {
             for (RiverPartDTO rp : river.getRiverpartList()) {
                 riverPoints.addAll(rp.getRiverpointList());
             }
-            Log.w(LOG,"### setRiverPoints, number of river points: " + riverPoints.size());
-            for (RiverPointDTO es : riverPoints) {
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(new LatLng(es.getLatitude(), es.getLongitude()))
-                        .icon(desc);
+            Collections.sort(riverPoints);
+            for (int i = 0; i < 120; i++) {
+                if (i < riverPoints.size()) {
+                    selectedRiverPoints.add(riverPoints.get(i));
+                }
+
+
+            }
+
+            int index = 0;
+            for (RiverPointDTO p : selectedRiverPoints) {
+                MarkerOptions markerOptions;
+                if (index == 0) {
+                    markerOptions = new MarkerOptions()
+                            .position(new LatLng(p.getLatitude(), p.getLongitude()))
+                            .icon(nearestIcon);
+                    index = 1;
+                } else {
+                    markerOptions = new MarkerOptions()
+                            .position(new LatLng(p.getLatitude(), p.getLongitude()))
+                            .icon(icon);
+                }
 
                 final Marker m = googleMap.addMarker(markerOptions);
                 riverMarkers.add(m);
-
             }
 
         }
@@ -213,11 +256,11 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
                 }
                 if (isFound) {
                     selectedSite = river.getEvaluationsiteList().get(index);
-                    Log.e(LOG,"Site has been selected: " + selectedSite.getRiverName());
+                    Log.e(LOG, "Site has been selected: " + selectedSite.getRiverName());
                     txtCount.setText("" + selectedSite.getEvaluationList().size());
                     txtLng.setText("" + selectedSite.getLatitude());
                     txtLat.setText("" + selectedSite.getLongitude());
-                    Util.expand(siteEditor,1000,null);
+                    Util.expand(siteEditor, 1000, null);
                     btnSave.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -242,6 +285,7 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
+                //googleMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                 //ensure that all markers in bounds
                 if (riverMarkers.size() > 2) {
                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -278,16 +322,18 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
                 })
                 .show();
     }
+
     private void sendNewSite() {
-        Log.w(LOG,"Sending new site data to server");
+        Log.w(LOG, "Sending new site data to server");
     }
+
     private void setEvaluationSiteMarkers() {
 
 
-
         if (!river.getEvaluationsiteList().isEmpty()) {
+            BitmapDescriptor desc = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
             for (EvaluationSiteDTO es : river.getEvaluationsiteList()) {
-                BitmapDescriptor desc = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(new LatLng(es.getLatitude(), es.getLongitude()))
                         .icon(desc)
@@ -315,6 +361,9 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
             }
             googleMap.setMyLocationEnabled(true);
             googleMap.setBuildingsEnabled(true);
+            googleMap.getUiSettings().setCompassEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setZoomGesturesEnabled(true);
 
             googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
@@ -340,12 +389,13 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
     }
 
     private void sendSiteConfirmation() {
-        Log.e(LOG,"############### sendSiteConfirmation");
-        Util.collapse(siteEditor,500,null);
+        Log.e(LOG, "############### sendSiteConfirmation");
+        Util.collapse(siteEditor, 500, null);
     }
+
     private void sendSiteDeletion() {
-        Log.w(LOG,"############### sendSiteDeletion");
-        Util.collapse(siteEditor,500,null);
+        Log.w(LOG, "############### sendSiteDeletion");
+        Util.collapse(siteEditor, 500, null);
     }
 
     @Override
@@ -374,13 +424,32 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.e(LOG, "####### onLocationChanged, accuracy: " + location.getAccuracy());
         this.location = location;
         if (location.getAccuracy() <= ACCURACY_LIMIT) {
             stopLocationUpdates();
-        }
-        Log.e(LOG, "####### onLocationChanged, accuracy: " + location.getAccuracy());
-    }
 
+            setRiverPoints();
+        }
+
+    }
+    private void addDeviceLocationMarker() {
+        Log.w(LOG,"Adding device location marker to map");
+        IconGenerator gen = new IconGenerator(getApplicationContext());
+        gen.setColor(ContextCompat.getColor(getApplicationContext(),R.color.green_300));
+        Bitmap bm = gen.makeIcon("You are here");
+        BitmapDescriptor desc = BitmapDescriptorFactory.fromBitmap(bm);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .icon(desc)
+                .title("You are here")
+                .snippet("");
+
+        if (googleMap != null) {
+            final Marker m = googleMap.addMarker(markerOptions);
+            markers.add(m);
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -435,6 +504,8 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
             if (location.getAccuracy() > ACCURACY_LIMIT) {
                 startLocationUpdates();
             } else {
+                addDeviceLocationMarker();
+
             }
             Log.w(LOG, "## requesting location ....lastLocation: "
                     + location.getLatitude() + " "
@@ -494,6 +565,10 @@ public class EvaluationSiteMapActivity extends AppCompatActivity implements Loca
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    private void makeBubbles() {
 
     }
 }

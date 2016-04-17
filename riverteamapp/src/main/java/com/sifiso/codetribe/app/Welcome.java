@@ -120,7 +120,7 @@ public class Welcome extends AppCompatActivity {
 
             }
 
-            Intent intent = new Intent(ctx, MainPagerActivity.class);
+            Intent intent = new Intent(ctx, CreateSiteActivity.class);
             startActivity(intent);
             finish();
             return;

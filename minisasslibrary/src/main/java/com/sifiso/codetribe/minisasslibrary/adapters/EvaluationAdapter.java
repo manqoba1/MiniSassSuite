@@ -164,7 +164,7 @@ public class EvaluationAdapter extends BaseAdapter {
                 Util.flashOnce(h.ELI_directions, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        mListener.onDirectionToSite(evaluation.getEvaluationSite());
+                        mListener.onDirectionToSite(null);
                     }
                 });
 

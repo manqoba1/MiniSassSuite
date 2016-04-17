@@ -1,5 +1,8 @@
 package com.sifiso.codetribe.minisasslibrary.dto;
 
+import android.location.Location;
+import android.location.LocationManager;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +10,8 @@ import java.io.Serializable;
  */
 public class RiverPointDTO implements Serializable, Comparable<RiverPointDTO> {
     private static final long serialVersionUID = 1L;
-    private Integer riverPointID, distance;
+    private Integer riverPointID;
+    private Double distance;
     private double latitude;
     private double longitude;
     private float distanceFromMe;
@@ -29,11 +33,11 @@ public class RiverPointDTO implements Serializable, Comparable<RiverPointDTO> {
         this.distanceFromMe = distanceFromMe;
     }
 
-    public Integer getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
@@ -123,5 +127,17 @@ public class RiverPointDTO implements Serializable, Comparable<RiverPointDTO> {
             return 1;
         }
         return 0;
+    }
+    public float calculateDistance(double latitude, double longitude) {
+        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+        loc1.setLatitude(this.latitude);
+        loc1.setLongitude(this.longitude);
+
+        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+        loc2.setLatitude(latitude);
+        loc2.setLongitude(longitude);
+
+        distanceFromMe = loc1.distanceTo(loc2);
+        return distanceFromMe;
     }
 }

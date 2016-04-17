@@ -65,7 +65,7 @@ public class InsectSelectorFragment extends Fragment implements PageFragment {
     }
     private void setList() {
 
-        adapter = new InsectSelectionAdapter(ctx, mSites, R.layout.insect_select_item, new InsectSelectionAdapter.InsectPopupAdapterListener() {
+        adapter = new InsectSelectionAdapter(ctx, mSites, new InsectSelectionAdapter.InsectPopupAdapterListener() {
             @Override
             public void onInsectSelected(InsectImageDTO insect, int index) {
 

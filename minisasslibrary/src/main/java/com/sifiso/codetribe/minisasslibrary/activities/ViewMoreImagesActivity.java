@@ -46,7 +46,7 @@ public class ViewMoreImagesActivity extends AppCompatActivity {
         txtCount = (TextView)findViewById(R.id.AVM_count);
         txtGroupName = (TextView)findViewById(R.id.AVM_groupName);
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Log.i(LOG, "onCreate more insect images");

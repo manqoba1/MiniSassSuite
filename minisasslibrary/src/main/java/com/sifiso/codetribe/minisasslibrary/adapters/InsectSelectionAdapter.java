@@ -1,6 +1,7 @@
 package com.sifiso.codetribe.minisasslibrary.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,13 +27,11 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
     private Context mContext;
     private List<InsectImageDTO> mList;
     private ArrayList<InsectImageDTO> selectedInsects;
-    private int rowLayout;
     private InsectPopupAdapterListener listener;
 
-    public InsectSelectionAdapter(Context mContext, List<InsectImageDTO> mList, int rowLayout, InsectPopupAdapterListener listener) {
+    public InsectSelectionAdapter(Context mContext, List<InsectImageDTO> mList, InsectPopupAdapterListener listener) {
         this.mContext = mContext;
         this.mList = mList;
-        this.rowLayout = rowLayout;
         this.listener = listener;
     }
 
@@ -94,7 +93,7 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
             @Override
             public void onClick(View view) {
                 insect.setSelected(true);
-                listener.onViewMore(insect,position);
+                listener.onViewMore(insect, position);
             }
         });
         h.INSC_image.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +104,10 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
         });
         if (insect.isSelected()) {
             h.INSC_box.setChecked(true);
+            h.footer.setBackgroundColor(ContextCompat.getColor(mContext, R.color.amber_600));
         } else {
             h.INSC_box.setChecked(false);
+            h.footer.setBackgroundColor(ContextCompat.getColor(mContext, R.color.blue_500));
         }
     }
 
@@ -118,6 +119,7 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
 
     public interface InsectPopupAdapterListener {
         void onInsectSelected(InsectImageDTO insect, int index);
+
         void onViewMore(InsectImageDTO insect, int index);
     }
 
@@ -125,12 +127,14 @@ public class InsectSelectionAdapter extends RecyclerView.Adapter<InsectSelection
         protected ImageView INSC_image;
         protected CheckBox INSC_box;
         private TextView INSC_more;
+        private View footer;
 
         public Holder(View itemView) {
             super(itemView);
             INSC_box = (CheckBox) itemView.findViewById(R.id.INSC_box);
             INSC_image = (ImageView) itemView.findViewById(R.id.INSC_image);
             INSC_more = (TextView) itemView.findViewById(R.id.INSC_more);
+            footer = itemView.findViewById(R.id.footer);
         }
     }
 }

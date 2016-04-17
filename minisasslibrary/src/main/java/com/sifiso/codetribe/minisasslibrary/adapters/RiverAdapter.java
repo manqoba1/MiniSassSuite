@@ -112,7 +112,7 @@ public class RiverAdapter extends BaseAdapter {
                 h.actionsView.setVisibility(View.VISIBLE);
             } else {
                 h.scoreView.setVisibility(View.GONE);
-                h.actionsView.setVisibility(View.GONE);
+                //h.actionsView.setVisibility(View.GONE);
                 h.AR_percOverallEva.setText(0 + "");
                 h.AR_conditionName.setText("No Observation(s) yet");
                 h.AR_percOverallEva.setTextColor(ContextCompat.getColor(mCtx, R.color.gray));
@@ -121,7 +121,7 @@ public class RiverAdapter extends BaseAdapter {
             }
         } else {
             h.scoreView.setVisibility(View.GONE);
-            h.actionsView.setVisibility(View.GONE);
+            //h.actionsView.setVisibility(View.GONE);
             h.AR_percOverallEva.setText(0 + "");
             h.AR_conditionName.setText("No Observation(s) yet");
             h.AR_percOverallEva.setTextColor(ContextCompat.getColor(mCtx, R.color.gray));

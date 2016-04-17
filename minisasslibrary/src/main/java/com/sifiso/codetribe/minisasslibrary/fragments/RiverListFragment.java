@@ -27,6 +27,7 @@ import com.sifiso.codetribe.minisasslibrary.services.CreateEvaluationListener;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -179,6 +180,8 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
     private void setListView() {
 
         txtCount.setText("" + response.getRiverList().size());
+        Collections.sort(response.getRiverList());
+
         riverAdapter = new RiverAdapter(response.getRiverList(), ctx, new RiverAdapter.RiverAdapterListener() {
             @Override
             public void onDirectionRequired(final List<EvaluationSiteDTO> siteList) {

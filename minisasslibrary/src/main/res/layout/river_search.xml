@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/editLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/seekLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/beige_pale"
+            android:padding="@dimen/mon_margin">
+
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_search" />
+            <ProgressBar
+                android:id="@+id/busy"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/refresh">
+
+                <TextView
+                    android:id="@+id/progress"
+                    style="@style/BlueCircleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="10" />
+                <TextView
+                    android:id="@+id/km"
+                    android:layout_toRightOf="@id/progress"
+                    style="@style/TextStyleGreySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_divider"
+                    android:layout_centerVertical="true"
+                    android:text="KM" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/km"
+                    android:max="50"
+                    android:progress="10" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text0"
+        android:layout_below="@id/seekLayout"
+        android:text="Rivers Around You"
+        android:layout_marginLeft="@dimen/mon_padding"
+        style="@style/TextStyleGreySmall"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/riversLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text0"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/riverCount"
+                style="@style/RedCircleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="0" />
+            <ImageView
+                android:id="@+id/riverDirectionsIcon"
+                android:src="@drawable/ic_action_directions"
+                android:layout_width="40dp"
+                android:layout_toLeftOf="@id/riverCount"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_height="40dp" />
+
+            <Spinner
+                android:id="@+id/riverSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:layout_toLeftOf="@id/riverDirectionsIcon" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_below="@id/riversLayout"
+            android:text="Observation Sites"
+            android:layout_marginLeft="@dimen/mon_padding"
+            style="@style/TextStyleGreySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/siteSpinnerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_marginBottom="@dimen/mon_margin"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/sitesCount"
+                style="@style/GreenCircleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="0" />
+            <ImageView
+                android:id="@+id/siteDirectionsIcon"
+                android:src="@drawable/ic_action_directions"
+                android:layout_width="40dp"
+                android:layout_toLeftOf="@id/sitesCount"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_height="40dp" />
+
+            <Spinner
+                android:id="@+id/siteSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:layout_toLeftOf="@id/siteDirectionsIcon" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+

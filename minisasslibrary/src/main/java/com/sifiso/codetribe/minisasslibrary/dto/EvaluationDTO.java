@@ -22,6 +22,8 @@ public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
     private String comment, conditionName, teamName;
     private Double score;
     private Double pH;
+    private Double latitude;
+    private Double longitude;
     private String remarks;
     private Double waterTemperature;
     private Double oxygen;
@@ -30,10 +32,34 @@ public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
     private List<EvaluationImageDTO> evaluationimageList;
     private TeamMemberDTO teamMember;
     private List<ImagesDTO> imagesList;
-    private EvaluationSiteDTO evaluationSite;
     private ConditionsDTO conditions;
+    private List<InsectImageDTO> insectImages;
     private List<EvaluationInsectDTO> evaluationinsectList;
     private List<EvaluationCommentDTO> evaluationcommentList;
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public List<InsectImageDTO> getInsectImages() {
+        return insectImages;
+    }
+
+    public void setInsectImages(List<InsectImageDTO> insectImages) {
+        this.insectImages = insectImages;
+    }
 
     public List<ImagesDTO> getImagesList() {
         return imagesList;
@@ -173,14 +199,6 @@ public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
 
     public void setTeamMember(TeamMemberDTO teamMember) {
         this.teamMember = teamMember;
-    }
-
-    public EvaluationSiteDTO getEvaluationSite() {
-        return evaluationSite;
-    }
-
-    public void setEvaluationSite(EvaluationSiteDTO evaluationSite) {
-        this.evaluationSite = evaluationSite;
     }
 
     public ConditionsDTO getConditions() {

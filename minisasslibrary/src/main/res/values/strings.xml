@@ -148,9 +148,6 @@
     <string name="title_activity_visited_sites">VisitedSitesActivity</string>
     <string name="title_activity_file_import">FileImportActivity</string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-       AIzaSyBwOWDuadjGmsvN8drvijcWpyGXRySTzbs
-    </string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
     <string name="title_activity_team_member">Team Members</string>
     <string name="registration_message">Sign up to become a river health monitor.</string>
@@ -183,4 +180,9 @@ Meet the Team:
 </string>
     <string name="title_activity_evaluation2">Evaluation2Activity</string>
     <string name="title_activity_evaluation_site_map">Observation Site Map</string>
+    <string name="title_activity_nav_map">NavMapActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_create_site">Manage Observation Site</string>
 </resources>

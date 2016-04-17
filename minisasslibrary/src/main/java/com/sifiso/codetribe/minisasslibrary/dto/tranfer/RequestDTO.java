@@ -43,7 +43,8 @@ public class RequestDTO implements Serializable {
             ADD_COMMENT = 16,
             ADD_EVALUATION_INSECT = 17,
             ADD_TEAM = 18,
-            ADD_STREAM = 19;
+            ADD_STREAM = 19,
+            ADD_EVALUATION_SITE = 20;
 
 
     public static final int ADD_COUNTRY = 21,
@@ -60,6 +61,7 @@ public class RequestDTO implements Serializable {
             UPDATE_TEAM_MEMBER = 37,
             UPDATE_COMMENT = 38,
             UPDATE_EVALUATION = 39,
+            DELETE_EVALUATION_SITE = 40,
             UPDATE_CONDITIONS = 55,
             SEND_INVITE_TO_TEAM_MEMBER = 56;
 

@@ -5,6 +5,11 @@
  */
 package com.sifiso.codetribe.minisasslibrary.dto;
 
+import android.location.Location;
+import android.location.LocationManager;
+
+import com.google.android.gms.maps.model.Marker;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,8 @@ public class EvaluationSiteDTO implements Serializable, Comparable<EvaluationSit
     private Integer gID;
     private String description;
     private String riverName2;
+    private Marker marker;
+
 
     @Override
     public int compareTo(EvaluationSiteDTO another) {
@@ -44,6 +51,17 @@ public class EvaluationSiteDTO implements Serializable, Comparable<EvaluationSit
         return 0;
     }
 
+    public void calculateDistance(double latitude,double longitude) {
+        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+        loc1.setLatitude(getLatitude());
+        loc1.setLongitude(getLongitude());
+
+        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+        loc2.setLatitude(latitude);
+        loc2.setLongitude(longitude);
+
+        distanceFromMe = loc1.distanceTo(loc2);
+    }
     public Boolean getConfirmed() {
         return confirmed;
     }

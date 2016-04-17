@@ -211,7 +211,7 @@ public class CacheUtil implements Serializable {
                         break;
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(LOG, "Failed to cache data", e);
                 return 9;
             }

@@ -184,10 +184,7 @@ public class RequestSyncService extends IntentService {
 
     }
     private void sendRequest(RequestDTO w) {
-        w.getEvaluation().getEvaluationSite().setRiver(null);
-        w.getEvaluation().getEvaluationSite().setRiverName2(null);
-        w.getEvaluation().getEvaluationSite().setCategory(null);
-        w.getEvaluation().getEvaluationSite().setEvaluationList(null);
+
         for (InsectImageDTO m: w.getInsectImages()) {
             m.setInsectimagelistList(null);
         }
