@@ -69,6 +69,7 @@ import com.sifiso.codetribe.minisasslibrary.util.Statics;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -210,7 +211,7 @@ public class CreateSiteActivity extends AppCompatActivity
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                     CameraUpdate cu2 = CameraUpdateFactory.newLatLngZoom(latLng, 13);
                                     mgGoogleMap.animateCamera(cu2);
                                 }
@@ -248,7 +249,7 @@ public class CreateSiteActivity extends AppCompatActivity
             }
         }
         if (foundCloseOne) {
-            Log.e(LOG,"------------- foundCloseOne, ignoring long click");
+            Log.e(LOG, "------------- foundCloseOne, ignoring long click");
             return;
         }
         final AlertDialog.Builder d = new AlertDialog.Builder(this);
@@ -272,6 +273,7 @@ public class CreateSiteActivity extends AppCompatActivity
     private void doAddSiteDialog() {
         showEditorDialog(SiteEditorDialog.ADD_SITE);
     }
+
     private void createSiteWhereYouAreDialog() {
         AlertDialog.Builder d = new AlertDialog.Builder(this);
         d.setTitle("New Observation Site")
@@ -514,8 +516,8 @@ public class CreateSiteActivity extends AppCompatActivity
                     if (marker.getTitle() == null || marker.getTitle().isEmpty()) {
                         Log.e(LOG, "+++++++++++> marker has no title, WTF?");
                         //check if within or very near a site
-                        for (EvaluationSiteDTO s: river.getEvaluationsiteList()) {
-                            s.calculateDistance(marker.getPosition().latitude,marker.getPosition().longitude);
+                        for (EvaluationSiteDTO s : river.getEvaluationsiteList()) {
+                            s.calculateDistance(marker.getPosition().latitude, marker.getPosition().longitude);
                         }
                         Collections.sort(river.getEvaluationsiteList());
                         if (!river.getEvaluationsiteList().isEmpty()) {
@@ -588,7 +590,7 @@ public class CreateSiteActivity extends AppCompatActivity
                     if (dfr.getDistance() < 500) {
                         showNewSiteDialog(latLng);
                     } else {
-                        Log.d(LOG,"You are more than 500 metres from a river");
+                        Log.d(LOG, "You are more than 500 metres from a river");
                     }
 
 
@@ -597,10 +599,10 @@ public class CreateSiteActivity extends AppCompatActivity
             mgGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    Log.d(LOG,"****************** MAP clicked: " + latLng);
+                    Log.d(LOG, "****************** MAP clicked: " + latLng);
                     //check if within or very near a site
-                    for (EvaluationSiteDTO s: river.getEvaluationsiteList()) {
-                        s.calculateDistance(latLng.latitude,latLng.longitude);
+                    for (EvaluationSiteDTO s : river.getEvaluationsiteList()) {
+                        s.calculateDistance(latLng.latitude, latLng.longitude);
                     }
                     Collections.sort(river.getEvaluationsiteList());
                     if (!river.getEvaluationsiteList().isEmpty()) {
@@ -619,7 +621,7 @@ public class CreateSiteActivity extends AppCompatActivity
     }
 
 
-
+    static final DecimalFormat df = new DecimalFormat("###,###,###,###");
     private void showPopupMenu() {
         Log.w(LOG, "showPopupMenu selectedSite id: " + selectedSite.getEvaluationSiteID()
                 + " obs: " + selectedSite.getEvaluationList().size());
@@ -629,6 +631,14 @@ public class CreateSiteActivity extends AppCompatActivity
         IconizedMenu popup = new IconizedMenu(this, handle);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_on_map, popup.getMenu());
+        selectedSite.calculateDistance(location.getLatitude(), location.getLongitude());
+        if (selectedSite.getDistanceFromMe() > 200) {
+            Log.e(LOG, "Cannot do observation -------------------------------------: "
+                    + selectedSite.getDistanceFromMe());
+            Menu m = popup.getMenu();
+            m.getItem(0).setVisible(false);
+        }
+
         popup.setOnMenuItemClickListener(new IconizedMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -638,20 +648,23 @@ public class CreateSiteActivity extends AppCompatActivity
                         if (selectedSite == null) {
                             throw new RuntimeException("SelectedSite is fucking null, why?");
                         }
-                        Log.e(LOG, "..............starting InsectPickerActivity, selectedSite " + selectedSite.getEvaluationSiteID() + " obs: " + selectedSite.getEvaluationList().size());
+
+                        Log.e(LOG, "..............starting InsectPickerActivity, selectedSite "
+                                + selectedSite.getEvaluationSiteID() + " obs: "
+                                + selectedSite.getEvaluationList().size());
                         Intent m = new Intent(getApplicationContext(), InsectPickerActivity.class);
                         m.putExtra("site", selectedSite);
                         startActivity(m);
                         break;
                     case R.id.ic_action_list:
-                        Intent m2 = new Intent(getApplicationContext(),MainPagerActivity.class);
+                        Intent m2 = new Intent(getApplicationContext(), MainPagerActivity.class);
                         startActivity(m2);
                         break;
                     case R.id.ic_action_edit:
                         showEditorDialog(SiteEditorDialog.UPDATE_SITE);
                         break;
                     case R.id.ic_action_directions:
-                        getDirections(selectedSite.getLatitude(),selectedSite.getLongitude());
+                        getDirections(selectedSite.getLatitude(), selectedSite.getLongitude());
                         break;
                     case R.id.ic_action_remove:
                         showEditorDialog(SiteEditorDialog.DELETE_SITE);
@@ -707,8 +720,9 @@ public class CreateSiteActivity extends AppCompatActivity
 
             }
         });
-        d.show(getSupportFragmentManager(),"EDITOR_DIALOG");
+        d.show(getSupportFragmentManager(), "EDITOR_DIALOG");
     }
+
     private EvaluationSiteDTO findSiteWhereYouAre() {
         if (river.getEvaluationsiteList().isEmpty())
             return null;
@@ -816,12 +830,13 @@ public class CreateSiteActivity extends AppCompatActivity
     }
 
     RiverSearchDialog riverSearchDialog;
+
     private void startSearch() {
         //todo start search dialog
         if (riverSearchDialog == null) {
             riverSearchDialog = new RiverSearchDialog();
         } else {
-            riverSearchDialog.show(getSupportFragmentManager(),"DIALOG");
+            riverSearchDialog.show(getSupportFragmentManager(), "DIALOG");
             return;
         }
         riverSearchDialog.setLatitude(location.getLatitude());
@@ -862,19 +877,19 @@ public class CreateSiteActivity extends AppCompatActivity
 
                 List<DistanceFromRiver> mlist = new ArrayList<>(riverMarkers.size());
                 for (RiverPointDTO p : riverPoints) {
-                    LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     mlist.add(new DistanceFromRiver(p.getLatitude(), p.getLongitude(), latLng));
                 }
                 Collections.sort(mlist);
                 DistanceFromRiver dfr = mlist.get(0);
-                getDirections(dfr.getLatitude(),dfr.getLongitude());
+                getDirections(dfr.getLatitude(), dfr.getLongitude());
 
 
             }
 
             @Override
             public void onDirections(EvaluationSiteDTO site) {
-                getDirections(site.getLatitude(),site.getLongitude());
+                getDirections(site.getLatitude(), site.getLongitude());
             }
         });
 
@@ -882,7 +897,7 @@ public class CreateSiteActivity extends AppCompatActivity
 
     }
 
-    private void getDirections(double latitude,double longitude) {
+    private void getDirections(double latitude, double longitude) {
         Log.i(LOG, "startDirectionsMap ..........");
         String url = "http://maps.google.com/maps?saddr="
                 + location.getLatitude() + "," + location.getLongitude()
@@ -891,11 +906,12 @@ public class CreateSiteActivity extends AppCompatActivity
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
         startActivity(intent);
     }
+
     Marker deviceMarker;
 
     private void addDeviceLocationMarker() {
         IconGenerator gen = new IconGenerator(getApplicationContext());
-        gen.setColor(ContextCompat.getColor(getApplicationContext(),R.color.cyan_100));
+        gen.setColor(ContextCompat.getColor(getApplicationContext(), R.color.cyan_100));
         Bitmap bm = gen.makeIcon("You are here");
         BitmapDescriptor desc = BitmapDescriptorFactory.fromBitmap(bm);
         MarkerOptions markerOptions = new MarkerOptions()
@@ -956,8 +972,10 @@ public class CreateSiteActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
     boolean isBusy;
     static final int RADIUS = 20;
+
     private void getRiversAroundMe() {
         if (isBusy) {
             Log.e(LOG, "### getRiversAroundMe is BUSY!!!");
@@ -991,7 +1009,7 @@ public class CreateSiteActivity extends AppCompatActivity
                     river = rivers.get(0);
                     setRiverPoints();
                 } else {
-                    Util.showErrorToast(getApplicationContext(),"No rivers found");
+                    Util.showErrorToast(getApplicationContext(), "No rivers found");
                     return;
                 }
 
@@ -1021,7 +1039,7 @@ public class CreateSiteActivity extends AppCompatActivity
 
             @Override
             public void onError(final String message) {
-                Util.showErrorToast(getApplicationContext(),message);
+                Util.showErrorToast(getApplicationContext(), message);
             }
         });
 
