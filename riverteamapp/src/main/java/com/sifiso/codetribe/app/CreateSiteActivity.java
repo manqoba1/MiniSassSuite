@@ -77,7 +77,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -258,6 +257,9 @@ public class CreateSiteActivity extends AppCompatActivity
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        selectedSite = new EvaluationSiteDTO();
+                        selectedSite.setLatitude(latLng.latitude);
+                        selectedSite.setLongitude(latLng.longitude);
                         doAddSiteDialog();
                     }
                 })
@@ -322,8 +324,12 @@ public class CreateSiteActivity extends AppCompatActivity
             deviceMarker.remove();
         }
         IconGenerator gen = new IconGenerator(getApplicationContext());
+        for (RiverDTO river: rivers) {
+            Log.d(LOG, "setEvaluationSiteMarkers, River: " + river.getRiverName() + " sites: " + river.getEvaluationsiteList().size());
+        }
         if (!river.getEvaluationsiteList().isEmpty()) {
-
+            Log.i(LOG,"################ River: " + river.getRiverName() + " sites: " + river.getEvaluationsiteList().size());
+            int index = 0;
             for (final EvaluationSiteDTO es : river.getEvaluationsiteList()) {
                 View v = getLayoutInflater().inflate(R.layout.map_site_icon, null);
                 TextView txt = (TextView) v.findViewById(R.id.badge);
@@ -349,7 +355,6 @@ public class CreateSiteActivity extends AppCompatActivity
                 Bitmap bm = gen.makeIcon();
                 BitmapDescriptor desc = BitmapDescriptorFactory
                         .fromBitmap(bm);
-                //desc = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
 
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(new LatLng(es.getLatitude(), es.getLongitude()))
@@ -359,21 +364,14 @@ public class CreateSiteActivity extends AppCompatActivity
 
                 final Marker m = mgGoogleMap.addMarker(markerOptions);
                 hashMap.put(m, es);
+                index++;
+                Log.d(LOG,"================> Next index up is: " + index + " pos: " + m.getPosition());
+
 
             }
 
         }
         Log.e(LOG, "+++++++++++++++ hashMap has: " + hashMap.keySet().size());
-
-        Set<Marker> markers = hashMap.keySet();
-        StringBuilder sb = new StringBuilder();
-        sb.append("################ markers in hashMap ####################\n");
-        for (Marker m : markers) {
-            sb.append("title: ").append(m.getTitle()).append(" snippet: ").append(m.getSnippet())
-                    .append(" latLng: ").append(m.getPosition()).append("\n");
-        }
-        sb.append("################ end of markers in hashMap ####################");
-        Log.d(LOG, sb.toString());
         pointsHaveBeenSet = true;
 
     }
@@ -688,9 +686,6 @@ public class CreateSiteActivity extends AppCompatActivity
         d.setContext(getApplicationContext());
         d.setType(type);
         if (type == SiteEditorDialog.ADD_SITE) {
-            selectedSite = new EvaluationSiteDTO();
-            selectedSite.setLatitude(location.getLatitude());
-            selectedSite.setLongitude(location.getLongitude());
             selectedSite.setRiverID(river.getRiverID());
 
         }
@@ -1011,6 +1006,9 @@ public class CreateSiteActivity extends AppCompatActivity
                 } else {
                     Util.showErrorToast(getApplicationContext(), "No rivers found");
                     return;
+                }
+                for (RiverDTO river: rivers) {
+                    Log.e(LOG, "getRiversAroundMe: River sites: " + river.getRiverName() + " sites: " + river.getEvaluationsiteList().size());
                 }
 
                 CacheUtil.cacheData(getApplicationContext(), r,
