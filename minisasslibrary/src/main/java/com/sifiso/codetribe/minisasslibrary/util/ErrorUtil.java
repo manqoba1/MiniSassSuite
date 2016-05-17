@@ -25,7 +25,7 @@ public class ErrorUtil {
             case Constants.ERROR_DATABASE:
                 ToastUtil
                         .errorToast(ctx,
-                                "Database error. Contact mgGolf support on the web site");
+                                "Database error. Contact MiniSASS support on the web site");
                 break;
             case Constants.ERROR_NETWORK_UNAVAILABLE:
                 Util.showErrorToast(ctx,
@@ -33,12 +33,12 @@ public class ErrorUtil {
                 break;
             case Constants.ERROR_ENCODING:
                 Util.showErrorToast(ctx,
-                        "Error encoding request. Contact mgGolf support");
+                        "Error encoding request. Contact MiniSASS support");
                 break;
             case Constants.ERROR_SERVER_COMMS:
                 ToastUtil
                         .errorToast(ctx,
-                                "Problem communicating with the server. Please contact mgGolf support");
+                                "Problem communicating with the server. Please contact MiniSASS support");
                 break;
             case Constants.ERROR_DUPLICATE:
                 Util.showErrorToast(ctx,

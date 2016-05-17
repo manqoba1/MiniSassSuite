@@ -29,7 +29,7 @@ public class NetUtil {
     public static void sendRequest(Context ctx, final String suffix,
                                    RequestList w, final NetListener listener) {
 
-        BaseVolley.getRemoteData(suffix, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(suffix, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 if (response.getStatusCode() == 0) {
@@ -53,7 +53,7 @@ public class NetUtil {
     public static void sendRequest(Context ctx, final String suffix,
                                    RequestDTO w, final NetListener listener) {
 
-        BaseVolley.getRemoteData(suffix, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(suffix, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 if (response.getStatusCode() == 0) {

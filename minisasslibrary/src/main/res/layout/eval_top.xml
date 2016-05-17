@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/evalTopSection"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/mon_padding">
+
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mon_margin">
+
+        <TextView
+            android:id="@+id/number"
+            style="@style/BlackCircleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/number">
+
+            <TextView
+                android:id="@+id/teamName"
+                style="@style/Title2TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:text="Team Name Here" />
+
+            <TextView
+                android:id="@+id/siteName"
+                style="@style/Title3TextStyleGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/teamName"
+                android:layout_alignLeft="@id/teamName"
+                android:text="Site Name Here" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topLayout"
+        android:layout_marginLeft="@dimen/mon_padding">
+
+        <TextView
+            android:id="@+id/dateLabel"
+            style="@style/TextStyleGray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Date Observed"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_toRightOf="@id/dateLabel"
+            android:text="Wednesday, 23 December, 2099 12:34"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dateLayout"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:text="This is the space reserved for remarks that describe some special situation or something interesting. Sometimes there just is nothing going on and no remarks or pictures are necessary"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/midLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/remarks"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageCrab"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/gray_crap" />
+
+        <TextView
+            android:id="@+id/average"
+            style="@style/Title1TextStyleRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mon_wide"
+            android:layout_toRightOf="@+id/imageCrab"
+            android:text="0.00" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/resultText"
+        style="@style/Title3TextStyleBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/midLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:text="Unmodified(NATURAL condition)" />
+
+</RelativeLayout>

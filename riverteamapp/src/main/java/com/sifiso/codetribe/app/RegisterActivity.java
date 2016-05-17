@@ -155,56 +155,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
         req.setRequestType(RequestDTO.LIST_REGISTER_DATA);
         try {
             setRefreshActionButtonState(true);
-            /*NetUtil.sendRequest(ctx, Statics.MINI_SASS_ENDPOINT, req, new NetUtil.NetListener() {
-                @Override
-                public void onMessage(final ResponseDTO r) {
-                    Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setRefreshActionButtonState(false);
-                            if (!ErrorUtil.checkServerError(ctx, r)) {
-                                return;
-                            }
-
-                            Log.e(LOG, new Gson().toJson(r));
-                            response = r;
-                            buildPages();
-                        }
-                    });
-
-
-                }
-
-                @Override
-                public void onClose() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setRefreshActionButtonState(false);
-                            ToastUtil.noNetworkToast(ctx);
-                            ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
-
-                            dialogFragment.show(getFragmentManager(), "");
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onError(final String message) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setRefreshActionButtonState(false);
-                            ToastUtil.noNetworkToast(ctx);
-
-                        }
-                    });
-                }
-            });*/
-            BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, req, ctx, new BaseVolley.BohaVolleyListener() {
+            BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, req, ctx, new BaseVolley.BohaVolleyListener() {
                 @Override
                 public void onResponseReceived(final ResponseDTO r) {
                     Log.e(LOG, "## getStarterData responded...statusCode: " + r.getStatusCode());

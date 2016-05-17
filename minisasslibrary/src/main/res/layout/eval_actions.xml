@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/evalActions"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/mon_margin">
+
+    <LinearLayout
+        android:id="@+id/divider"
+        android:background="@color/grey_500"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
+        android:layout_below="@id/divider"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iconDirections"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:src="@drawable/ic_action_directions" />
+
+        <ImageView
+            android:id="@+id/iconCamera"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="@dimen/mon_wider"
+            android:layout_toLeftOf="@id/iconDirections"
+            android:src="@drawable/ic_action_camera" />
+
+        <ImageView
+            android:id="@+id/iconEdit"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="@dimen/mon_wider"
+            android:layout_toLeftOf="@id/iconCamera"
+            android:src="@drawable/ic_action_edit" />
+        <ImageView
+            android:id="@+id/iconCrab"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="@dimen/mon_wider"
+            android:layout_toLeftOf="@id/iconEdit"
+            android:src="@drawable/gray_crap" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

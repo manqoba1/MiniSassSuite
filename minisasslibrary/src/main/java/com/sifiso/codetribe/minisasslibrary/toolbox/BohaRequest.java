@@ -16,6 +16,7 @@ import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -41,6 +42,11 @@ public class BohaRequest extends Request<ResponseDTO> {
 
     }
 
+    private static String getSize(int length) {
+        Double d = Double.parseDouble("" + length) / Double.parseDouble("" + 1024);
+        return df.format(d.doubleValue()) + "K" ;
+    }
+    static final DecimalFormat df = new DecimalFormat("###,###,###,###,##0.0");
     @Override
     protected Response<ResponseDTO> parseNetworkResponse(
             NetworkResponse response) {
@@ -48,7 +54,7 @@ public class BohaRequest extends Request<ResponseDTO> {
         try {
             Gson gson = new Gson();
             String resp = new String(response.data);
-            Log.i(LOG, "response string length returned: " + resp.length());
+            Log.i(LOG, "response string length returned: " + getSize(resp.length()));
             try {
                 dto = gson.fromJson(resp, ResponseDTO.class);
                 if (dto != null) {

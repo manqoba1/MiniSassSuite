@@ -46,6 +46,7 @@ import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Constants;
 import com.sifiso.codetribe.minisasslibrary.util.DividerItemDecoration;
 import com.sifiso.codetribe.minisasslibrary.util.RequestCacheUtil;
+import com.sifiso.codetribe.minisasslibrary.util.RiverDataWorker;
 import com.sifiso.codetribe.minisasslibrary.util.SharedUtil;
 import com.sifiso.codetribe.minisasslibrary.util.SpacesItemDecoration;
 import com.sifiso.codetribe.minisasslibrary.util.Statics;
@@ -66,7 +67,7 @@ public class InsectPickerActivity extends AppCompatActivity implements
     private InsectSelectionAdapter adapter;
     private RecyclerView recyclerView;
 
-    private List<InsectImageDTO> mRawImages;
+    private List<InsectImageDTO> insectImages;
     private List<InsectImageDTO> mSelectedImages;
     private TextView txtTotal, txtNumber, txtAverage, txtScoreStatus;
     private ImageView scoreIcon;
@@ -96,28 +97,30 @@ public class InsectPickerActivity extends AppCompatActivity implements
     }
 
     private void getCachedData() {
-        CacheUtil.getCachedData(ctx, CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
+        Log.w(LOG,"getCachedData starting ...");
+        RiverDataWorker.getLookups((MSApp) getApplication(),
+                new RiverDataWorker.LookupsListener() {
             @Override
-            public void onFileDataDeserialized(ResponseDTO r) {
-                mRawImages = r.getInsectimageDTOList();
+            public void onLookupsRetrieved(ResponseDTO response) {
+                insectImages = response.getInsectimageDTOList();
+                Log.d(LOG,"++++ insect image metadata from cache: "
+                + insectImages.size());
                 setList();
             }
+            @Override
+            public void onLookupsCached() {}
 
             @Override
-            public void onDataCached(ResponseDTO response) {
+            public void onError(String message) {
 
-            }
-
-            @Override
-            public void onError() {
-                Log.e(LOG, "Failed to get cached data");
             }
         });
+
     }
     private void setList() {
 
         adapter = new InsectSelectionAdapter(ctx,
-                mRawImages,
+                insectImages,
                 new InsectSelectionAdapter.InsectPopupAdapterListener() {
             @Override
             public void onInsectSelected(InsectImageDTO insect, int index) {
@@ -127,7 +130,7 @@ public class InsectPickerActivity extends AppCompatActivity implements
             @Override
             public void onViewMore(InsectImageDTO insect, int index) {
                 intent = new Intent(InsectPickerActivity.this, ViewMoreImagesActivity.class);
-                intent.putExtra("insetImageList", (java.io.Serializable) mRawImages);
+                intent.putExtra("insetImageList", (java.io.Serializable) insectImages);
                 intent.putExtra("insect", insect);
                 startActivity(intent);
             }
@@ -180,7 +183,7 @@ public class InsectPickerActivity extends AppCompatActivity implements
             return;
         }
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 snackbar.dismiss();
@@ -236,7 +239,7 @@ public class InsectPickerActivity extends AppCompatActivity implements
     private void setCheckedInsects() {
         mSelectedImages = new ArrayList<>();
 
-        for (InsectImageDTO m: mRawImages) {
+        for (InsectImageDTO m: insectImages) {
             if (m.isSelected()) {
                 mSelectedImages.add(m);
                 total += m.getSensitivityScore();
@@ -380,7 +383,7 @@ public class InsectPickerActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (mSelectedImages != null && !mSelectedImages.isEmpty()) {
             intent = new Intent();
-            intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
+            intent.putExtra("overallInsect", (java.io.Serializable) insectImages);
             intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
             setResult(RESULT_OK, intent);
         } else {
@@ -424,13 +427,8 @@ public class InsectPickerActivity extends AppCompatActivity implements
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == android.R.id.home) {
-            intent = new Intent(InsectPickerActivity.this, EvaluationActivity.class);
-            intent.putExtra("overallInsect", (java.io.Serializable) mRawImages);
-            intent.putExtra("selectedInsects", (java.io.Serializable) mSelectedImages);
-            setResult(INSECT_DATA, intent);
-            finish();
-        }
+
+
         return super.onOptionsItemSelected(item);
     }
 

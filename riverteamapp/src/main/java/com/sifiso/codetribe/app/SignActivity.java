@@ -76,7 +76,7 @@ public class SignActivity extends AppCompatActivity {
         setFields();
 
 
-        getEmail();
+        //getEmail();
         Util.setCustomActionBar(ctx, getSupportActionBar(),
                 "Sign In", ContextCompat.getDrawable(ctx, R.drawable.ic_launcher));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -182,15 +182,14 @@ public class SignActivity extends AppCompatActivity {
                 registerGCMDevice();
             }
 
-            Intent intent = new Intent(ctx, LandingMapActivity.class);
+            Intent intent = new Intent(ctx, MainDrawerActivity.class);
             startActivity(intent);
             finish();
             return;
         }
+        wr = WebCheck.checkNetworkAvailability(getApplicationContext());
         if (wr.isMobileConnected() || wr.isWifiConnected()) {
             registerGCMDevice();
-        } else {
-
         }
     }
 
@@ -240,6 +239,7 @@ public class SignActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException("GooglePlayServicesUtil resultCode: " + resultCode);
             }
         }
+
         return true;
     }
 
@@ -271,7 +271,7 @@ public class SignActivity extends AppCompatActivity {
 
         pd.setCancelable(false);
         pd.show();
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO resp) {
                 runOnUiThread(new Runnable() {
@@ -300,7 +300,7 @@ public class SignActivity extends AppCompatActivity {
                                             resp.getTeamMember().setTeam(r.getTeam());
                                             SharedUtil.saveTeamMember(ctx, resp.getTeamMember());
                                             SharedUtil.storeEmail(ctx, esEmail.getText().toString());
-                                            Intent intent = new Intent(SignActivity.this, CreateSiteActivity.class);
+                                            Intent intent = new Intent(SignActivity.this, MainDrawerActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -317,7 +317,7 @@ public class SignActivity extends AppCompatActivity {
                         }
                         SharedUtil.saveTeamMember(ctx, resp.getTeamMember());
                         SharedUtil.storeEmail(ctx, esEmail.getText().toString());
-                        Intent intent = new Intent(SignActivity.this, CreateSiteActivity.class);
+                        Intent intent = new Intent(SignActivity.this, MainDrawerActivity.class);
                         startActivity(intent);
                         finish();
 
@@ -375,7 +375,7 @@ public class SignActivity extends AppCompatActivity {
 
     List<String> emailAccountList;
 
-    public void getEmail() {
+    public void getEmailx() {
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accts = am.getAccounts();
         if (accts.length == 0) {

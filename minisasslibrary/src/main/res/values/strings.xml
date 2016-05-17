@@ -99,7 +99,7 @@
     <string name="error_network_unavailable">Network unavailable. Check settings and signal strength</string>
     <string name="error_server_unavailable">Server is unavailable due to maintenance. Please try later.</string>
     <string name="error_encoding">Error encoding request. Contact support</string>
-    <string name="error_server_comms">Problem communicating with the server. Please try again or contact mgGolf support</string>
+    <string name="error_server_comms">Problem communicating with the server. Please try again or contact MiniSASS support</string>
     <string name="error_duplicate">Attempting to put duplicate data in database, ignored</string>
     <string name="title_activity_picture">PictureActivity</string>
     <string name="take_pic">Take Picture</string>
@@ -185,4 +185,5 @@ Meet the Team:
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_create_site">Manage Observation Site</string>
+    <string name="title_activity_observations_list">ObservationsListActivity</string>
 </resources>

@@ -1,10 +1,8 @@
 package com.sifiso.codetribe.minisasslibrary.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.sifiso.codetribe.minisasslibrary.MiniSassApp;
 import com.sifiso.codetribe.minisasslibrary.R;
 import com.sifiso.codetribe.minisasslibrary.adapters.PictureRecyclerAdapter;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationDTO;
@@ -108,11 +103,6 @@ public class PictureRecyclerGridActivity extends AppCompatActivity {
         TeamMemberDTO member = SharedUtil.getTeamMember(ctx);
         getSupportActionBar().setSubtitle(member.getFirstName() + member.getLastName());
         Statics.setRobotoFontLight(ctx, title);
-        MiniSassApp app = (MiniSassApp) getApplication();
-        Tracker t = app.getTracker(MiniSassApp.TrackerName.APP_TRACKER);
-
-        t.setScreenName("PictureRecyclerGridActivity");
-        t.send(new HitBuilders.AppViewBuilder().build());
 
     }
 

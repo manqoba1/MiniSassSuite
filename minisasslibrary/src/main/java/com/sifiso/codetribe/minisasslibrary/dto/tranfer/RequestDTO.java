@@ -91,6 +91,10 @@ public class RequestDTO implements Serializable {
             LIST_EVALUATION_SITE_WITH_RADIUS = 76,
             LIST_OF_INSECTS_IMAGES = 77,
             LIST_EVALUATION_BY_RIVER_ID = 78,
+            GET_RIVER_DETAILS = 92,
+            FIX_RIVER_POINTS = 910,
+            KILL_SITE_DUPLICATES = 911,
+            FIX_CROCODILE = 912,
             ADD_GCM_DEVICE = 79,
             GET_RIVERS_BY_RADIUS = 100;
 
@@ -106,6 +110,7 @@ public class RequestDTO implements Serializable {
     private Integer countryID, categoryID, commentID, conditionsID, evaluationID, evaluationInsectID,
             evaluationCommentID, evaluationSiteID, insectID, provinceID, riverID, teamID, townID, teamMemberID,
             evaluationImageID;
+    private boolean zipResponse;
     private Double latitude, longitude;
     private Float accuracy;
     private ImagesDTO images;
@@ -127,6 +132,14 @@ public class RequestDTO implements Serializable {
     private InsectImageDTO insectImage;
     private StreamDTO stream;
     private TmemberDTO tmember;
+
+    public boolean isZipResponse() {
+        return zipResponse;
+    }
+
+    public void setZipResponse(boolean zipResponse) {
+        this.zipResponse = zipResponse;
+    }
 
     public String getSearch() {
         return search;
@@ -178,9 +191,12 @@ public class RequestDTO implements Serializable {
         this.countryCode = countryCode;
     }
 
-    private List<InsectImageDTO> insectImages = new ArrayList<>();
+    private List<InsectImageDTO> insectImages;
 
     public List<InsectImageDTO> getInsectImages() {
+        if (insectImages == null) {
+            insectImages = new ArrayList<>();
+        }
         return insectImages;
     }
 

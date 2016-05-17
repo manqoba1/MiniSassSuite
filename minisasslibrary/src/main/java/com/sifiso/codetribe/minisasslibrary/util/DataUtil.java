@@ -277,7 +277,7 @@ public class DataUtil {
         req.setTeam(team);
         req.setRequestType(RequestDTO.ADD_TEAM);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, req, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, req, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 listener.onResponse(r);

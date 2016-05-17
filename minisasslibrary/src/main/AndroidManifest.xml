@@ -14,7 +14,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -62,20 +61,24 @@
 
         <activity
             android:name=".activities.SplashActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.PictureActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_minisass_maps" />
+            android:label="@string/title_activity_minisass_maps"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.PictureRecyclerGridActivity"
-            android:label="@string/title_activity_picture_recycler_grid" />
+            android:label="@string/title_activity_picture_recycler_grid"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FullPhotoActivity"
-            android:label="@string/title_activity_full_photo" />
+            android:label="@string/title_activity_full_photo"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -85,12 +88,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.GPSscanner"
-            android:label="@string/title_activity_gpsscanner"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.InsectPickerActivity"
-            android:label="@string/title_activity_insect_picker" />
+            android:label="@string/title_activity_insect_picker"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".services.RequestSyncService"
@@ -98,10 +98,12 @@
 
         <activity
             android:name=".activities.InsectBrowser"
-            android:label="@string/title_activity_insect_browser" />
+            android:label="@string/title_activity_insect_browser"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ViewMoreImagesActivity"
-            android:label="@string/title_activity_view_more_images" />
+            android:label="@string/title_activity_view_more_images"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_view_more_images"
@@ -112,33 +114,29 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_password" />
+            android:label="@string/title_activity_forgot_password"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TeamMemberActivity"
             android:label="@string/title_activity_team_member"
-            android:parentActivityName=".activities.ProfileActivity" />
+            android:parentActivityName=".activities.ProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AboutActivity"
-            android:label="@string/title_activity_about" />
+            android:label="@string/title_activity_about"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name=".activities.EvaluationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".activities.Evaluation2Activity"
-            android:label="@string/title_activity_evaluation2"
+            android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activities.EvaluationSiteMapActivity"
-            android:label="@string/title_activity_evaluation_site_map" />
-
+            android:label="@string/title_activity_evaluation_site_map"
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.sifiso.codetribe.app.CreateSiteActivity"
-            android:label="@string/title_activity_create_site"></activity>
+            android:name=".activities.ObservationsListActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_observations_list"/>
     </application>
 
 </manifest>

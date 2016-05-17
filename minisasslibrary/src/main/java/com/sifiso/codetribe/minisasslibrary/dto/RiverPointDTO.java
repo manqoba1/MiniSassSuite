@@ -124,7 +124,7 @@ public class RiverPointDTO implements Serializable, Comparable<RiverPointDTO> {
             return -1;
         }
         if (this.distanceFromMe > another.distanceFromMe) {
-            return 1;
+            return +1;
         }
         return 0;
     }

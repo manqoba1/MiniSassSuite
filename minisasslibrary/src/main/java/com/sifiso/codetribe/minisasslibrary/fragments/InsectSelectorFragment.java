@@ -127,7 +127,7 @@ public class InsectSelectorFragment extends Fragment implements PageFragment {
             listener = (InsectSelectorFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement ObservationListener");
         }
     }
 

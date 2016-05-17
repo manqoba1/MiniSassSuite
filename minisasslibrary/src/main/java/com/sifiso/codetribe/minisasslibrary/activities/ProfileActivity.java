@@ -49,8 +49,6 @@ import com.sifiso.codetribe.minisasslibrary.util.ToastUtil;
 import com.sifiso.codetribe.minisasslibrary.util.Util;
 
 import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -158,7 +156,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
         RequestDTO w = new RequestDTO();
         w.setRequestType(RequestDTO.UPDATE_PROFILE);
         w.setTeamMember(tm);
-        BaseVolley.getRemoteData(Statics.SERVLET_TEST, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_TEST, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO r) {
 
@@ -214,7 +212,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
         w.setRequestType(RequestDTO.REGISTER_TEAM_MEMBER);
         w.setTeamMember(dto);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_TEST, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_TEST, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO r) {
                 runOnUiThread(new Runnable() {
@@ -531,9 +529,10 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
             public void run() {
 
                 P_name.setText(teamMember.getFirstName() + " " + teamMember.getLastName());
-                P_phone.setText((teamMember.getCellphone().equals("") ? "cell not specified" : teamMember.getCellphone()));
+                if (teamMember.getCellphone() != null) {
+                    P_phone.setText(teamMember.getCellphone());
+                }
                 P_email.setText(teamMember.getEmail());
-
                 P_EVN_count.setText((teamMember.getEvaluationCount() == null ? 0 : teamMember.getEvaluationCount()) + "");
                 P_TNAME.setText("Team " + teamMember.getTeamName());
                 if (teamMember.getTeamMemberImage() == null) {
@@ -619,7 +618,7 @@ public class ProfileActivity extends AppCompatActivity implements BusyListener, 
 
         setRefreshActionButtonState(true);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO r) {
                 runOnUiThread(new Runnable() {

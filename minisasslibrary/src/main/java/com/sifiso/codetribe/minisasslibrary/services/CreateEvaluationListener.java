@@ -13,12 +13,9 @@ public interface CreateEvaluationListener {
 
     public void onRefreshMap(RiverDTO river, int result);
 
-    public void onCreateEvaluation(RiverDTO river);
-
     public void onDirection(Double latitude, Double longitude);
 
     public void onSitesMapRequested(RiverDTO river);
 
-    public void onNewEvaluation();
 
 }

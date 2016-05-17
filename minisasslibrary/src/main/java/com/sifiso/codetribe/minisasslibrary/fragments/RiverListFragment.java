@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -215,10 +214,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
                 mListener.onListEvaluationSites(siteList, position);
             }
 
-            @Override
-            public void onCreateEvaluation(RiverDTO river) {
-                mListener.onCreateEvaluation(river);
-            }
+
 
             @Override
             public void onMapRequest(RiverDTO river, int result) {
@@ -232,14 +228,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
         RL_riverList.setAdapter(riverAdapter);
         RL_riverList.setVerticalScrollbarPosition(index2);
         RL_riverList.setSelection(index2);
-        RL_riverList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                mListener.onCreateEvaluation((RiverDTO) parent.getItemAtPosition(position));
-                return false;
-            }
-        });
     }
 
     static final int CREATE_EVALUATION = 108;
@@ -255,7 +244,7 @@ public class RiverListFragment extends Fragment implements PageFragment, SwipeRe
             mListener = (CreateEvaluationListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement ObservationListener");
         }
     }
 

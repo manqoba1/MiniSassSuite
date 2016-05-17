@@ -109,7 +109,7 @@ public class SearchTownFragment extends Fragment implements PageFragment {
             mListener = (SearchTownFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement ObservationListener");
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,13 +34,13 @@ public class SiteEditorDialog extends DialogFragment {
 
         void onSiteUpdated();
 
-        void onSiteRemoved();
+        void onSiteRemoved(EvaluationSiteDTO site);
 
         void onError(String message);
     }
 
     EditText eSiteName;
-    TextView txtCount;
+    TextView txtCount, txtConfirm;
     RadioButton radioRocky, radioSandy;
     Button btnSave;
     View view;
@@ -88,29 +89,42 @@ public class SiteEditorDialog extends DialogFragment {
         }
         txtCount.setText("" + site.getEvaluationList().size());
         if (type == DELETE_SITE) {
-            showConfirmDialog();
+            eSiteName.setEnabled(false);
+            radioRocky.setEnabled(false);
+            radioSandy.setEnabled(false);
+            btnSave.setText("Remove Observation Site");
         }
     }
 
     private void setFields() {
         txtCount = (TextView) view.findViewById(R.id.evaluations);
+        txtConfirm = (TextView) view.findViewById(R.id.confirm);
+        txtConfirm.setVisibility(View.GONE);
         txtCount.setText("0");
         deleteIcon = (ImageView) view.findViewById(R.id.delete);
         eSiteName = (EditText) view.findViewById(R.id.editName);
         radioSandy = (RadioButton) view.findViewById(R.id.radioSandy);
         radioRocky = (RadioButton) view.findViewById(R.id.radioRocky);
         btnSave = (Button) view.findViewById(R.id.btnSave);
-
+        deleteIcon.setVisibility(View.GONE);
         deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showConfirmDialog();
+                dismiss();
             }
         });
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (type) {
+                    case DELETE_SITE:
+                         if (txtConfirm.getVisibility() == View.VISIBLE) {
+                             txtConfirm.setVisibility(View.GONE);
+                             deleteSite();
+                         } else {
+                             txtConfirm.setVisibility(View.VISIBLE);
+                         }
+                        break;
                     case ADD_SITE:
                         addSite();
                         break;
@@ -123,19 +137,16 @@ public class SiteEditorDialog extends DialogFragment {
     }
 
     static final int ROCKY_TYPE_ID = 9, SANDY_TYPE_ID = 8;
-    boolean isdeleteSite;
-
-    private void showConfirmDialog() {
-        if (isdeleteSite) {
-            isdeleteSite = false;
-            deleteSite();
-            return;
-        }
-        isdeleteSite = true;
-        Util.showToast(getContext(), "Please tap the Remove icon again to confirm site removal");
-    }
 
     private void addSite() {
+        if (!radioSandy.isChecked() && !radioRocky.isChecked()) {
+            Util.showToast(getContext(),"Please Rocky or Sandy type");
+            return;
+        }
+        if (eSiteName.getText().toString().isEmpty()) {
+            Util.showToast(getContext(),"Please enter Observation site name");
+            return;
+        }
         RequestDTO w = new RequestDTO(RequestDTO.ADD_EVALUATION_SITE);
         site.setRiverID(river.getRiverID());
         site.setRiverName(river.getRiverName());
@@ -151,7 +162,7 @@ public class SiteEditorDialog extends DialogFragment {
             site.setCategoryID(SANDY_TYPE_ID);
         }
         w.setEvaluationSite(site);
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 dismiss();
@@ -173,28 +184,32 @@ public class SiteEditorDialog extends DialogFragment {
         });
     }
 
-
     public void deleteSite() {
+
+        Log.e("SiteEditorDialog","....... about to delete site: " + site.getEvaluationSiteID() + " " + site.getSiteName());
         RequestDTO w = new RequestDTO(RequestDTO.DELETE_EVALUATION_SITE);
         w.setEvaluationSiteID(site.getEvaluationSiteID());
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
+                listener.onSiteRemoved(site);
                 dismiss();
-                listener.onSiteRemoved();
+
             }
 
             @Override
             public void onVolleyError(VolleyError error) {
-                dismiss();
                 listener.onError(error.getMessage());
+                dismiss();
+
             }
 
             @Override
             public void onError(String message) {
-                dismiss();
                 listener.onError(message);
+                dismiss();
+
             }
         });
     }
@@ -215,7 +230,7 @@ public class SiteEditorDialog extends DialogFragment {
             es.setCategoryID(SANDY_TYPE_ID);
         }
         w.setEvaluationSite(es);
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 dismiss();

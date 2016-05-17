@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.text.util.Linkify;
@@ -225,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         w.setRequestType(RequestDTO.UPDATE_EVALUATION);
         w.setEvaluation(dto);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_TEST, w, mCtx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_TEST, w, mCtx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 if (!ErrorUtil.checkServerError(mCtx, r)) {
@@ -523,12 +522,12 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
             TextView ELI_condition = (TextView) v.findViewById(R.id.ELI_condition);
             TextView ELI_date = (TextView) v.findViewById(R.id.ELI_date);
-            TextView ELI_oxygen = (TextView) v.findViewById(R.id.ELI_oxygen);
+            TextView ELI_oxygen = (TextView) v.findViewById(R.id.oxygen);
             TextView ELI_pH = (TextView) v.findViewById(R.id.ELI_pH);
             TextView ELI_score = (TextView) v.findViewById(R.id.ELI_score);
             TextView ELI_team = (TextView) v.findViewById(R.id.ELI_team);
             TextView ELI_wc = (TextView) v.findViewById(R.id.ELI_wc);
-            TextView ELI_wt = (TextView) v.findViewById(R.id.ELI_wt);
+            TextView ELI_wt = (TextView) v.findViewById(R.id.waterTemp);
             TextView ELI_remarks = (TextView) v.findViewById(R.id.ELI_remarks);
 
             RelativeLayout AR_traineeLayout = (RelativeLayout) v.findViewById(R.id.AR_traineeLayout);

@@ -1,32 +1,35 @@
 package com.sifiso.codetribe.minisasslibrary.dialogs;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.sifiso.codetribe.minisasslibrary.R;
+import com.sifiso.codetribe.minisasslibrary.activities.MSApp;
 import com.sifiso.codetribe.minisasslibrary.dto.EvaluationSiteDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.RiverDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
-import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
-import com.sifiso.codetribe.minisasslibrary.toolbox.BaseVolley;
-import com.sifiso.codetribe.minisasslibrary.util.CacheUtil;
-import com.sifiso.codetribe.minisasslibrary.util.RiverSearcher;
-import com.sifiso.codetribe.minisasslibrary.util.Statics;
+import com.sifiso.codetribe.minisasslibrary.util.RiverDataWorker;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,10 +55,11 @@ public class RiverSearchDialog extends DialogFragment {
     private View spinnersLayout;
     private double latitude, longitude;
     private int radius;
+    Button btnClose, btnLoad;
     ProgressBar progressBar;
     RiverSearchListener listener;
     private TextView riverCount, siteCount, txtRadius;
-    static final String LOG = RiverSearcher.class.getSimpleName();
+    static final String LOG = RiverSearchDialog.class.getSimpleName();
 
 
     @Override
@@ -64,17 +68,18 @@ public class RiverSearchDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.river_search, null);
         setFields();
-        if (rivers == null || rivers.isEmpty()) {
-            getCachedRivers();
-        } else {
+        if (rivers != null && !rivers.isEmpty()) {
             setRiverSpinner();
         }
         builder.setView(view);
-
+        IntentFilter m = new IntentFilter(RiverDataWorker.BROADCAST_DIALOG);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(new SearchBroadCastReceiver(),m);
         return builder.create();
     }
     private void setFields() {
 
+        btnClose = (Button) view.findViewById(R.id.btnClose);
+        btnLoad = (Button) view.findViewById(R.id.btnLoad);
         riverDirections = (ImageView) view.findViewById(R.id.riverDirectionsIcon);
         siteDirections = (ImageView) view.findViewById(R.id.siteDirectionsIcon);
         progressBar = (ProgressBar) view.findViewById(R.id.busy);
@@ -89,6 +94,18 @@ public class RiverSearchDialog extends DialogFragment {
         siteSpinner = (Spinner) view.findViewById(R.id.siteSpinner);
         spinnersLayout = view.findViewById(R.id.siteSpinnerLayout);
        //
+        btnLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getCachedData();
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onSearchComplete(rivers);
+            }
+        });
         riverDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +124,8 @@ public class RiverSearchDialog extends DialogFragment {
                 getRiversAroundMe();
             }
         });
+        seekBar.setProgress(10);
+        seekBar.setMax(50);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -138,102 +157,106 @@ public class RiverSearchDialog extends DialogFragment {
         this.radius = radius;
     }
 
+    public void setApp(MSApp app) {
+        this.app = app;
+    }
+
     public void setListener(RiverSearchListener listener) {
         this.listener = listener;
     }
     List<RiverDTO> rivers;
+    MSApp app;
+    Snackbar snackbar;
 
-    boolean isBusy;
-    private void getCachedRivers() {
-        CacheUtil.getCachedData(getContext(), CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
+    private void getRiversAroundMe() {
+
+        Log.d(LOG, "############### getRiversAroundMe");
+        progressBar.setVisibility(View.VISIBLE);
+        snackbar = Snackbar.make(progressBar,"Searching for rivers ....",Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
+        RiverDataWorker.getRiversAroundMe(app, context, latitude, longitude,
+                radius, true, new RiverDataWorker.RiverSearchListener() {
             @Override
-            public void onFileDataDeserialized(ResponseDTO response) {
-                if (!response.getRiverList().isEmpty()) {
-                    rivers = response.getRiverList();
+            public void onResponse(List<RiverDTO> list) {
+                progressBar.setVisibility(View.GONE);
+                snackbar.dismiss();
+                Log.e(LOG, "### .....RiverDataWorker.getRiversAroundMe onResponse, " +
+                        "found: " + list.size());
+                setRivers(list,true);
+                Snackbar.make(progressBar,"Search for rivers found: " +
+                list.size(),Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String message) {
+                snackbar.dismiss();
+                snackbar =Snackbar.make(progressBar,message,Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.setActionTextColor(ContextCompat.getColor(context,R.color.amber_500));
+                snackbar.show();
+
+            }
+        });
+
+
+
+
+
+
+    }
+
+    private void getCachedData() {
+        riverSpinner.setVisibility(View.GONE);
+        siteSpinner.setVisibility(View.GONE);
+        RiverDataWorker.getRivers(app, new RiverDataWorker.RiverCacheListener() {
+            @Override
+            public void onRiversCached() {
+
+            }
+            @Override
+            public void onRiversFound(List<RiverDTO> list) {
+                if (!list.isEmpty()) {
+                    rivers = list;
+                    for (RiverDTO r: rivers) {
+                        r.calculateDistance(latitude,longitude);
+                    }
+                    Collections.sort(rivers);
+                    riverSpinner.setVisibility(View.VISIBLE);
+                    siteSpinner.setVisibility(View.VISIBLE);
                     setRiverSpinner();
                 }
             }
 
             @Override
-            public void onDataCached(ResponseDTO response) {
-
-            }
-
-            @Override
-            public void onError() {
+            public void onError(String message) {
 
             }
         });
     }
-    private void getRiversAroundMe() {
-        if (isBusy) {
-            Log.e(LOG, "### getRiversAroundMe is BUSY!!!");
-            return;
+    class SearchBroadCastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(LOG,"======= SearchBroadCastReceiver onReceive: getCachedData starting");
+            getCachedData();
+
         }
-        Log.d(LOG, "############### getRiversAroundMe");
-
-        RequestDTO w = new RequestDTO();
-        w.setRequestType(RequestDTO.LIST_DATA_WITH_RADIUS_RIVERS);
-        w.setLatitude(latitude);
-        w.setLongitude(longitude);
-        w.setRadius(radius);
-
-        isBusy = true;
-        progressBar.setVisibility(View.VISIBLE);
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, context, new BaseVolley.BohaVolleyListener() {
-            @Override
-            public void onResponseReceived(ResponseDTO r) {
-                isBusy = false;
-                progressBar.setVisibility(View.GONE);
-                Log.e(LOG, "### getRiversAroundMe, found: " + r.getRiverList().size());
-                for (RiverDTO river : r.getRiverList()) {
-                    river.calculateDistance(latitude, longitude);
-                }
-                Collections.sort(r.getRiverList());
-                rivers = r.getRiverList();
-                setRiverSpinner();
-               // Util.expand(spinnersLayout,1000,null);
-                listener.onSearchComplete(r.getRiverList());
-                CacheUtil.cacheData(context, r,
-                        CacheUtil.CACHE_DATA, new CacheUtil.CacheUtilListener() {
-                            @Override
-                            public void onFileDataDeserialized(final ResponseDTO resp) {
-
-                            }
-
-                            @Override
-                            public void onDataCached(ResponseDTO r) {
-
-
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
-            }
-
-            @Override
-            public void onVolleyError(VolleyError error) {
-                listener.onError(error.getMessage());
-            }
-
-            @Override
-            public void onError(final String message) {
-                listener.onError(message);
-            }
-        });
-
-
     }
-
     private RiverDTO selectedRiver;
     private EvaluationSiteDTO selectedSite;
+    private boolean isFirsTime = true;
+    static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,##0.0");
 
     private void setRiverSpinner() {
         List<String> rlist = new ArrayList<>();
         for (RiverDTO river : rivers) {
-            rlist.add(river.getRiverName().trim());
+            rlist.add(river.getRiverName().trim()
+                    + "\t\t(" + df.format(river.getDistanceFromMe()/1000) + " km)" );
         }
         ArrayAdapter<String> riverAdapter = new ArrayAdapter<>(
                 context, R.layout.spinner_text_black, rlist);
@@ -243,9 +266,17 @@ public class RiverSearchDialog extends DialogFragment {
         riverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (rivers.isEmpty()) {
+                    Log.e(LOG,"............no rivers for spinner");
+                }
                 selectedRiver = rivers.get(position);
                 setSiteSpinner();
-                listener.onRiverSelected(selectedRiver);
+                if (isFirsTime) {
+                    isFirsTime = false;
+                    Log.d(LOG,"ignored onItemSelected because its first time thru");
+                } else {
+                    listener.onRiverSelected(selectedRiver);
+                }
             }
 
             @Override
@@ -260,10 +291,14 @@ public class RiverSearchDialog extends DialogFragment {
     private void setSiteSpinner() {
         List<String> siteList = new ArrayList<>();
         for (EvaluationSiteDTO s : selectedRiver.getEvaluationsiteList()) {
+            s.calculateDistance(latitude,longitude);
+        }
+        Collections.sort(selectedRiver.getEvaluationsiteList());
+        for (EvaluationSiteDTO s : selectedRiver.getEvaluationsiteList()) {
             if (s.getSiteName() == null) {
-                siteList.add("No name given");
+                siteList.add("No name given (" + df.format(s.getDistanceFromMe()/1000) + " km)" );
             } else {
-                siteList.add(s.getSiteName().trim());
+                siteList.add(s.getSiteName().trim() +  " (" + df.format(s.getDistanceFromMe()/1000) + " km)");
             }
         }
         ArrayAdapter<String> siteAdapter = new ArrayAdapter<>(
@@ -286,11 +321,42 @@ public class RiverSearchDialog extends DialogFragment {
         });
     }
 
+    public void setFirsTime(boolean firsTime) {
+        isFirsTime = firsTime;
+    }
+
     public void setContext(Context context) {
         this.context = context;
     }
 
-    public void setRivers(List<RiverDTO> rivers) {
-        this.rivers = rivers;
+    public void setRivers(List<RiverDTO> riverList, final boolean setSpinner) {
+        this.rivers = riverList;
+        List<Integer> ids = new ArrayList<>();
+        for (RiverDTO r: rivers) {
+            ids.add(r.getRiverID());
+        }
+        RiverDataWorker.getRiversByIDs(app, ids, new RiverDataWorker.RiverCacheListener() {
+            @Override
+            public void onRiversCached() {
+
+            }
+            @Override
+            public void onRiversFound(List<RiverDTO> list) {
+                rivers = list;
+                for (RiverDTO r: rivers) {
+                    r.calculateDistance(latitude,longitude);
+                }
+                Collections.sort(rivers);
+                if (setSpinner || riverSpinner != null) {
+                    setRiverSpinner();
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
+
     }
 }

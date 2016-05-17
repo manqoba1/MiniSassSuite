@@ -88,6 +88,41 @@ public class SharedUtil {
         return tm;
     }
 
+    public static void saveRiverRefreshTime(Context ctx) {
+
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = sp.edit();
+
+        ed.putLong("time", new Date().getTime());
+        ed.commit();
+        Log.e(LOG, "Time  SAVED IN SharedPreferences");
+
+    }
+    public static Date getRiverRefreshTime(Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Long st = sp.getLong("time", 0);
+        if (st == 0) {
+            return null;
+        }
+        Date date = new Date(st);
+        return date;
+    }
+    static final long TIME = 1000 * 60 * 1;
+    public static boolean isRiverListNeedsRefresh(Context ctx) {
+        if (getRiverRefreshTime(ctx) == null) {
+            return true;
+        }
+        Date lastRefresh = getRiverRefreshTime(ctx);
+        Date now = new Date();
+        if (now.getTime() - lastRefresh.getTime() > TIME) {
+            return true;
+        }
+
+
+        return false;
+    }
+
     public static void saveTeamMember(Context ctx, TeamMemberDTO evi) {
 
         SharedPreferences sp = PreferenceManager

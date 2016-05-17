@@ -39,7 +39,7 @@ public class ServletsForRequests {
         servletsListener = listener;
         requestList = req;
         ctx = c;
-        BaseVolley.getRemoteData(Statics.REQUEST_SERVLET, requestList, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.REQUEST_SERVLET, requestList, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 parseData(r);
@@ -81,7 +81,7 @@ public class ServletsForRequests {
     }
 
     private static void helperRequest(RequestList req) {
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, requestList, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, requestList, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
                 if (r.getStatusCode() == null || r.getStatusCode() == 0) {

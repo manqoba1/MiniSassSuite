@@ -21,7 +21,7 @@ public class DistanceFromRiver implements Comparable<DistanceFromRiver> {
         calculateDistance();
     }
 
-    public void calculateDistance() {
+    private void calculateDistance() {
         Location loc1 = new Location(LocationManager.GPS_PROVIDER);
         loc1.setLatitude(latitude);
         loc1.setLongitude(longitude);
@@ -34,10 +34,10 @@ public class DistanceFromRiver implements Comparable<DistanceFromRiver> {
 
     @Override
     public int compareTo(DistanceFromRiver another) {
-        if (distance < another.distance) {
+        if (this.distance < another.distance) {
             return -1;
         }
-        if (distance > another.distance) {
+        if (this.distance > another.distance) {
             return 1;
         }
         return 0;

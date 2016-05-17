@@ -6,8 +6,7 @@
 package com.sifiso.codetribe.minisasslibrary.dto;
 
 
-import android.location.Location;
-import android.location.LocationManager;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ public class RiverDTO implements Serializable, Comparable<RiverDTO> {
     private Integer riverID;
     private String riverName;
     private Date dateAdded;
+    private boolean ignore;
     private Double nearestLatitude, nearestLongitude;
     private float distanceFromMe;
     private List<EvaluationSiteDTO> evaluationsiteList = new ArrayList<>();
@@ -31,6 +31,14 @@ public class RiverDTO implements Serializable, Comparable<RiverDTO> {
     private List<StreamDTO> streamList = new ArrayList<>();
 
     public RiverDTO() {
+    }
+
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
     }
 
     public List<StreamDTO> getStreamList() {
@@ -145,22 +153,18 @@ public class RiverDTO implements Serializable, Comparable<RiverDTO> {
         List<RiverPointDTO> points = new ArrayList<>();
         for (RiverPartDTO rp : riverpartList) {
             for (RiverPointDTO point : rp.getRiverpointList()) {
-                Location loc1 = new Location(LocationManager.GPS_PROVIDER);
-                loc1.setLatitude(point.getLatitude());
-                loc1.setLongitude(point.getLongitude());
-
-                Location loc2 = new Location(LocationManager.GPS_PROVIDER);
-                loc2.setLatitude(latitude);
-                loc2.setLongitude(longitude);
-
-                point.setDistanceFromMe(loc1.distanceTo(loc2));
+                point.calculateDistance(latitude,longitude);
                 points.add(point);
             }
         }
 
         Collections.sort(points);
-        if (!points.isEmpty())
+        if (!points.isEmpty()) {
             distanceFromMe = points.get(0).getDistanceFromMe();
+            Log.d("RiverDTO","---------------------> distanceFromMe: " + distanceFromMe);
+        } else {
+            Log.e("RiverDTO","ERROR - no points for distance calc");
+        }
 
         return distanceFromMe;
     }

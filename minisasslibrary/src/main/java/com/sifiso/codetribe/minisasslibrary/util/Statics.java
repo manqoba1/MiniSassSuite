@@ -5,21 +5,17 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
-import com.sifiso.codetribe.minisasslibrary.R;
-
 import java.util.regex.Pattern;
 
 
 public class Statics {
 
 
-//    public static final String WEBSOCKET_URL = "ws://69.89.15.29:48953/ms2/";
-//    public static final String URL = "http://69.89.15.29:48953/ms2/";
-//    public static final String IMAGE_URL = "http://69.89.15.29::48953/";
+    public static final String URL = "http://69.89.9.242:3030/ms2/";
+    public static final String IMAGE_URL = "http://69.89.9.242::3030/";
 
-    public static final String WEBSOCKET_URL = "ws://192.168.1.233:40405/ms2/";
-    public static final String URL = "http://192.168.1.233:40405/ms2/";
-    public static final String IMAGE_URL = "http://192.168.1.233:40405/";
+//    public static final String URL = "http://192.168.1.233:40405/ms2/";
+//    public static final String IMAGE_URL = "http://192.168.1.233:40405/";
 
     /*public static final String WEBSOCKET_URL = "ws://146.64.85.22:8080/ms2/";
     public static final String URL = "http://146.64.85.22:8080/ms2/";
@@ -33,9 +29,6 @@ public class Statics {
             MINI_SASS_ENDPOINT = "wsmini",
             SERVLET_ENDPOINT = "list?JSON=",
             SERVLET_TEST = "test1?JSON=";
-
-    public static final String SESSION_ID = "sessionID";
-    public static final int CRASH_STRING = R.string.crash_toast;
 
 
     public static void setDroidFontBold(Context ctx, TextView txt) {

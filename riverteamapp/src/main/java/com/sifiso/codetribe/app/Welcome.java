@@ -120,7 +120,7 @@ public class Welcome extends AppCompatActivity {
 
             }
 
-            Intent intent = new Intent(ctx, CreateSiteActivity.class);
+            Intent intent = new Intent(ctx, MainDrawerActivity.class);
             startActivity(intent);
             finish();
             return;

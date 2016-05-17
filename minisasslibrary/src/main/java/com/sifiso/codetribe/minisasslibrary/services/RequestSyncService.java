@@ -51,7 +51,7 @@ public class RequestSyncService extends IntentService {
         Log.w(LOG, "-------->>> RequestSyncService, onHandleIntent");
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(getApplicationContext());
         if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
-            Log.e(LOG,"No network connection, service quitting");
+            Log.e(LOG, "No network connection, service quitting");
             return;
         }
         FileInputStream stream;
@@ -73,31 +73,36 @@ public class RequestSyncService extends IntentService {
                 startUploads();
             } else {
                 Log.e(LOG, "requestCache is null");
-                requestSyncListener.onTasksSynced(0, 0);
+                if (requestSyncListener != null)
+                    requestSyncListener.onTasksSynced(0, 0);
             }
         } catch (JsonSyntaxException e1) {
             Log.e(LOG, "JsonSyntaxException, there is no request cache currently");
             restoreCache();
-            requestSyncListener.onTasksSynced(0, 0);
+            if (requestSyncListener != null)
+                requestSyncListener.onTasksSynced(0, 0);
         } catch (FileNotFoundException e) {
             Log.e(LOG, "fileNotFoundException, there is no request cache currently");
             restoreCache();
-            requestSyncListener.onTasksSynced(0, 0);
+            if (requestSyncListener != null)
+                requestSyncListener.onTasksSynced(0, 0);
         } catch (Exception e) {
             Log.e(LOG, "there's an issue with the sync", e);
             restoreCache();
-            requestSyncListener.onTasksSynced(0, 0);
+            if (requestSyncListener != null)
+                requestSyncListener.onTasksSynced(0, 0);
         }
 
     }
 
     private void restoreCache() {
-        for (RequestDTO w: requests) {
-            RequestCacheUtil.addRequest(getApplicationContext(),w,null);
+        for (RequestDTO w : requests) {
+            RequestCacheUtil.addRequest(getApplicationContext(), w, null);
         }
-        Log.i(LOG,"Requests restored to cache");
+        Log.i(LOG, "Requests restored to cache");
 
     }
+
     private static String getStringFromInputStream(InputStream is) throws IOException {
 
         BufferedReader br = null;
@@ -127,12 +132,12 @@ public class RequestSyncService extends IntentService {
             }
             if (list.getRequests().isEmpty()) {
                 Log.d(LOG, "There are no requests that have been cached");
+                if (requestSyncListener != null)
                 requestSyncListener.onTasksSynced(0, 0);
                 return;
             }
             Log.w(LOG, "sending cached request list after clearing unneeded fields: " + list.getRequests().size());
-            for (RequestDTO w: list.getRequests()) {
-
+            for (RequestDTO w : list.getRequests()) {
 
 
             }
@@ -149,6 +154,7 @@ public class RequestSyncService extends IntentService {
                         rce.setDateUploaded(new Date().getTime());
                     }
                     cleanUpCache();
+                    if (requestSyncListener != null)
                     requestSyncListener.onTasksSynced(response.getGoodCount(), response.getBadCount());
                 }
 
@@ -159,6 +165,8 @@ public class RequestSyncService extends IntentService {
 
                 @Override
                 public void onError(String message) {
+
+                    if (requestSyncListener != null)
                     requestSyncListener.onError(message);
                 }
             });
@@ -173,7 +181,7 @@ public class RequestSyncService extends IntentService {
 
     private void startUploads() {
         if (requests.isEmpty()) {
-            Log.w(LOG,"***** no requests to upload");
+            Log.w(LOG, "***** no requests to upload");
             return;
         }
         index = 0;
@@ -183,13 +191,14 @@ public class RequestSyncService extends IntentService {
         sendRequest(requests.get(index));
 
     }
+
     private void sendRequest(RequestDTO w) {
 
-        for (InsectImageDTO m: w.getInsectImages()) {
+        for (InsectImageDTO m : w.getInsectImages()) {
             m.setInsectimagelistList(null);
         }
 
-        Log.e(LOG,"###########################################......index: "+index+" ........Sending request to server: \n" + gson.toJson(w));
+        Log.e(LOG, "###########################################......index: " + index + " ........Sending request to server: \n" + gson.toJson(w));
         NetUtil.sendRequest(getApplicationContext(), Statics.SERVLET_ENDPOINT, w, new NetUtil.NetListener() {
             @Override
             public void onMessage(ResponseDTO response) {
@@ -197,7 +206,7 @@ public class RequestSyncService extends IntentService {
                 if (index < requests.size()) {
                     sendRequest(requests.get(index));
                 } else {
-                    Log.e(LOG,"+++++++++++++++++++++++++++++++++++++++++++++ Request upload completed, uploaded " + (index));
+                    Log.e(LOG, "+++++++++++++++++++++++++++++++++++++++++++++ Request upload completed, uploaded " + (index));
                     cleanUpCache();
                     Intent m = new Intent(BROADCAST_REQUESTS_UPLOADED);
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(m);
@@ -211,11 +220,13 @@ public class RequestSyncService extends IntentService {
 
             @Override
             public void onError(String message) {
-                Log.e(LOG,message);
+                Log.e(LOG, message);
             }
         });
     }
+
     public static final String BROADCAST_REQUESTS_UPLOADED = "com.boha.BROADCAST_REQUESTS_UPLOADED";
+
     private void cleanUpCache() {
         requestCache = new RequestCache();
         requestCache.setRequestCacheEntryList(new ArrayList<RequestCacheEntry>());
@@ -243,7 +254,7 @@ public class RequestSyncService extends IntentService {
     private final IBinder mBinder = new LocalBinder();
 
     public void startSyncCachedRequests(RequestSyncListener rsl) {
-        Log.w(LOG,"+++++++++++++ startSyncCachedRequests ..........");
+        Log.w(LOG, "+++++++++++++ startSyncCachedRequests ..........");
         requestSyncListener = rsl;
         onHandleIntent(null);
     }

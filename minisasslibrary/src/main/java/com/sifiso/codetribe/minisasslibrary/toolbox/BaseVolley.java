@@ -12,8 +12,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
-import com.sifiso.codetribe.minisasslibrary.MiniSassApp;
 import com.sifiso.codetribe.minisasslibrary.R;
+import com.sifiso.codetribe.minisasslibrary.activities.MSApp;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestDTO;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.RequestList;
 import com.sifiso.codetribe.minisasslibrary.dto.tranfer.ResponseDTO;
@@ -74,13 +74,13 @@ public class BaseVolley {
      * @param context  the Activity context
      * @param listener the listener implementor who wants to know about call status
      */
-    public static void getRemoteData(String suffix, RequestDTO request,
-                                     Context context, MiniSassApp app, BohaVolleyListener listener) {
+    public static void sendRequest(String suffix, RequestDTO request,
+                                   Context context, MSApp app, BohaVolleyListener listener) {
 
         ctx = context;
         bohaVolleyListener = listener;
         if (requestQueue == null) {
-            Log.w(LOG, "------------- getRemoteData requestQueue is null - get from app");
+            Log.w(LOG, "------------- sendRequest requestQueue is null - get from app");
             requestQueue = app.getRequestQueue();
         }
         String json = null, jj = null;
@@ -109,13 +109,13 @@ public class BaseVolley {
      * @param context  the Activity context
      * @param listener the listener implementor who wants to know abdout call status
      */
-    public static void getRemoteData(String suffix, RequestDTO request,
-                                     Context context, BohaVolleyListener listener) {
+    public static void sendRequest(String suffix, RequestDTO request,
+                                   Context context, BohaVolleyListener listener) {
 
         ctx = context;
         bohaVolleyListener = listener;
         if (requestQueue == null) {
-            Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
+            Log.w(LOG, "sendRequest requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
         }
         String json = null, jj = null;
@@ -137,16 +137,16 @@ public class BaseVolley {
         requestQueue.add(bohaRequest);
     }
 
-    public static void getRemoteData(String suffix, RequestList request,
-                                     Context context, BohaVolleyListener listener) {
+    public static void sendRequest(String suffix, RequestList request,
+                                   Context context, BohaVolleyListener listener) {
 
         ctx = context;
         bohaVolleyListener = listener;
         if (requestQueue == null) {
-            Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
+            Log.w(LOG, "sendRequest requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
         } else {
-            Log.e(LOG, "********** getRemoteData requestQueue is NOT NULL - Kool");
+            Log.e(LOG, "********** sendRequest requestQueue is NOT NULL - Kool");
         }
         String json = null, jj = null;
 
@@ -189,13 +189,13 @@ public class BaseVolley {
         requestQueue.add(bohaRequest);
     }
 
-    public static void getRemoteData(String suffix, RequestDTO request,
-                                     Context context, int timeOutSeconds, BohaVolleyListener listener) {
+    public static void sendRequest(String suffix, RequestDTO request,
+                                   Context context, int timeOutSeconds, BohaVolleyListener listener) {
 
         ctx = context;
         bohaVolleyListener = listener;
         if (requestQueue == null) {
-            Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
+            Log.w(LOG, "sendRequest requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
         }
         String json = null, jj = null;
@@ -224,7 +224,8 @@ public class BaseVolley {
                 response = r;
                 Gson gson = new Gson();
                 int length = gson.toJson(response).length();
-                Log.e(LOG, "+++++++ Yup! ...response object received, status code: " + r.getStatusCode() + " size: " + getSize(length));
+                Log.e(LOG, "$$$$$ ++++++++++++++++++ Yup! ...response received, status code: "
+                        + r.getStatusCode() + " size: " + getSize(length) + " message: " + r.getMessage());
 
                 if (r.getStatusCode() > 0) {
                     try {
@@ -304,8 +305,8 @@ public class BaseVolley {
     protected ImageLoader imageLoader;
     protected static String suff;
     static final String LOG = "BaseVolley";
-    static final int MAX_RETRIES = 2;
-    static final long SLEEP_TIME = 3000;
+    static final int MAX_RETRIES = 3;
+    static final long SLEEP_TIME = 5000;
 
 
     static int retries;

@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ObservationListFragment">
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/beige_pale"
+            android:layout_margin="@dimen/mon_divider"
+            app:cardCornerRadius="@dimen/mon_divider"
+            app:cardElevation="@dimen/mon_divider">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mon_margin">
+
+                <RelativeLayout
+                    android:id="@+id/layouta1"
+                    android:padding="@dimen/mon_padding"
+                    android:background="@color/blue_100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/totalSites"
+                        style="@style/BlackCircleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mon_padding"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="0" />
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_toLeftOf="@id/totalSites" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layouta2"
+                    android:padding="@dimen/mon_padding"
+                    android:background="@color/beige_pale"
+                    android:layout_below="@id/layouta1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/chkBoxAll"
+                        android:text="Show All"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/totalObserv"
+                        style="@style/Title1TextStyleRed"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="33" />
+
+                    <TextView
+                        android:id="@+id/label1"
+                        style="@style/TextStyleGray"
+                        android:textSize="13sp"
+                        android:layout_centerVertical="true"
+                        android:text="Number of Observations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mon_padding"
+                        android:layout_toLeftOf="@id/totalObserv" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_below="@id/layout1"
+        android:layout_margin="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

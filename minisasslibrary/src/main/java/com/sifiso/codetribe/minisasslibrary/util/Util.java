@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
@@ -98,6 +99,19 @@ public class Util {
     static int maxFlashes, count;
     private static int MAX_IMAGE_DIMENSION = 720;
 
+    public static float getDistanceBetween(double latitude1, double longitude1,
+                             double latitude2, double longitude2) {
+        Location loc1 = new Location(LocationManager.GPS_PROVIDER);
+        loc1.setLatitude(latitude1);
+        loc1.setLongitude(longitude1);
+
+        Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+        loc2.setLatitude(latitude2);
+        loc2.setLongitude(longitude2);
+
+        float dist = loc1.distanceTo(loc2);
+       return dist;
+    }
     public static ImageView setCustomActionBar(Context ctx,
                                                ActionBar actionBar, String text, Drawable image) {
         actionBar.setDisplayShowCustomEnabled(true);
@@ -132,31 +146,7 @@ public class Util {
             subTxt.setVisibility(View.VISIBLE);
         }
         logo.setImageDrawable(image);
-        /*if (image == null || image.equals("")) {
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_launcher));
-        } else {
-            CircleTransform transform = new CircleTransform();
-            Picasso.with(ctx).load(image).placeholder(ctx.getResources().getDrawable(R.drawable.ic_launcher)).transform(transform).into(logo);
 
-        }*/
-
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flashOnce(txt, 200, new UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        listener.onEvokeProfile();
-                    }
-                });
-                flashOnce(subTxt, 200, new UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-
-                    }
-                });
-            }
-        });
         actionBar.setCustomView(actionView);
     }
 
@@ -711,9 +701,6 @@ public class Util {
         } else {
             txt.setVisibility(View.GONE);
         }
-       /* ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomHeroImage(ctx));
-*/
         pop.setPromptView(v);
 
         pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);

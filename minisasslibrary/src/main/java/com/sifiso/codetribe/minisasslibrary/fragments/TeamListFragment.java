@@ -147,7 +147,7 @@ public class TeamListFragment extends Fragment implements PageInterface, PageFra
                 });
             }
         });
-//		BaseVolley.getRemoteData(Statics.SERVLET_TEAM, r, ctx,
+//		BaseVolley.sendRequest(Statics.SERVLET_TEAM, r, ctx,
 //				new BaseVolley.BohaVolleyListener() {
 //
 //					@Override
@@ -244,7 +244,7 @@ public class TeamListFragment extends Fragment implements PageInterface, PageFra
         r.setTeam(t);
         if (!BaseVolley.checkNetworkOnDevice(ctx)) return;
         busyListener.setBusy();
-        BaseVolley.getRemoteData(Statics.MINI_SASS_ENDPOINT, r, ctx,
+        BaseVolley.sendRequest(Statics.MINI_SASS_ENDPOINT, r, ctx,
                 new BaseVolley.BohaVolleyListener() {
 
                     @Override

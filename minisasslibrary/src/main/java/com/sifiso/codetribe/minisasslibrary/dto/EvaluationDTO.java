@@ -19,7 +19,7 @@ public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
     private static final long serialVersionUID = 1L;
     private Integer evaluationID, teamMemberID, conditionsID, evaluationSiteID;
     private long evaluationDate;
-    private String comment, conditionName, teamName;
+    private String comment, conditionName, teamName, siteName;
     private Double score;
     private Double pH;
     private Double latitude;
@@ -36,6 +36,14 @@ public class EvaluationDTO implements Serializable, Comparable<EvaluationDTO> {
     private List<InsectImageDTO> insectImages;
     private List<EvaluationInsectDTO> evaluationinsectList;
     private List<EvaluationCommentDTO> evaluationcommentList;
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
 
     public Double getLatitude() {
         return latitude;

@@ -3,14 +3,7 @@
 
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/action_site_edit"
-            android:title="Manage Sites"
-            android:icon="@android:drawable/ic_menu_edit"/>
-        <item
-            android:id="@+id/action_observe"
-            android:title="Perform Observation"
-            android:icon="@android:drawable/ic_menu_manage"/>
+
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_action_add_person"

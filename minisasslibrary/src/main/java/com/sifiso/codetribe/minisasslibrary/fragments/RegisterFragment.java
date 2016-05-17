@@ -89,15 +89,6 @@ public class RegisterFragment extends Fragment implements PageFragment {
 
     static String LOG = RegisterFragment.class.getSimpleName();
 
-   /* public void updateTown(TownDTO t) {
-        Log.d(LOG, t.getTownID() + " : " + t.getTownName());
-        if (rsTown == null) {
-            rsTown = (TextView) v.findViewById(R.id.edtTown);
-        }
-        rsTown.setText(t.getTownName());
-        townID = t.getTownID();
-    }*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +105,6 @@ public class RegisterFragment extends Fragment implements PageFragment {
         activity = getActivity();
         ctx = getActivity().getApplicationContext();
         setFields();
-        getEmail();
 
         return v;
     }
@@ -453,7 +443,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
         }
 
         if (isMoreMember) {
-            ToastUtil.toast(ctx, "Member is add to " + rsTeamName.getText().toString().toUpperCase() + ".");
+            ToastUtil.toast(ctx, "Member is added to " + rsTeamName.getText().toString().toUpperCase() + ".");
             llMember.setVisibility(View.VISIBLE);
             memberToBeAddedAdapter = new MemberToBeAddedAdapter(ctx, memberToBeRegistered, new MemberToBeAddedAdapter.MemberToBeAddedAdapterListener() {
                 @Override
@@ -512,7 +502,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
         r.setTeam(g);
         setRefreshActionButtonState(true);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, r, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, r, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO resp) {
                 activity.runOnUiThread(new Runnable() {
@@ -580,7 +570,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
             mListener = (RegisterFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement ObservationListener");
         }
     }
 
@@ -647,7 +637,7 @@ public class RegisterFragment extends Fragment implements PageFragment {
 
     List<String> emailAccountList;
 
-    public void getEmail() {
+    public void getEmailx() {
         AccountManager am = AccountManager.get(ctx);
         Account[] accts = am.getAccounts();
         if (accts.length == 0) {

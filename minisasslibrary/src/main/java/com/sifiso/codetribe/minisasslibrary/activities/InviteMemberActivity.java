@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -106,7 +105,7 @@ public class InviteMemberActivity extends AppCompatActivity {
         w.setTeamID(teamID);
         w.setTeamMemberID(teamMemberID);
 
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO r) {
 
@@ -129,7 +128,7 @@ public class InviteMemberActivity extends AppCompatActivity {
         RequestDTO w = new RequestDTO(RequestDTO.SEARCH_MEMBERS);
         w.setSearch(search);
         w.setEmail(teamMember.getEmail());
-        BaseVolley.getRemoteData(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
+        BaseVolley.sendRequest(Statics.SERVLET_ENDPOINT, w, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(final ResponseDTO r) {
                 runOnUiThread(new Runnable() {

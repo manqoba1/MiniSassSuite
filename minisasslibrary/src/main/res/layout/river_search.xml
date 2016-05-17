@@ -150,5 +150,29 @@
                 android:layout_toLeftOf="@id/siteDirectionsIcon" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_below="@id/siteSpinnerLayout"
+            android:layout_margin="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnClose"
+                android:text="Done"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btnLoad"
+                android:layout_toRightOf="@id/btnClose"
+                android:text="Load Cached Rivers"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/blue_600"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 

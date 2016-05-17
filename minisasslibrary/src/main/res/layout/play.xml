@@ -65,7 +65,7 @@
             android:textSize="12sp" />
 
         <RelativeLayout
-            android:id="@+id/AR_btnLayout"
+            android:id="@+id/AR_mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/ELI_envType"
@@ -113,7 +113,7 @@
             android:id="@+id/ELI_envType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/AR_btnLayout"
+            android:layout_above="@+id/AR_mainLayout"
             android:layout_alignEnd="@+id/diver"
             android:layout_alignRight="@+id/diver"
             android:text="New Text" />
@@ -122,7 +122,7 @@
             android:id="@+id/diver"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/AR_btnLayout"
+            android:layout_below="@+id/AR_mainLayout"
             android:layout_marginTop="10dp"
             android:background="@color/lime_A700" />
 
@@ -168,7 +168,7 @@
 
 
             <TextView
-                android:id="@+id/ELI_wt"
+                android:id="@+id/waterTemp"
                 style="@style/Title3TextStyleBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/ELI_wt"
+                android:layout_toLeftOf="@id/waterTemp"
                 android:padding="5dp"
                 android:text="Water Temperature \t   (\u2103)" />
 
@@ -197,7 +197,7 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/ELI_oxygen"
+                android:id="@+id/oxygen"
                 style="@style/Title3TextStyleBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@id/ELI_oxygen"
+                android:layout_toLeftOf="@id/oxygen"
                 android:padding="5dp"
                 android:text="Dissolved Oxygen \t   (mg/l)" />
 

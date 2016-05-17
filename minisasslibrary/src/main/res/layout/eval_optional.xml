@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/evalOptionals"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/waterClarityLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/diver"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/waterClarity"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_centerVertical="true"
+            android:text="00" />
+
+        <TextView
+            android:id="@+id/label1"
+            style="@style/TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_toLeftOf="@id/waterClarity"
+            android:padding="@dimen/mon_padding"
+            android:text="Water Clarity \t   (cm)" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/waterTempLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/waterClarityLayout"
+        android:layout_marginTop="@dimen/mon_divider">
+
+
+        <TextView
+            android:id="@+id/waterTemp"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_centerVertical="true"
+            android:text="00" />
+
+        <TextView
+            android:id="@+id/label2"
+            style="@style/TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/waterTemp"
+            android:padding="@dimen/mon_padding"
+            android:text="Water Temperature \t   (\u2103)" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/oxygenLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/waterTempLayout"
+        android:layout_marginTop="@dimen/mon_divider">
+
+        <TextView
+            android:id="@+id/oxygen"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="00" />
+
+        <TextView
+            android:id="@+id/label3"
+            style="@style/TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_toLeftOf="@id/oxygen"
+            android:padding="@dimen/mon_padding"
+            android:text="Dissolved Oxygen \t   (mg/l)" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/phLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/oxygenLayout"
+        android:layout_marginTop="@dimen/mon_divider">
+
+        <TextView
+            android:id="@+id/ph"
+            style="@style/Title2TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_centerVertical="true"
+            android:text="00" />
+
+        <TextView
+            android:id="@+id/AR_instructorRatingCntLabel"
+            style="@style/TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_toLeftOf="@id/ph"
+            android:text="pH \t   (pH Units)" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

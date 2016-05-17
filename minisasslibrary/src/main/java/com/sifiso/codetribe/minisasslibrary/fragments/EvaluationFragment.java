@@ -85,7 +85,7 @@ public class EvaluationFragment extends Fragment implements PageFragment {
             mListener = (EvaluationFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement ObservationListener");
         }
     }
 

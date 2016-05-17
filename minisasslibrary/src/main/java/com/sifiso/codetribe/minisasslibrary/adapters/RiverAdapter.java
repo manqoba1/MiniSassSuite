@@ -142,21 +142,7 @@ public class RiverAdapter extends BaseAdapter {
             }
         });
         h.AR_txtRiverName.setText(river.getRiverName().trim() + " River");
-        h.AR_txtRiverName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(h.AR_txtRiverName, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        if (river.getEvaluationsiteList() != null) {
-                            mListener.onCreateEvaluation(river);
-                        } else {
-                            ToastUtil.toast(mCtx, "No Observation(s) yet");
-                        }
-                    }
-                });
-            }
-        });
+
         h.AR_totalEvaluation.setText("" + river.getEvaluationsiteList().size());
         h.AR_totalEvaluation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,8 +218,6 @@ public class RiverAdapter extends BaseAdapter {
         public void onSitesMapRequested(RiverDTO river);
 
         public void onEvaluationRequest(List<EvaluationSiteDTO> siteList, int position, String riverName);
-
-        public void onCreateEvaluation(RiverDTO river);
 
         public void onMapRequest(RiverDTO river, int result);
 
